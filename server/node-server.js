@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const nodeProxy = require('./node-proxy');
 const nodeAppServer = require('./node-app-server');
 const authPassport = require('./auth-passport');
+const article =require('./article')
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -65,7 +66,13 @@ app.post('/api/auth/login',
     res.status(200).send(JSON.stringify(req.user));
   }
 );
-
+app.post('/api/article/list',
+  (req, res) => {
+    article.readArticleList().then((result)=>{
+      res.status(200).send(JSON.stringify({data:"read article List success",meta:result}));
+    })
+  }
+)
 
 // API proxy logic: if you need to talk to a remote server from your client-side
 // app you can proxy it though here by editing ./proxy-config.js

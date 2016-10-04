@@ -1,0 +1,14 @@
+.article-list-item-wrap{
+    margin:10px;
+    padding: 10px 5px;
+    transition: box-shadow 0.2s;
+    border-radius: 3px;
+}
+.article-list-item-wrap:hover{
+    /*box-shadow:6px 4px 2px 1px rgba(0, 0, 0, 0.2);*/
+    transition: box-shadow 0.5s;
+    box-shadow:2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+.article-list-item-title{
+    color:slategrey;
+}

@@ -6,7 +6,7 @@ import {
   LOGOUT_USER,
   FORM_RESET,
 } from '../constants';
-
+import {closeModal} from './modal';
 export function loginUser() {
   return (dispatch, getState) => {
     const user = {
@@ -27,6 +27,7 @@ export function loginUser() {
               type: FORM_RESET,
               form: 'login',
             });
+            dispatch(closeModal())
             return res;
           }),
       },
