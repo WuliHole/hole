@@ -49,7 +49,14 @@ class App extends React.Component<IAppProps, void> {
     alert(2222222222)
   }
   render() {
-    const { children, session, login, logout, modal, closeLoginModal} = this.props;
+    const {
+      children,
+      session,
+      login,
+      logout,
+      modal,
+      closeLoginModal
+    } = this.props;
     const token = session.get('token', false);
     const isLoggedIn = token && token !== null && typeof token !== 'undefined';
     const firstName = session.getIn(['user', 'first'], '');

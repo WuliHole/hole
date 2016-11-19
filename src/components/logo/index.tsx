@@ -3,8 +3,8 @@ const LogoImage = require('../../assets/rangleio-logo.svg');
 
 const styles = {
   width: 128,
-  fontSize: "40px",
-  fontWeight: "500",
+  fontSize: '40px',
+  fontWeight: '500',
 };
 
 export default function Logo() {

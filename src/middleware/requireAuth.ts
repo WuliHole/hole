@@ -1,4 +1,6 @@
-export const requireAuth = (traget, key: string, descriptor: TypedPropertyDescriptor<Function>): any => {
+export const requireAuth = (
+    traget, key: string, descriptor: TypedPropertyDescriptor<Function>
+): any => {
     const originMethod = descriptor.value;
     return {
         get() {
@@ -7,11 +9,10 @@ export const requireAuth = (traget, key: string, descriptor: TypedPropertyDescri
                 ? () => {
                     this.props.openLoginModal()
                 }
-                : originMethod;//.apply(this,arguments) 
+                : originMethod; // .apply(this,arguments) 
         },
         set() {
 
         }
     }
-
 }

@@ -23,7 +23,7 @@ function articleReducer(state = INITIAL_STATE,
 
         case FETCH_ARTICLE_LIST_SUCCESS:
             return state.merge(fromJS({
-                articleList:action.payload,
+                articleList: action.payload,
                 hasError: false,
                 isLoading: false,
             }));

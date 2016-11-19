@@ -6,7 +6,8 @@ const connect = require('react-redux').connect;
 interface IAritclePageProps extends React.Props<any> {
   article: any;
   fetchArticles: () => void;
-};
+}
+
 function mapStateToProps(state) {
   return {
     article: state.article,
@@ -43,10 +44,12 @@ class ArticlePage extends React.Component<IAritclePageProps, void> {
 interface IArticleList extends React.Props<any> {
   data: any
 }
-class ArticleLsit extends React.Component<IArticleList, void>{
+
+class ArticleLsit extends React.Component<IArticleList, void> {
   constructor(props) {
     super(props)
   }
+
   render() {
     let {data} = this.props;
     data = data.toJS();
@@ -61,7 +64,7 @@ class ArticleLsit extends React.Component<IArticleList, void>{
       </Container>
     }
     return (<Container size={4} center>
-      {data.map((article) => <div 
+      {data.map((article) => <div
         className="article-list-item-wrap"
         key={article.id}>
         <h2>{article.title}</h2>
@@ -77,4 +80,4 @@ class ArticleLsit extends React.Component<IArticleList, void>{
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ArticlePage);
+)(ArticlePage)

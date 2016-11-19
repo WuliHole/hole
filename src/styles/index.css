@@ -28,5 +28,4 @@
 @import 'basscss-position';
 @import 'basscss-border';
 @import 'basscss-hide';
-
-@import './article/article-list';
+@import './article/article-list.less';

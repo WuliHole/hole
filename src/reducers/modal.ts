@@ -11,12 +11,12 @@ const INITIAL_STATE = fromJS({
 
 function modalReducer(state = INITIAL_STATE, action = { type: '' }) {
   switch (action.type) {
-  case OPEN_MODAL:
-    return state.update('opened', ()=>true);
-  case CLOSE_MODAL:
-    return state.update('opened', ()=>false);
-  default:
-    return state;
+    case OPEN_MODAL:
+      return state.update('opened', () => true);
+    case CLOSE_MODAL:
+      return state.update('opened', () => false);
+    default:
+      return state;
   }
 }
 
