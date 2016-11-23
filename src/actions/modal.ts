@@ -1,4 +1,4 @@
-import { OPEN_MODAL, CLOSE_MODAL } from '../constants/modal.action.types';
+import { OPEN_MODAL, CLOSE_MODAL } from '../constants/modal.action.types'
 
 
 export function openModal() {

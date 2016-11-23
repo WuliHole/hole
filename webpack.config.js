@@ -7,11 +7,11 @@ const plugins = require('./webpack/plugins');
 const postcssInit = require('./webpack/postcss');
 
 const applicationEntries = process.env.NODE_ENV === 'development'
-  ? [ 'webpack-hot-middleware/client?reload=true' ]
-  : [ ];
+  ? ['webpack-hot-middleware/client?reload=true']
+  : [];
 
 module.exports = {
-  entry: [ './src/index.tsx' ].concat(applicationEntries),
+  entry: ['./src/index.tsx'].concat(applicationEntries),
 
   output: {
     path: path.join(__dirname, 'dist'),
@@ -66,6 +66,9 @@ module.exports = {
     'react/lib/ReactContext': 'window',
     'react/lib/ExecutionEnvironment': true,
     'react/addons': true,
+    // why this
+    // https://github.com/davezuko/react-redux-starter-kit/issues/327
+    fs: '{}',
   },
 
   postcss: postcssInit,

@@ -16,9 +16,6 @@ export function updateArticleList() {
             payload: {
                 promise: fetchArticleList()
                     .then((res) => {
-                        // dispatch({
-                        //     type: FETCH_ARTICLE_LIST_SUCCESS,
-                        // });
                         return res;
                     }),
             },

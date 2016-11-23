@@ -33,7 +33,7 @@ function configureStore(initialState) {
   return store;
 }
 
-function _getMiddleware(): Middleware[] {
+export function _getMiddleware(): Middleware[] {
   let middleware = [
     routerMiddleware(browserHistory),
     promiseMiddleware,
