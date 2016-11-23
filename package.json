@@ -86,7 +86,6 @@
     "karma-webpack": "^1.7.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
-    "nock": "^9.0.2",
     "nodemon": "^1.9.2",
     "object-assign": "^4.0.1",
     "passport": "^0.3.2",
