@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const nodeProxy = require('./node-proxy');
 const nodeAppServer = require('./node-app-server');
 const authPassport = require('./auth-passport');
+const article = require('./article')
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -21,10 +22,10 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 authPassport.readUsers()
-  .then( (_users) => {
+  .then((_users) => {
     users = _users;
   })
-  .catch( (err) => {
+  .catch((err) => {
     throw err;
   });
 
@@ -41,21 +42,21 @@ app.use(passport.session());
 passport.use(new LocalStrategy(
   (username, password, done) => {
     authPassport.authenticateUser(username, password, users)
-    .then( (authResult) => {
-      return done(null, authResult);
-    })
-    .then(null, (message) => {
-      return done(null, false, message);
-    });
+      .then((authResult) => {
+        return done(null, authResult);
+      })
+      .then(null, (message) => {
+        return done(null, false, message);
+      });
   }
 
 ));
 
-passport.serializeUser( (user, done) => {
+passport.serializeUser((user, done) => {
   done(null, user.meta.id);
 });
 
-passport.deserializeUser( (id, done) => {
+passport.deserializeUser((id, done) => {
   done(null, authPassport.getUserById(id, users));
 });
 
@@ -65,7 +66,18 @@ app.post('/api/auth/login',
     res.status(200).send(JSON.stringify(req.user));
   }
 );
-
+app.post('/api/article/list',
+  (req, res) => {
+    article.readArticleList().then((result) => {
+      res.
+        status(200)
+        .send(JSON.stringify({
+          data: 'read article List success',
+          meta: result,
+        }));
+    })
+  }
+)
 
 // API proxy logic: if you need to talk to a remote server from your client-side
 // app you can proxy it though here by editing ./proxy-config.js

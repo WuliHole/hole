@@ -141,7 +141,7 @@
     "object-curly-spacing": [2, "always"], // http://eslint.org/docs/rules/object-curly-spacing
     "one-var": [2, "never"],         // http://eslint.org/docs/rules/one-var
     "padded-blocks": [2, "never"],   // http://eslint.org/docs/rules/padded-blocks
-    "semi": [2, "always"],           // http://eslint.org/docs/rules/semi
+    // "semi": [2, "never"],           // http://eslint.org/docs/rules/semi
     "semi-spacing": [2, {            // http://eslint.org/docs/rules/semi-spacing
       "before": false,
       "after": true

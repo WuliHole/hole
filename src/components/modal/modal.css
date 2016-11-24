@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+.btn-modal-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 @media (--breakpoint-md) {
 
   .modal {
@@ -11,7 +17,6 @@
     margin: 4rem auto;
     width: 75%;
   }
-
 }
 
 @custom-media --breakpoint-md (min-width: 52em);

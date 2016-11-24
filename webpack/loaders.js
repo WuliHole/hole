@@ -32,6 +32,11 @@ exports.css = {
   exclude: /node_modules/,
 };
 
+exports.less = {
+  test: /\.less$/,
+  loader: 'css-loader!postcss-loader!less-loader',
+}
+
 exports.json = {
   test: /\.json$/,
   loader: 'json',
