@@ -11,12 +11,10 @@
     "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160728142841"
   },
   "dependencies": {
-    "fetch-mock": "registry:npm/fetch-mock#4.1.1+20160712175252",
     "react-router": "registry:npm/react-router#2.4.0+20160628165748",
     "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457",
     "redux-thunk": "registry:npm/redux-thunk#2.0.0+20160525185520"
   },
   "devDependencies": {
-    "nock": "registry:npm/nock#0.7.0+20160723033700"
   }
 }
