@@ -33,7 +33,11 @@ class ArticlePage extends React.Component<IAritclePageProps, void> {
     return <Container size={4} center>
       <h2 className="caps">Article List</h2>
       <p>{article.get('hasError', false) }</p>
-      <ArticleLsit data={article.get('articleList') }/>
+      <ArticleLsit
+        data={article.get('articleList') }
+        isLoading={this.props.article.get('isLoading') }
+        hasError={this.props.article.get('hasError') }
+        />
       <p>
         Rangle.io is a next-generation HTML5 design and development firm
         dedicated to modern, responsive web and mobile applications.
@@ -43,6 +47,8 @@ class ArticlePage extends React.Component<IAritclePageProps, void> {
 }
 interface IArticleList extends React.Props<any> {
   data: any
+  isLoading: boolean
+  hasError: boolean
 }
 
 class ArticleLsit extends React.Component<IArticleList, void> {
@@ -51,18 +57,24 @@ class ArticleLsit extends React.Component<IArticleList, void> {
   }
 
   render() {
-    let {data} = this.props;
+    let {data, isLoading, hasError} = this.props;
     data = data.toJS();
-    if (!data) {
+    if (isLoading) {
       return <Container size={4} center>
         im Waiting  load.
       </Container>
     }
-    if (!data.length) {
+
+    if (hasError) {
+      return <div className="err">error</div>
+    }
+    
+    if (data.length === 0) {
       return <Container size={4} center>
         there is no Content
       </Container>
     }
+
     return (<Container size={4} center>
       {data.map((article) => <div
         className="article-list-item-wrap"
