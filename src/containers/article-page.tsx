@@ -30,13 +30,13 @@ class ArticlePage extends React.Component<IAritclePageProps, void> {
   }
   render() {
     const {article} = this.props;
-    return <Container size={4} center>
+    return <Container size={ 4 } center>
       <h2 className="caps">Article List</h2>
-      <p>{article.get('hasError', false) }</p>
+      <p>{ article.get('hasError', false) }</p>
       <ArticleLsit
-        data={article.get('articleList') }
-        isLoading={this.props.article.get('isLoading') }
-        hasError={this.props.article.get('hasError') }
+        data={ article.get('articleList') }
+        isLoading={ this.props.article.get('isLoading') }
+        hasError={ this.props.article.get('hasError') }
         />
       <p>
         Rangle.io is a next-generation HTML5 design and development firm
@@ -60,7 +60,7 @@ class ArticleLsit extends React.Component<IArticleList, void> {
     let {data, isLoading, hasError} = this.props;
     data = data.toJS();
     if (isLoading) {
-      return <Container size={4} center>
+      return <Container size={ 4 } center>
         im Waiting  load.
       </Container>
     }
@@ -68,20 +68,26 @@ class ArticleLsit extends React.Component<IArticleList, void> {
     if (hasError) {
       return <div className="err">error</div>
     }
-    
+
     if (data.length === 0) {
-      return <Container size={4} center>
+      return <Container size={ 4 } center>
         there is no Content
       </Container>
     }
 
-    return (<Container size={4} center>
-      {data.map((article) => <div
-        className="article-list-item-wrap"
-        key={article.id}>
-        <h2>{article.title}</h2>
-        <p>{article.content}</p>
-      </div>) }
+    return (<Container size={ 4 } center>
+      { data.map((article) =>
+        <div
+          className="article-list-item-wrap"
+          key={ article.id }>
+          <h2 className={
+            'article-list-item-title border-bottom border-color-primary'
+          }
+            >
+            { article.title }
+          </h2>
+          <p className="article-list-item-paragraph">{ article.content }</p>
+        </div>) }
     </Container>
 
     )
