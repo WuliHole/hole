@@ -13,6 +13,7 @@ import routes from './store/routes';
 import configureStore from './store/configure-store';
 
 import './styles/index.css';
+import './styles/index.less'
 
 declare const __TEST__: boolean;
 
