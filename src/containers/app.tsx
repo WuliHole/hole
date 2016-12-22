@@ -10,7 +10,7 @@ import LoginModal from '../components/login/login-modal';
 import Logo from '../components/logo';
 import Navigator from '../components/navigator';
 import NavigatorItem from '../components/navigator-item';
-import {requireAuth} from '../middleware/requireAuth';
+import { requireAuth } from '../middleware/requireAuth';
 interface IAppProps extends React.Props<any> {
   session: any;
   login: () => void;
@@ -66,7 +66,7 @@ class App extends React.Component<IAppProps, void> {
       <div>
         <LoginModal
           onSubmit={ login }
-          onClose={closeLoginModal}
+          onClose={ closeLoginModal }
           isPending={ session.get('isLoading', false) }
           hasError={ session.get('hasError', false) }
           isVisible={ modal.get('opened', false) } />
@@ -77,21 +77,21 @@ class App extends React.Component<IAppProps, void> {
           </NavigatorItem>
 
           <NavigatorItem mr>
-            <Link to="/article">Article</Link>
+            <Link className="nav-link" to="/article">Article</Link>
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn } mr>
-            <Link to="/">Counter</Link>
+            <Link className="nav-link" to="/">Counter</Link>
           </NavigatorItem>
 
-          <NavigatorItem isVisible={!isLoggedIn }mr>
-            <Button onClick={this.handleCommit.bind(this) }>
+          <NavigatorItem isVisible={ !isLoggedIn } mr>
+            <Button onClick={ this.handleCommit.bind(this) }>
               Commit
             </Button>
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn }>
-            <Link to="/about">About Us</Link>
+            <Link className="nav-link" to="/about">About Us</Link>
           </NavigatorItem>
           <div className="flex flex-auto"></div>
           <NavigatorItem isVisible={ isLoggedIn } mr>

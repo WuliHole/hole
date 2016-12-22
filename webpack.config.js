@@ -51,8 +51,8 @@ module.exports = {
     loaders: [
       loaders.tsx,
       loaders.html,
-      loaders.css,
       loaders.less,
+      loaders.css,
       loaders.svg,
       loaders.eot,
       loaders.woff,

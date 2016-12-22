@@ -11,7 +11,8 @@ export default function Navigator({
   return (
     <nav
       data-testid={ testid }
-      className="flex items-center p1 bg-white border-bottom">
+      className={
+        'flex items-center p1 bg-white border-bottom border-color-primary' }>
       { children }
     </nav>
   );
