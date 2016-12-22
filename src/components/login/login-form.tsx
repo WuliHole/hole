@@ -8,7 +8,7 @@ import FormError from '../form/form-error';
 import Input from '../form/form-input';
 import Button from '../button';
 import Alert from '../alert';
-
+import Icon from '../icon'
 interface ILoginFormProps {
   onSubmit: () => void;
   handleSubmit?: () => void;
@@ -48,7 +48,7 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
           id="qa-alert"
           isVisible={ hasError }
           status="error">
-          Invalid username and password
+          <Icon name="jinggao"/>Invalid username and password
         </Alert>
 
         <FormGroup testid="login-username">

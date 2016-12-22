@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Modal, ModalContent } from '../modal';
-import Button from '../button';
 import LoginForm from './login-form';
-
+import Icon from '../icon'
 interface ILoginModalProps extends React.Props<any> {
   isVisible: boolean;
   isPending: boolean;
@@ -20,14 +19,19 @@ export default function LoginModal({
 }: ILoginModalProps) {
   return (
     <Modal isVisible={ isVisible }>
-      <ModalContent style={{maxWidth:350}}>
-        <Button className="btn-model-close" onClick={onClose}>close</Button>
-        <h1 className="mt0">Login</h1>
+      <ModalContent style={ { maxWidth: 350 } }>
+        <Icon
+          onClick={ onClose }
+          name="guanbi"
+          style={ { position: 'absolute', right: '0px' } }
+          >
+          close
+        </Icon>
+        <h1 className="mt0 center">Login</h1>
         <LoginForm
           isPending={ isPending }
           hasError={ hasError }
           onSubmit={ onSubmit } />
-        
       </ModalContent>
     </Modal>
   );
