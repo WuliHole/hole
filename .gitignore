@@ -46,6 +46,7 @@ test/**/*.js.map
 
 # E2E test output
 e2e/robot/test_results
-# why this https://wolfgang.reutz.at/2015/06/16/git-ignore-mac-osx-icon-files/
+# why this :
+       #http://stackoverflow.com/questions/21109672/git-ignoring-icon-files-because-of-icon-rule
 !icon
 
