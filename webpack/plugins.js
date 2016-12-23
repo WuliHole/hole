@@ -30,8 +30,9 @@ const basePlugins = [
 const devPlugins = [
   new StyleLintPlugin({
     configFile: './.stylelintrc',
-    files: ['src/**/*.css'],
+    files: ['src/**/*.css', 'src/**/*.less'],
     failOnError: false,
+    syntax: 'less',
   }),
 ];
 

@@ -36,6 +36,10 @@ module.exports = (config) => {
       },
     ],
 
+    mime: {
+      'text/x-typescript': ['ts', 'tsx'],
+    },
+
     preprocessors: {
       './src/tests.entry.ts': [
         'webpack',
@@ -54,8 +58,8 @@ module.exports = (config) => {
       module: {
         loaders: combinedLoaders(),
         postLoaders: config.singleRun
-          ? [ loaders.istanbulInstrumenter ]
-          : [ ],
+          ? [loaders.istanbulInstrumenter]
+          : [],
       },
       stats: {
         colors: true,
@@ -117,5 +121,5 @@ function combinedLoaders() {
       return aggregate.concat([loaders[k]]);
     }
   },
-  []);
+    []);
 }
