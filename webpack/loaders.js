@@ -34,7 +34,7 @@ exports.css = {
 
 exports.less = {
   test: /\.less$/,
-  loader: 'style-loader!css-loader?importLoaders=2!postcss-loader!less-loader',
+  loaders: ['style', 'css', 'less'],
 }
 
 exports.json = {
