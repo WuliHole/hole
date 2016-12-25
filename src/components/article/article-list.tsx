@@ -2,9 +2,9 @@ import React = require('react')
 import Icon from '../icon'
 import ArticleItem from './article-item'
 import Container from '../container';
-
+import { List } from 'immutable'
 interface IArticleListProps extends React.Props<any> {
-  data: any
+  data: List<ArticleModel>
   isLoading: boolean
   hasError: boolean
 }
@@ -18,7 +18,7 @@ export default
 
   render() {
     let {data, isLoading, hasError} = this.props;
-    data = data.toJS();
+    const ArticlesInfo = data.toJS() as ArticleModel[];
 
     if (isLoading) {
       return <Container size={ 4 } center>
@@ -30,7 +30,7 @@ export default
       return <div className="err">error</div>
     }
 
-    if (data.length === 0) {
+    if (ArticlesInfo.length === 0) {
       return <Container size={ 4 } center>
         <Icon name="dangan">
           没有内容哦
@@ -41,9 +41,9 @@ export default
     return (
       <Container size={ 4 } center>
         {
-          data.map((article) => {
+          ArticlesInfo.map((article) => {
             return <ArticleItem
-              key={article.title}
+              key={ article.id }
               title={ article.title }
               content={ article.content }>
             </ArticleItem>
