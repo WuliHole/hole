@@ -3,5 +3,5 @@ interface ArticleModel {
   title: string,
   content: string,
   createAt: string,
-  author:string
+  author: string
 }

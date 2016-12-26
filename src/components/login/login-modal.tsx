@@ -25,7 +25,6 @@ export default function LoginModal({
           name="guanbi"
           style={ { position: 'absolute', right: '0px' } }
           >
-          close
         </Icon>
         <h1 className="mt0 center">Login</h1>
         <LoginForm
