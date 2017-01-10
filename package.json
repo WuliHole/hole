@@ -40,6 +40,10 @@
     "url": "https://github.com/rangle/rangle-starter/issues"
   },
   "dependencies": {
+    "draft-js": "^0.9.1",
+    "draft-js-inline-toolbar-plugin": "^2.0.0-beta9",
+    "draft-js-plugins-editor": "^2.0.0-beta9",
+    "draft-js-side-toolbar-plugin": "^2.0.0-beta9",
     "express": "^4.13.4",
     "helmet": "^2.0.0",
     "http-proxy": "^1.13.2",

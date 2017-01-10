@@ -1,3 +1,5 @@
+
+
 interface ArticleModel {
   id: number,
   title: string,
@@ -5,3 +7,5 @@ interface ArticleModel {
   createAt: string,
   author: string
 }
+
+

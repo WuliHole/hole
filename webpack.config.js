@@ -26,6 +26,10 @@ module.exports = {
     'inline-source-map',
 
   resolve: {
+    alias: {
+      'react': path.join(__dirname, 'node_modules', 'react')
+    },
+
     extensions: [
       '',
       '.webpack.js',
@@ -53,6 +57,14 @@ module.exports = {
       loaders.html,
       loaders.less,
       loaders.css,
+      [
+        {
+          test: /plugin\.css$/,
+          loaders: [
+            'style', 'css',
+          ],
+        },
+      ],
       loaders.svg,
       loaders.eot,
       loaders.woff,

@@ -17,8 +17,8 @@ export default
   }
 
   render() {
-    let {data, isLoading, hasError} = this.props;
-    const ArticlesInfo = data.toJS() as ArticleModel[];
+    let {data, isLoading, hasError} = this.props
+    const ArticlesInfo = data.toJS()
 
     if (isLoading) {
       return <Container size={ 4 } center>
@@ -44,8 +44,8 @@ export default
           ArticlesInfo.map((article) => {
             return <ArticleItem
               key={ article.id }
-              title={ article.title }
-              content={ article.content }>
+              articleInfo={ article }
+              >
             </ArticleItem>
           })
         }
