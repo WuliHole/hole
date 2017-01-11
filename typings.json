@@ -10,8 +10,7 @@
     "react": "registry:dt/react#0.14.0+20160801203155",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "redux-mock-store": "registry:dt/redux-mock-store#0.0.6+20160907111255",
-    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160728142841",
-    "app": "file:./src/models/article.d.ts"
+    "whatwg-fetch": "registry:dt/whatwg-fetch#0.0.0+20160728142841"
   },
   "dependencies": {
     "react-router": "registry:npm/react-router#2.4.0+20160628165748",
