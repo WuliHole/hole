@@ -63,6 +63,8 @@ passport.deserializeUser((id, done) => {
 app.post('/api/auth/login',
   passport.authenticate('local'),
   (req, res) => {
+    const user = authPassport.getUserById(req.user.meta.id, users)
+    req.user.meta.profile.avatar = user.avatar
     res.status(200).send(JSON.stringify(req.user));
   }
 );

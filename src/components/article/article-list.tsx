@@ -43,6 +43,7 @@ export default
         {
           ArticlesInfo.map((article) => {
             return <ArticleItem
+              className={ 'm2 bg-white article-item-shadow' }
               key={ article.id }
               articleInfo={ article }
               >

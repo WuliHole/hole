@@ -27,7 +27,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      'react': path.join(__dirname, 'node_modules', 'react')
+      'react': path.join(__dirname, 'node_modules', 'react'),
     },
 
     extensions: [
@@ -57,14 +57,7 @@ module.exports = {
       loaders.html,
       loaders.less,
       loaders.css,
-      [
-        {
-          test: /plugin\.css$/,
-          loaders: [
-            'style', 'css',
-          ],
-        },
-      ],
+      loaders.pluginCss,
       loaders.svg,
       loaders.eot,
       loaders.woff,

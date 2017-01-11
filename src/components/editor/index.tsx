@@ -6,33 +6,47 @@ import {
 import {
   EditorState,
   ContentBlock,
-  getDefaultKeyBinding
+  getDefaultKeyBinding,
+  convertToRaw
 } from 'draft-js'
-
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
+import { Serlizer } from './utils/serializer'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
+import './draft.less'
 import './style.less'
 
-const inlineToolbarPlugin = createInlineToolbarPlugin();
-const { InlineToolbar } = inlineToolbarPlugin;
-const sideToolbarPlugin = createSideToolbarPlugin()
-const { SideToolbar } = sideToolbarPlugin;
-const plugins = [inlineToolbarPlugin, sideToolbarPlugin];
+interface EditorProps {
+  plugins?: any[]
+  decorators?: any[]
+  editorState?: EditorState
+  placeholder?: string
+  onChange?: (s: EditorState) => any
+}
 
-export default class SimpleInlineToolbarEditor
-  extends React.Component<any, any> {
+export default class HoleEditor
+  extends React.Component<EditorProps, any> {
   public editor;
+  public static placeholder = '写点儿什么'
+
+  serializer = Serlizer.serialize
 
   state = {
-    editorState: createEditorStateWithText(this.props.text),
+    editorState: this.props.editorState
+      ? this.props.editorState
+      : EditorState.createEmpty(),
   };
 
   onChange = (editorState) => {
-    this.setState({
-      editorState,
-    });
+    if (this.editor) {
+      this.setState({
+        editorState,
+      });
+
+      if (this.props.onChange) {
+        this.props.onChange(editorState)
+      }
+
+    }
   };
 
 
@@ -61,19 +75,20 @@ export default class SimpleInlineToolbarEditor
 
   render() {
     const isFocus = this.isFocus()
+    const placeholder = this.props.placeholder || HoleEditor.placeholder
     return (
       <div onClick={ this.focus }>
         <Editor
           editorState={ this.state.editorState }
           onChange={ this.onChange }
-          plugins={ plugins }
-          decorators={ [] }
+          plugins={ this.props.plugins || [] }
+          decorators={ this.props.decorators || [] }
           ref={ (element) => { this.editor = element; } }
           blockStyleFn={ this.blockStyleFn }
           handleReturn={ this.handleBeforeInput }
+          placeholder={ placeholder }
           />
-        <SideToolbar />
-        <InlineToolbar />
+        { this.editor && this.props.children }
       </div>
     );
   }

@@ -53,7 +53,7 @@
     "media-query-list-comma-space-before": "never",
     "media-query-parentheses-space-inside": "never",
     "no-eol-whitespace": true,
-    "no-missing-eof-newline": false,
+    "no-missing-eof-newline": true,
     "number-leading-zero": "always",
     "number-no-trailing-zeros": true,
     "property-no-vendor-prefix": true,

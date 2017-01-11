@@ -1,28 +1,34 @@
-[{
-  "id": 1,
-  "Username": "admin",
-  "Password": "superuser",
-  "First": "Super",
-  "Last": "Dave"
-},
-{
-  "id": 2,
-  "Username": "guest",
-  "Password": "letmein",
-  "First": "Guest",
-  "Last": "Visitor"
-},
-{
-  "id": 3,
-  "Username": "user",
-  "Password": "pass",
-  "First": "John",
-  "Last": "Doe"
-},
-{
-  "id": 4,
-  "Username": "alice",
-  "Password": "x",
-  "First": "Alice",
-  "Last": "Carroll"
-}]
+[
+  {
+    "id": 1,
+    "Username": "admin",
+    "Password": "superuser",
+    "First": "Super",
+    "Last": "Dave",
+    "avatar": "http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk"
+  },
+  {
+    "id": 2,
+    "Username": "guest",
+    "Password": "letmein",
+    "First": "Guest",
+    "Last": "Visitor",
+    "avatar": "http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk"
+  },
+  {
+    "id": 3,
+    "Username": "user",
+    "Password": "pass",
+    "First": "John",
+    "Last": "Doe",
+    "avatar": "http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk"
+  },
+  {
+    "id": 4,
+    "Username": "alice",
+    "Password": "x",
+    "First": "Alice",
+    "Last": "Carroll",
+    "avatar": "http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk"
+  }
+]

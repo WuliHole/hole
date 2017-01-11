@@ -6,9 +6,11 @@ import { updateArticleList } from '../actions/article';
 import { ArticleList, ArticleItem } from '../components/article'
 import { List } from 'immutable'
 import Alert from '../components/alert'
+import Comment from '../components/comment'
 
 interface IReadingPageProps extends React.Props<any> {
   article
+  user
   routeParams: {
     articleTitle: string
     userName: string
@@ -19,6 +21,7 @@ function mapStateToProps(state) {
   return {
     article: state.article,
     router: state.router,
+    user: state.session.get('user')
   }
 }
 
@@ -27,44 +30,66 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+export function findTargetArticle(props) {
+  const {article} = props;
+  const {userName, articleTitle} = props.routeParams
+  const articles = article.get('articleList')
+  return articles
+    .find(articleInfo =>
+      articleInfo.get('author').toLowerCase() === userName.toLowerCase()
+      && articleInfo.get('title') === strip(articleTitle)
+    )
+}
+
+export function strip(title: string): string {
+  return title ? title.replace(/-/g, '') : ''
+}
+
 class ReadingPage extends React.Component<IReadingPageProps, void> {
   constructor(props) {
     super(props);
   }
 
-  private findTargetArticle() {
-    const {article} = this.props;
-    const {userName, articleTitle} = this.props.routeParams
-    const articles = article.get('articleList')
-    return articles
-      .find(articleInfo =>
-        articleInfo.get('author').toLowerCase() === userName.toLowerCase()
-        && articleInfo.get('title') === this.strip(articleTitle)
-      )
-  }
-
-  strip(title: string): string {
-    return title ? title.replace(/-/g, '') : ''
-  }
-
   render() {
-    const targetArticle = this.findTargetArticle()
+    const articleImmutable = findTargetArticle(this.props)
+    const targetArticle = articleImmutable
+      ? articleImmutable.toJS()
+      : null
 
-    return <Container size={ targetArticle ? 4 : 1 } center>
+    return <div >
       {
         targetArticle
-          ? <ArticleItem
-            articleInfo={ targetArticle.toJS() }
-            />
-          : <div className="not-found">
-            <Alert status="error" isVisible={ true }>
-              <span className="not-found-text">
-                <Icon name="jinggao" />文章未找到
-              </span>
-            </Alert>
-          </div>
+        &&
+        <div className="bg-white">
+          <Container size={ targetArticle ? 4 : 1 } center>
+            <ArticleItem
+              articleInfo={ targetArticle }
+              className={ 'm4' }
+              />
+          </Container>
+        </div>
       }
-    </Container>
+      {
+        targetArticle
+        &&
+        <Comment
+          user={ this.props.user.toJS() }
+          article={ targetArticle }
+          >
+        </Comment>
+      }
+      {
+        !targetArticle
+        &&
+        <div className="not-found">
+          <Alert status="error" isVisible={ true }>
+            <span className="not-found-text">
+              <Icon name="jinggao" />文章未找到
+              </span>
+          </Alert>
+        </div>
+      }
+    </div>
   }
 }
 

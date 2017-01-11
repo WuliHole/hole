@@ -37,6 +37,14 @@ exports.less = {
   loaders: ['style', 'css', 'less'],
 }
 
+exports.pluginCss = {
+  test: /plugin\.css$/,
+  loaders: [
+    'style',
+    'css',
+  ],
+}
+
 exports.json = {
   test: /\.json$/,
   loader: 'json',
