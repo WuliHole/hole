@@ -40,6 +40,7 @@
     "url": "https://github.com/rangle/rangle-starter/issues"
   },
   "dependencies": {
+    "decorate-component-with-props": "^1.0.2",
     "draft-js": "^0.9.1",
     "draft-js-inline-toolbar-plugin": "^2.0.0-beta9",
     "draft-js-plugins-editor": "^2.0.0-beta9",
