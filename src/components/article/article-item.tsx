@@ -36,8 +36,8 @@ export default ({articleInfo, className}: ItemProps) => {
     'border-color-primary',
     'text-decoration-none'
   )
-  const {title, content, author} = articleInfo
-  const href = `@${author}/${linkifyTitle(title)}`
+  const {title, content, author, id} = articleInfo
+  const href = `@${author}/${linkifyTitle(title)}_${id}`
 
   return (
     <div className={ `article-list-item-wrap ${className || ' '}` }>

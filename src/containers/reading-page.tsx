@@ -32,13 +32,9 @@ function mapDispatchToProps(dispatch) {
 
 export function findTargetArticle(props) {
   const {article} = props;
-  const {userName, articleTitle} = props.routeParams
+  const {userName, articleTitle, id} = props.routeParams
   const articles = article.get('articleList')
-  return articles
-    .find(articleInfo =>
-      articleInfo.get('author').toLowerCase() === userName.toLowerCase()
-      && articleInfo.get('title') === strip(articleTitle)
-    )
+  return articles.find(articleInfo => article.get('id') === id)
 }
 
 export function strip(title: string): string {

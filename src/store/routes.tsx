@@ -11,7 +11,9 @@ export default (
   <Route path="/" component={ App }>
     <IndexRoute component={ IndexPage } />
     <Route path="article" component={ ArticleListPage } />
-    <Route path="@:userName/:articleTitle" component={ ReadingPage } />
+    <Route path="@:userName/:articleTitle_:articleId"
+      component={ ReadingPage }
+      />
     <Route path="about" component={ AboutPage } />
   </Route>
 );
