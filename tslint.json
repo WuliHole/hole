@@ -1,19 +1,28 @@
 {
   "rules": {
     "class-name": true,
-    "comment-format": [true, "check-space"],
+    "comment-format": [
+      true,
+      "check-space"
+    ],
     "curly": true,
     "eofline": true,
     "forin": true,
-    "indent": [true, "spaces"],
+    "indent": [
+      true,
+      "spaces"
+    ],
     "label-position": true,
     "label-undefined": true,
-    "max-line-length": [true, 80],
+    "max-line-length": [
+      true,
+      80
+    ],
     "no-arg": true,
     "no-bitwise": true,
-    "no-console": [true,
+    "no-console": [
+      true,
       "log",
-      "debug",
       "info",
       "time",
       "timeEnd",
@@ -35,7 +44,8 @@
     "no-unreachable": true,
     "no-use-before-declare": false,
     "no-var-keyword": true,
-    "one-line": [true,
+    "one-line": [
+      true,
       "check-open-brace",
       "check-catch",
       "check-else",
@@ -43,16 +53,24 @@
     ],
     "radix": true,
     "semicolon": false,
-    "triple-equals": [true, "allow-null-check"],
+    "triple-equals": [
+      true,
+      "allow-null-check"
+    ],
     "use-strict": true,
     "variable-name": "allow-leading-underscore",
-    "whitespace": [true,
+    "whitespace": [
+      true,
       "check-branch",
       "check-decl",
       "check-operator",
       "check-separator",
       "check-type"
     ],
-    "quotemark": [ true, "single", "jsx-double" ]
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ]
   }
 }

@@ -1,3 +1,4 @@
+import { debug } from '../utils/debug'
 import {
   FETCH_COMMENT_ERROR,
   FETCH_COMMENT_PENDING,
@@ -29,12 +30,9 @@ function commentReducer(state = INITIAL_STATE,
         isLoading: true,
       }))
 
+    // @FIX: implement fetch process after next verion
     case FETCH_COMMENT_SUCCESS:
-      return state.merge(fromJS({
-        comments: action.payload.meta,
-        hasError: false,
-        isLoading: false,
-      }))
+      return processPostComment(state, action)
 
     case POST_COMMENT_SUCCESS:
       return processPostComment(state, action)
@@ -55,6 +53,14 @@ export default commentReducer
 
 function processPostComment(state, action) {
   const comment = action.payload.meta as ICommentServerResponse
+  if (!comment.postId) {
+    throw new Error(
+      `unexcept postId : ${comment.postId}
+       payload : ${JSON.stringify(action.payload)}
+      `)
+  }
+
+  debug(`responseComment:\n${JSON.stringify(comment)}`)
 
   const oldTable = state.get('comments') as Map<string, List<any>>
 
@@ -66,7 +72,8 @@ function processPostComment(state, action) {
   } else {
     newTable = oldTable.set(comment.postId, List([comment]))
   }
-
+  debug(`postId:\n${comment.postId}`)
+  debug(`newTable:\n${JSON.stringify(newTable)}`)
   return state.merge(fromJS({
     comments: newTable,
     hasError: false,
