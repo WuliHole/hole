@@ -30,6 +30,15 @@ export default class extends React.Component<{ store } & Ioptions, any> {
     }, 0)
   }
 
+  onClick = (e) => {
+    const editorState: EditorState = this.props.store
+      .getItem('getEditorState')()
+
+    if (editorState.getCurrentContent().getPlainText().length > 0
+      && this.props.onClick) {
+      setTimeout(() => this.props.onClick(e, this.props.store), )
+    }
+  }
 
   render() {
     const {
@@ -38,10 +47,13 @@ export default class extends React.Component<{ store } & Ioptions, any> {
     } = this.props
 
     return <div>
-      { this.state.isVisible &&
+      {
         <button
-          onClick={ this.props.onClick }
+          onClick={ __TEST__ ? this.props.onClick : this.onClick }
           className={ ` ${theme ? theme : ''} btn` }
+          style={ {
+            color: this.state.isVisible ? '' : '#000000'
+          } }
           >
           { text ? text : 'Not Rounded' }
         </button>

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { shallow, render, mount } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { Serlizer } from './serializer'
 import { getContentState } from './testUtils'
@@ -24,7 +24,7 @@ describe('Editor Serilizer', () => {
     const text = '你好啊 今天开心吗，BUG又少了吗'
     const s = getContentState(text)
     const c = Serlizer.deserialize(s)
-    const editor = render(
+    const editor = mount(
       <Editor
         onChange={ () => { } }
         editorState={ EditorState.createWithContent(c) }>

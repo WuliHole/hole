@@ -5,7 +5,7 @@
 
 
 interface ArticleModel {
-  id: number,
+  id: string | number,
   title: string,
   content: Draft.Model.Encoding.RawDraftContentState,
   createAt: string,

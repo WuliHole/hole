@@ -1,6 +1,7 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
 import { default as Button, Ioptions } from './button'
 import createStore from '../../utils/createStore'
+import { EditorState } from 'draft-js'
 
 export default (config: Ioptions = {}) => {
 
@@ -30,12 +31,15 @@ export default (config: Ioptions = {}) => {
     // Re-Render the Button on selection change
     onChange: (editorState: EditorState) => {
 
-      if (editorState.getCurrentContent().getPlainText().length > 0) {
+      if (
+        editorState.getSelection().getHasFocus()
+        && editorState.getCurrentContent().getPlainText().length > 0
+      ) {
         store.updateItem('isVisible', true)
       } else {
         store.updateItem('isVisible', false)
       }
-      return editorState;
+      return editorState
     },
     Button: decorateComponentWithProps(Button, buttonProps),
   }

@@ -8,6 +8,10 @@ export class Serlizer {
   }
 
   public static deserialize(rawState: RawContentState): ContentState {
-    return convertFromRaw(rawState)
+    try {
+      return convertFromRaw(rawState)
+    } catch (e) {
+      throw new Error(`${e.message} \n  unexcept RawState :${rawState}`)
+    }
   }
 }

@@ -10,6 +10,7 @@ const article = require('./article')
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const genKey = require('draft-js').genKey
 let users;
 
 /**
@@ -65,6 +66,7 @@ app.post('/api/auth/login',
   (req, res) => {
     const user = authPassport.getUserById(req.user.meta.id, users)
     req.user.meta.profile.avatar = user.avatar
+    req.user.meta.profile.id = user.id
     res.status(200).send(JSON.stringify(req.user));
   }
 );
@@ -80,6 +82,24 @@ app.post('/api/article/list',
     })
   }
 )
+
+app.post('/api/comment', (req, res) => {
+  const user = authPassport.getUserById(req.body.authorId, users)
+  res.status(200).send(JSON.stringify({
+    success: true,
+    meta: {
+      content: req.body.content,
+      id: genKey(),
+      postId: req.body.postId,
+      author: {
+        avatar: user.avatar,
+        first: user.First,
+        last: user.Last,
+        id: user.id,
+      },
+    },
+  }))
+})
 
 // API proxy logic: if you need to talk to a remote server from your client-side
 // app you can proxy it though here by editing ./proxy-config.js

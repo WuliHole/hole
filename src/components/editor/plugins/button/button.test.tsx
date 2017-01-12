@@ -1,7 +1,8 @@
-import { shallow, render, mount } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import * as React from 'react'
 import Button from './button'
 import createStore from '../../utils/createStore'
+
 describe('Editor Plugin Button Component', () => {
 
   it('should  render text test-button', () => {
