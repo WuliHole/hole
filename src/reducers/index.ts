@@ -4,10 +4,13 @@ const formReducer = require('redux-form').reducer;
 import session from './session';
 import modal from './modal';
 import article from './article'
+import comment from './comment'
+
 const rootReducer = combineReducers({
   session,
   modal,
   article,
+  comment,
   routing: routerReducer,
   form: formReducer,
 });

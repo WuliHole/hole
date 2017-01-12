@@ -1,4 +1,4 @@
-import { shallow, render } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import * as React from 'react';
 
@@ -16,7 +16,7 @@ describe('Button Component', () => {
   });
 
   it('should allow for a custom css class in addition to the default', () => {
-    const wrapper = render(<Button className="bg-green">OK</Button>);
+    const wrapper = mount(<Button className="bg-green">OK</Button>);
     const button = wrapper.find('button');
 
     expect(button.hasClass('bg-green')).toBe(true);
@@ -33,7 +33,7 @@ describe('Button Component', () => {
   it('should respond to click events', () => {
     const onButtonClick = jasmine.createSpy('onButtonClick');
 
-    const wrapper = shallow(<Button onClick={onButtonClick} />);
+    const wrapper = shallow(<Button onClick={ onButtonClick } />);
 
     wrapper.simulate('click');
 

@@ -27,6 +27,7 @@ export default class Icon extends React.Component<IIconProps, IIconState> {
       } }
       onClick={ this.props.onClick }
       >
+      {this.props.children}
     </i>
   }
 }

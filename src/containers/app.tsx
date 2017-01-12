@@ -64,12 +64,15 @@ class App extends React.Component<IAppProps, void> {
 
     return (
       <div>
-        <LoginModal
-          onSubmit={ login }
-          onClose={ closeLoginModal }
-          isPending={ session.get('isLoading', false) }
-          hasError={ session.get('hasError', false) }
-          isVisible={ modal.get('opened', false) } />
+        {
+          modal.get('opened') &&
+          <LoginModal
+            onSubmit={ login }
+            onClose={ closeLoginModal }
+            isPending={ session.get('isLoading', false) }
+            hasError={ session.get('hasError', false) }
+            isVisible={ modal.get('opened', false) } />
+        }
         <Navigator testid="navigator">
 
           <NavigatorItem mr>

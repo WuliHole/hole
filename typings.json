@@ -1,8 +1,10 @@
 {
   "globalDependencies": {
     "classnames": "registry:dt/classnames#0.0.0+20160316155526",
+    "draft-js": "registry:dt/draft-js#0.7.0+20160707141746",
     "enzyme": "registry:dt/enzyme#2.4.1+20160709041153",
     "fetch-mock": "registry:dt/fetch-mock#5.0.0+20160829142453",
+    "immutable": "registry:dt/immutable#3.8.1+20160608070634",
     "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
     "node": "registry:dt/node#6.0.0+20160801161248",
     "react": "registry:dt/react#0.14.0+20160801203155",
@@ -15,6 +17,5 @@
     "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457",
     "redux-thunk": "registry:npm/redux-thunk#2.0.0+20160525185520"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
