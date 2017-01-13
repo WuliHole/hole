@@ -15,7 +15,7 @@ export default function Modal({
 
   return (
     <div style={ styles }
-      className="fixed top-0 bottom-0 left-0 right-0 z1 bg-darken-3">
+      className="fixed top-0 bottom-0 left-0 right-0 z4 bg-darken-3">
       { children }
     </div>
   );
