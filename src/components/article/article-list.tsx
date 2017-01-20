@@ -46,6 +46,7 @@ export default
               className={ 'm2 bg-white article-item-shadow' }
               key={ article.id }
               articleInfo={ article }
+              maxLength={ 150 }
               >
             </ArticleItem>
           })

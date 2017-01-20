@@ -16,7 +16,7 @@ describe('Comment Component', () => {
     title: 'give me a ball',
     content: getContentState('hello world'),
     createAt: '2017-1-10',
-    author: 'jacky chan'
+    author: user
   }
 
   it('should rightly render user name', () => {
@@ -26,7 +26,9 @@ describe('Comment Component', () => {
         article={ article }
         postComment={ (s) => new Promise(void 0) }></CommentForm>
     )
-    expect(comment.find('.comment-user').text()).toEqual(article.author)
+    expect(comment.find('.comment-user').text()).toEqual(
+      `${article.author.first} ${article.author.last}`
+    )
   })
 
   it('should render avatar', () => {

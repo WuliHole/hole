@@ -9,7 +9,7 @@ interface ArticleModel {
   title: string,
   content: Draft.Model.Encoding.RawDraftContentState,
   createAt: string,
-  author: string
+  author: User
 }
 
 

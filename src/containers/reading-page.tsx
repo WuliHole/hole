@@ -43,7 +43,7 @@ export function findTargetArticle(props) {
   const {article} = props;
   const {userName, articleTitle, id} = props.routeParams
   const articles = article.get('articleList')
-  return articles.find(articleInfo => article.get('id') === id)
+  return articles.find(articleInfo => articleInfo.get('id') === id)
 }
 
 /**
