@@ -11,6 +11,7 @@ import Logo from '../components/logo';
 import Navigator from '../components/navigator';
 import NavigatorItem from '../components/navigator-item';
 import { requireAuth } from '../middleware/requireAuth';
+import Avatar from '../components/avatar'
 interface IAppProps extends React.Props<any> {
   session: any;
   login: () => void;
@@ -45,9 +46,9 @@ class App extends React.Component<IAppProps, void> {
   }
 
   @requireAuth
-  handleCommit() {
-    alert(2222222222)
+  loginIn() {
   }
+
   render() {
     const {
       children,
@@ -79,37 +80,45 @@ class App extends React.Component<IAppProps, void> {
             <Logo />
           </NavigatorItem>
 
-          <NavigatorItem mr>
-            <Link className="nav-link" to="/article">Article</Link>
-          </NavigatorItem>
 
-          <NavigatorItem isVisible={ isLoggedIn } mr>
-            <Link className="nav-link" to="/">Counter</Link>
-          </NavigatorItem>
+          <div className="flex flex-auto"></div>
+
 
           <NavigatorItem isVisible={ !isLoggedIn } mr>
-            <Button onClick={ this.handleCommit.bind(this) }>
-              Commit
+            <Button
+              style={ {
+                background: 'rgba(0,0,0,0)',
+                fontSize: '14px',
+                color: '#449bf7',
+                fontWeight: 300
+              } }
+              onClick={ this.loginIn.bind(this) }>
+              登录/注册
             </Button>
           </NavigatorItem>
 
-          <NavigatorItem isVisible={ isLoggedIn }>
-            <Link className="nav-link" to="/about">About Us</Link>
+          <NavigatorItem isVisible={ isLoggedIn } mr>
+            <Avatar size={ 30 }
+              src={ isLoggedIn && session.get('user').get('avatar') }
+              />
           </NavigatorItem>
-          <div className="flex flex-auto"></div>
+
           <NavigatorItem isVisible={ isLoggedIn } mr>
             <div
               data-testid="user-profile"
-              className="h3">
+              className="h5">
               { `${firstName} ${lastName}` }
             </div>
           </NavigatorItem>
+
           <NavigatorItem isVisible={ isLoggedIn }>
             <Button onClick={ logout } className="bg-red white">
               Logout
             </Button>
           </NavigatorItem>
+
         </Navigator>
+
         <Content isVisible={ true }>
           { children }
         </Content>

@@ -51,10 +51,14 @@ export default ({
     <div className={ `article-list-item-wrap ${className || ' '}` }>
 
       <div >
-        <div className="">
+        <div className="inline-block">
           <Avatar src={ author.avatar } size={ 53 } />
         </div>
-        <div className="clearfix article-item-usrInfo ml4 pt1 pb1">
+        <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
+          style={ {
+            verticalAlign: 'text-bottom'
+          } }
+          >
           <div>{ author.first } { author.last }</div>
           <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
         </div>

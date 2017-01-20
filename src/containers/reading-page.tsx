@@ -88,10 +88,9 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
 
     return <div >
       <div className="bg-white">
-        <Container size={ targetArticle ? 4 : 1 } center>
+        <Container size={ targetArticle ? 3 : 1 } center>
           <ArticleItem
             articleInfo={ targetArticle }
-            className={ 'm4' }
             />
         </Container>
       </div>

@@ -12,6 +12,6 @@ export default ({src = '', size = 64}: Props) => {
     height: `${size}px`
   } }
     src={ src }
-    className="avatar circle left" alt="avatar"
+    className="avatar circle float-left" alt="avatar"
     />
 }

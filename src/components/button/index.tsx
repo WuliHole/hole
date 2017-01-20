@@ -7,6 +7,8 @@ interface IButtonProps extends React.Props<any> {
   className?: string;
   id?: string;
   testid?: string;
+  style?: React.CSSProperties
+  isvisible?: boolean
 };
 
 export default function Button({
@@ -15,7 +17,9 @@ export default function Button({
   className = '',
   id = '',
   testid = '',
-  children = null
+  children = null,
+  style = {},
+  isvisible = true
 }: IButtonProps) {
   const buttonClasses = classNames('btn', 'btn-primary', className);
 
@@ -24,6 +28,7 @@ export default function Button({
       data-testid={ testid }
       id={ id }
       type={ type }
+      style={ style }
       className={ buttonClasses }
       onClick={ onClick }>
       { children }

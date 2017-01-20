@@ -34,15 +34,13 @@ class ArticlePage extends React.Component<IAritclePageProps, void> {
 
   render() {
     const {article} = this.props;
-    return <div style={ { width: '1050px' } } className="max-auto">
-      <Container size={ 3 } center={ true }>
-        <ArticleList
-          data={ article.get('articleList') }
-          isLoading={ this.props.article.get('isLoading') }
-          hasError={ this.props.article.get('hasError') }
-          />
-      </Container>
-    </div>
+    return <Container size={ 4 } center={ false }>
+      <ArticleList
+        data={ article.get('articleList') }
+        isLoading={ this.props.article.get('isLoading') }
+        hasError={ this.props.article.get('hasError') }
+        />
+    </Container>
   }
 }
 

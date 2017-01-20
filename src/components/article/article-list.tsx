@@ -21,7 +21,7 @@ export default
     const ArticlesInfo = data.toJS()
 
     if (isLoading) {
-      return <Container size={ 4 } center>
+      return <Container size={ 3 } center>
         im Waiting  load.
       </Container>
     }
@@ -31,7 +31,7 @@ export default
     }
 
     if (ArticlesInfo.length === 0) {
-      return <Container size={ 4 } center>
+      return <Container size={ 3 } center>
         <Icon name="dangan">
           没有内容哦
         </Icon>
@@ -39,7 +39,7 @@ export default
     }
 
     return (
-      <Container size={ 4 } center>
+      <Container size={ 3 } center>
         {
           ArticlesInfo.map((article) => {
             return <ArticleItem
