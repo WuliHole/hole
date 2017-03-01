@@ -1,0 +1,255 @@
+/* stylelint-disable */
+// --------------------------------------------------
+
+
+// Note that all animation classes should begin with the "a-" utility prefix.
+
+// Variables
+@a-ease1:     cubic-bezier(0.1,0.9,0.2,1) ;
+@a-ease2:     cubic-bezier(0.1,0.25,0.75,0.9) ;
+@a-duration1: 0.167s ;
+@a-duration2: 0.267s ;
+@a-duration3: 0.367s ;
+@a-duration4: 0.467s ;
+
+.animationName(@name){
+  animation-name: @name;
+  -webkit-animation-name: @name;
+  -moz-animation-name: @name;
+}
+
+.animationDuration(@duration){
+  animation-duration: @duration;
+  -webkit-animation-duration: @duration;
+  -moz-animation-duration: @duration;
+}
+
+.animationTiming(@bizerFunc){
+  animation-timing-function: @bizerFunc;
+  -webkit-animation-timing-function: @bizerFunc;
+  -moz-animation-timing-function: @bizerFunc;
+}
+
+.animationFillMode(@mode){
+  animation-fill-mode: @mode;
+  -webkit-animation-fill-mode: @mode;
+  -moz-animation-fill-mode: @mode;
+}
+
+// Animation mixin
+.animationMix(@a-name, @a-duration, @a-ease: @a-ease1, @a-fillMode: both) {
+    .animationName(~'@{a-name}');
+    .animationDuration(@a-duration);
+    .animationTiming(@a-ease);
+    .animationFillMode(@a-fillMode);
+}
+
+// slideRightIn10
+.a-slideRightIn10 {
+    .animationMix('fadeIn,slideRightIn10', @a-duration3, @a-ease1);
+}
+
+// slideRightIn20
+.a-slideRightIn20 {
+    .animationMix('fadeIn,slideRightIn20', @a-duration3, @a-ease1);
+}
+
+// slideRightIn40
+.a-slideRightIn40 {
+    .animationMix('fadeIn,slideRightIn40', @a-duration3, @a-ease1);
+}
+
+// slideLeftIn10
+.a-slideLeftIn10 {
+    .animationMix('fadeIn,slideLeftIn10', @a-duration3, @a-ease1);
+}
+
+// slideLeftIn20
+.a-slideLeftIn20 {
+    .animationMix('fadeIn,slideLeftIn20', @a-duration3, @a-ease1);
+}
+
+// slideLeftIn40
+.a-slideLeftIn40 {
+    .animationMix('fadeIn,slideLeftIn40', @a-duration3, @a-ease1);
+}
+
+// slideRightIn400
+.a-slideRightIn400 {
+    .animationMix('fadeIn,slideRightIn400', @a-duration3, @a-ease1);
+}
+
+// slideLeftIn400
+.a-slideLeftIn400 {
+    .animationMix('fadeIn,slideLeft400', @a-duration3, @a-ease1);
+}
+
+// slideUpIn20
+.a-slideUpIn20 {
+    .animationMix('fadeIn,slideUpIn20', @a-duration3, @a-ease1);
+}
+
+// slideUpIn10
+.a-slideUpIn10 {
+    .animationMix('fadeIn,slideUpIn10', @a-duration1, @a-ease2);
+}
+
+// slideDownIn20
+.a-slideDownIn20 {
+    .animationMix('fadeIn,slideDownIn20', @a-duration3, @a-ease1);
+}
+
+// slideDownIn10
+.a-slideDownIn10 {
+    .animationMix('fadeIn,slideDownIn10', @a-duration1, @a-ease2);
+}
+
+// slideRightOut40
+.a-slideRightOut40 {
+    .animationMix('fadeOut,slideRightOut40', @a-duration1, @a-ease2);
+}
+
+// slideLeftOut40
+.a-slideLeftOut40 {
+    .animationMix('fadeOut,slideLeftOut40', @a-duration1, @a-ease2);
+}
+
+// slideRightOut400
+.a-slideRightOut400 {
+    .animationMix('fadeOut,slideRightOut400', @a-duration1, @a-ease2);
+}
+
+// slideLeftOut400
+.a-slideLeftOut400 {
+    .animationMix('fadeOut,slideLeftOut400', @a-duration1, @a-ease2);
+}
+
+// slideUpOut20
+.a-slideUpOut20 {
+    .animationMix('fadeOut,slideUpOut20', @a-duration1, @a-ease2);
+}
+
+// slideUpOut10
+.a-slideUpOut10 {
+    .animationMix('fadeOut,slideUpOut10', @a-duration1, @a-ease2);
+}
+
+// slideDownOut20
+.a-slideDownOut20 {
+    .animationMix('fadeOut,slideDownOut20', @a-duration1, @a-ease2);
+}
+
+// slideDownOut10
+.a-slideDownOut10 {
+    .animationMix('fadeOut,slideDownOut10', @a-duration1, @a-ease2);
+}
+
+// scaleUpIn100
+.a-scaleUpIn100 {
+    .animationMix('fadeIn,scaleUp100', @a-duration3, @a-ease1);
+}
+
+// scaleDownIn100
+.a-scaleDownIn100 {
+    .animationMix('fadeIn,scaleDown100', @a-duration3, @a-ease1);
+}
+
+// scaleUpOut103
+.a-scaleUpOut103 {
+    .animationMix('fadeOut,scaleUp103', @a-duration1, @a-ease2);
+}
+
+// scaleDownOut98
+.a-scaleDownOut98 {
+    .animationMix('fadeOut,scaleDown98', @a-duration1, @a-ease2);
+}
+
+// fadeIn
+.a-fadeIn400 {
+    -webkit-animation-duration: @a-duration3;
+    -webkit-animation-name: fadeIn;
+    -webkit-animation-fill-mode: both;
+    animation-duration: @a-duration3;
+    animation-name: fadeIn;
+    animation-fill-mode: both;
+}
+.a-fadeIn100 {
+    .a-fadeIn400;
+    -webkit-animation-duration: @a-duration1;
+    animation-duration: @a-duration1;
+}
+.a-fadeIn200 {
+    .a-fadeIn400;
+    -webkit-animation-duration: @a-duration2;
+    animation-duration: @a-duration2;
+}
+.a-fadeIn500 {
+    .a-fadeIn400;
+    -webkit-animation-duration: @a-duration4;
+    animation-duration: @a-duration4;
+}
+
+// fadeOut
+.a-fadeOut400 {
+    -webkit-animation-duration: @a-duration3;
+    -webkit-animation-name: fadeOut;
+    -webkit-animation-fill-mode: both;
+    animation-duration: @a-duration3;
+    animation-name: fadeOut;
+    animation-fill-mode: both;
+}
+.a-fadeOut100 {
+    .a-fadeOut400;
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 0.1s;
+}
+.a-fadeOut200 {
+    .a-fadeOut400;
+    -webkit-animation-duration: @a-duration1;
+    animation-duration: @a-duration1;
+}
+.a-fadeOut500 {
+    .a-fadeOut400;
+    -webkit-animation-duration: @a-duration4;
+    animation-duration: @a-duration4;
+}
+
+// rotate90deg
+.a-rotate90deg {
+    .animationMix(rotate90, 0.1s, @a-ease2);
+}
+
+// rotateN90deg
+.a-rotateN90deg {
+    .animationMix(rotateN90, 0.1s, @a-ease2);
+}
+
+// expandCollapse400
+.a-expandCollapse400 {
+    -webkit-transition: height @a-duration3 @a-ease2;
+    transition: height @a-duration3 @a-ease2;
+}
+
+// expandCollapse200
+.a-expandCollapse200 {
+    -webkit-transition: height @a-duration1 @a-ease2;
+    transition: height @a-duration1 @a-ease2;
+}
+
+// expandCollapse100
+.a-expandCollapse100 {
+    -webkit-transition: height 0.1s @a-ease2;
+    transition: height 0.1s @a-ease2;
+}
+
+// delay100
+.a-delay100 {
+    -webkit-animation-delay: @a-duration1;
+    animation-delay: @a-duration1;
+}
+
+// delay200
+.a-delay200 {
+    -webkit-animation-delay: 0.267s;
+    animation-delay: 0.267s;
+}

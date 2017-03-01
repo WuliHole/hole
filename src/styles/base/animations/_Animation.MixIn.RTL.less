@@ -1,0 +1,76 @@
+/* stylelint-disable */
+// --------------------------------------------------
+// RTL overrides for  Animations
+
+
+@import "_Animation.MixIn";
+
+// slideRightIn10
+.a-slideRightIn10 {
+    .animationMix((fadeIn, slideLeft10),@duration3,@ease1);
+}
+
+// slideRightIn20
+.a-slideRightIn20 {
+    .animationMix((fadeIn, slideLeft20),@duration3,@ease1);
+}
+
+// slideRightIn40
+.a-slideRightIn40 {
+    .animationMix((fadeIn, slideLeft40),@duration3,@ease1);
+}
+
+// slideLeftIn10
+.a-slideLeftIn10 {
+    .animationMix((fadeIn, slideRight10),@duration3,@ease1);
+}
+
+// slideLeftIn20
+.a-slideLeftIn20 {
+    .animationMix((fadeIn, slideRight20),@duration3,@ease1);
+}
+
+// slideLeftIn40
+.a-slideLeftIn40 {
+    .animationMix((fadeIn, slideRight40),@duration3,@ease1);
+}
+
+// slideRightIn400
+.a-slideRightIn400 {
+    .animationMix((fadeIn, slideLeft400),@duration3,@ease1);
+}
+
+// slideLeftIn400
+.a-slideLeftIn400 {
+    .animationMix((fadeIn, slideRight400),@duration3,@ease1);
+}
+
+// slideRightOut40
+.a-slideRightOut40 {
+    .animationMix((fadeOut, slideLeftOut40),@duration1,@ease2);
+}
+
+// slideLeftOut40
+.a-slideLeftOut40 {
+    .animationMix((fadeOut, slideRightOut40),@duration1,@ease2);
+}
+
+// slideRightOut400
+.a-slideRightOut400 {
+    .animationMix((fadeOut, slideLeftOut400),@duration1,@ease2);
+}
+
+// slideLeftOut400
+.a-slideLeftOut400 {
+    .animationMix((fadeOut, slideRightOut400),@duration1,@ease2);
+}
+
+// rotate90deg
+.a-rotate90deg {
+    .animationMix(rotateN90, 0.1s,@ease2);
+}
+
+// rotateN90deg
+.a-rotateN90deg {
+    .animationMix(rotate90, 0.1s,@ease2);
+}
