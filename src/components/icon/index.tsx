@@ -16,18 +16,20 @@ export default class Icon extends React.Component<IIconProps, IIconState> {
   }
 
   render() {
-    const style = this.props.style
+    const style = this.props.style || {}
+    const {fontSize, marginRight, otherStyles} = style
+
     return <i
       className={ `iconfont icon-${this.props.name}` }
       style={ {
-        ...style,
-        fontSize: '20px',
-        marginRight: '10px',
+        ...otherStyles,
+        fontSize: fontSize || '20px',
+        marginRight: marginRight || '10px',
         cursor: 'pointer'
       } }
       onClick={ this.props.onClick }
       >
-      {this.props.children}
+      { this.props.children }
     </i>
   }
 }

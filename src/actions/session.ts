@@ -1,12 +1,40 @@
-import { login } from '../api/auth/';
+import { login, signup } from '../api/auth/';
 import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
   FORM_RESET,
+  SIGNUP_USER_SUCCESS,
+  SIGNUP_USER_ERROR,
+  SIGNUP_USER_PENDING
 } from '../constants';
-import {closeModal} from './modal';
+import { closeModal } from './modal';
+
+export function signUpUser() {
+  return (dispatch, getState) => {
+    const email = getState().form.signup.email.value
+
+    return dispatch({
+      types: [
+        SIGNUP_USER_PENDING,
+        SIGNUP_USER_SUCCESS,
+        SIGNUP_USER_ERROR
+      ],
+      payload: {
+        promise: signup(email)
+          .then(res => {
+            dispatch({
+              type: FORM_RESET,
+              form: 'signup'
+            })
+            return res
+          })
+      }
+    })
+  }
+}
+
 export function loginUser() {
   return (dispatch, getState) => {
     const user = {

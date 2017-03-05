@@ -12,13 +12,15 @@ interface IInputProps extends React.Props<any> {
   type?: string;
   placeholder?: string;
   id?: string;
+  className?: string
 };
 
 export default function Input({
   type = 'text',
   placeholder = '',
   fieldDefinition = {} as IFieldDefinition,
-  id = ''
+  id = '',
+  className = '',
 }) {
   const {
     value,
@@ -30,7 +32,7 @@ export default function Input({
   return (
     <input
       id={ id }
-      className="block col-12 mb1 input"
+      className={ `block col-12 mb1 input ${className}` }
       type={ type }
       placeholder={ placeholder }
       value={ value }

@@ -1,8 +1,8 @@
 import * as React from 'react';
 const connect = require('react-redux').connect;
-const Link = require('react-router').Link;
+import { Link } from 'react-router'
 
-import { loginUser, logoutUser } from '../actions/session';
+import { loginUser, logoutUser, signUpUser } from '../actions/session';
 import { openModal, closeModal } from '../actions/modal';
 import Button from '../components/button';
 import Content from '../components/content';
@@ -12,10 +12,13 @@ import Navigator from '../components/navigator';
 import NavigatorItem from '../components/navigator-item';
 import { requireAuth } from '../middleware/requireAuth';
 import Avatar from '../components/avatar'
+import Icon from '../components/icon'
+
 interface IAppProps extends React.Props<any> {
   session: any;
   login: () => void;
   logout: () => void;
+  signup: () => void;
   modal: any;
   openLoginModal: () => void;
   closeLoginModal: () => void;
@@ -32,6 +35,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     login: () => dispatch(loginUser()),
+    signup: () => dispatch(signUpUser()),
     logout: () => dispatch(logoutUser()),
     openLoginModal: () => dispatch(openModal()),
     closeLoginModal: () => dispatch(closeModal()),
@@ -55,6 +59,7 @@ class App extends React.Component<IAppProps, void> {
       session,
       login,
       logout,
+      signup,
       modal,
       closeLoginModal
     } = this.props;
@@ -68,7 +73,8 @@ class App extends React.Component<IAppProps, void> {
         {
           modal.get('opened') &&
           <LoginModal
-            onSubmit={ login }
+            login={ login }
+            signup={ signup }
             onClose={ closeLoginModal }
             isPending={ session.get('isLoading', false) }
             hasError={ session.get('hasError', false) }
@@ -77,12 +83,26 @@ class App extends React.Component<IAppProps, void> {
         <Navigator testid="navigator">
 
           <NavigatorItem mr>
-            <Logo />
+            <Link to="/">
+              <Logo />
+            </Link>
           </NavigatorItem>
 
 
           <div className="flex flex-auto"></div>
 
+          <NavigatorItem mr>
+            <Link to="/article">Artciles</Link>
+          </NavigatorItem>
+
+          <NavigatorItem mr>
+            <Icon
+              name={ 'xie' }
+              style={ { fontSize: '14px' } }
+              onClick={ this.loginIn.bind(this) }>
+              写文章
+            </Icon>
+          </NavigatorItem>
 
           <NavigatorItem isVisible={ !isLoggedIn } mr>
             <Button
@@ -103,14 +123,6 @@ class App extends React.Component<IAppProps, void> {
               />
           </NavigatorItem>
 
-          <NavigatorItem isVisible={ isLoggedIn } mr>
-            <div
-              data-testid="user-profile"
-              className="h5">
-              { `${firstName} ${lastName}` }
-            </div>
-          </NavigatorItem>
-
           <NavigatorItem isVisible={ isLoggedIn }>
             <Button onClick={ logout } className="bg-red white">
               Logout
@@ -122,7 +134,7 @@ class App extends React.Component<IAppProps, void> {
         <Content isVisible={ true }>
           { children }
         </Content>
-      </div>
+      </div >
     );
   };
 };
