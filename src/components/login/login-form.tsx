@@ -11,6 +11,7 @@ import Alert from '../alert';
 import Icon from '../icon'
 import * as classnames from 'classnames'
 interface ILoginFormProps {
+  onSubmit: () => void;
   handleSubmit?: () => void;
   resetForm?: () => void;
   isPending: boolean;
@@ -35,7 +36,7 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
         password
       }
     } = this.props;
-
+    
     return (
       <Form handleSubmit={ handleSubmit }>
         <Alert
