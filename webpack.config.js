@@ -11,7 +11,9 @@ const applicationEntries = process.env.NODE_ENV === 'development'
   : [];
 
 module.exports = {
-  entry: ['./src/index.tsx'].concat(applicationEntries),
+  entry: {
+    index: './src/index.tsx'
+  },
 
   output: {
     path: path.join(__dirname, 'dist'),
