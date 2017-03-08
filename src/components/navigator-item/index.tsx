@@ -21,7 +21,7 @@ export default function NavigatorItem({
 
   return (
     <div className={ navItemClasses }>
-      { children }
+      { isVisible && children }
     </div>
   );
 };

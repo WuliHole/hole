@@ -9,6 +9,7 @@ import Input from '../form/form-input';
 import Button from '../button';
 import Alert from '../alert';
 import Icon from '../icon'
+import * as classnames from 'classnames'
 interface ILoginFormProps {
   onSubmit: () => void;
   handleSubmit?: () => void;
@@ -21,7 +22,7 @@ interface ILoginFormProps {
   };
 };
 
-// Making this a class-based component until redux-form typings support 
+// Making this a class-based component until redux-form typings support
 // stateless functional components.
 class LoginForm extends React.Component<ILoginFormProps, void> {
   render() {
@@ -35,7 +36,7 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
         password
       }
     } = this.props;
-
+    
     return (
       <Form handleSubmit={ handleSubmit }>
         <Alert
@@ -48,15 +49,18 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
           id="qa-alert"
           isVisible={ hasError }
           status="error">
-          <Icon name="jinggao"/>Invalid username and password
+          <Icon name="jinggao" />Invalid username and password
         </Alert>
 
         <FormGroup testid="login-username">
-          <FormLabel id="qa-uname-label">Username</FormLabel>
           <Input
             type="text" fieldDefinition={ username }
             id="qa-uname-input"
-            placeholder="Username"/>
+            className={ classnames({
+              'border-color-error': !username.valid,
+              'border-color-right': username.valid,
+            }) }
+            placeholder="用户名" />
           <FormError id="qa-uname-validation"
             isVisible={ !!(username.touched && username.error) }>
             { username.error }
@@ -64,11 +68,14 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
         </FormGroup>
 
         <FormGroup testid="login-password">
-          <FormLabel id="qa-password-label">Password</FormLabel>
           <Input type="password"
             fieldDefinition={ password }
             id="qa-password-input"
-            placeholder="Password" />
+            className={ classnames({
+              'border-color-error': !password.valid,
+              'border-color-right': password.valid,
+            }) }
+            placeholder="密码" />
           <FormError id="qa-password-validation"
             isVisible={ !!(password.touched && password.error) }>
             { password.error }
@@ -76,14 +83,16 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
         </FormGroup>
 
         <FormGroup testid="login-submit">
-          <Button type="submit" className="mr1" id="qa-login-button">
-            Login
+          <Button type="submit"
+            style={ {
+              width: '100%', backgroundColor: '#449bf7', fontWeight: 100
+            } }
+            className="block "
+            id="qa-login-button"
+            >
+            登录
           </Button>
-          <Button onClick={ resetForm }
-            type="reset"
-            className="bg-red" id="qa-clear-button">
-            Clear
-          </Button>
+
         </FormGroup>
       </Form>
     );
@@ -92,12 +101,16 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
   static validate(values) {
     const errors = { username: '', password: '' };
 
-    if (!values.username) {
-      errors.username = 'Username is required.';
+    if (!values.username || !values.username.trim()) {
+      errors.username = '用户名不得为空';
     }
 
     if (!values.password) {
-      errors.password = 'Password is required.';
+      errors.password = '用户名不得为空';
+    }
+
+    if (values.password && values.password.length < 6) {
+      errors.password = '密码不得少于6位';
     }
 
     return errors;

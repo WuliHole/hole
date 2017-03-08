@@ -1,9 +1,11 @@
+/* document http://basscss.com/*/
 @import 'basscss-basic';
 @import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 
 /* Add-on Modules */
 @import 'basscss-addons/modules/btn';
 @import 'basscss-addons/modules/btn-primary';
+@import 'basscss-addons/modules/btn-sizes';
 @import 'basscss-addons/modules/background-colors';
 @import 'basscss-addons/modules/colors';
 @import 'basscss-addons/modules/forms';

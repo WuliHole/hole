@@ -11,3 +11,7 @@ export function login(user) {
       .then(null, (err) => reject(new Error(LOGIN_ERR_MSG)));
   });
 }
+
+export function signup(email: string) {
+  return post('/auth/signup', { email })
+}
