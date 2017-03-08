@@ -1,5 +1,6 @@
 declare var require
 
+/* tslint:disable */
 export default {
   path: 'article',
   getComponent(nextState, cb) {

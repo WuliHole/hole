@@ -25,9 +25,7 @@ const basePlugins = [
   new CopyWebpackPlugin([
     { from: 'src/assets', to: 'assets' },
   ]),
-  new webpack.optimize.CommonsChunkPlugin(
-    { name: ['index'], minChunks: Infinity }
-  ),
+
 ].concat(sourceMap);
 
 const devPlugins = [
@@ -40,6 +38,10 @@ const devPlugins = [
 ];
 
 const prodPlugins = [
+  new webpack.optimize.CommonsChunkPlugin(
+    { name: ['index'], minChunks: Infinity }
+  ),
+
   new SplitByPathPlugin([
     { name: 'vendor', path: [path.join(__dirname, '..', 'node_modules/')] },
   ]),
