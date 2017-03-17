@@ -22,6 +22,7 @@ interface IAppProps extends React.Props<any> {
   modal: any;
   openLoginModal: () => void;
   closeLoginModal: () => void;
+  location: Location
 };
 
 function mapStateToProps(state) {
@@ -29,6 +30,7 @@ function mapStateToProps(state) {
     session: state.session,
     router: state.router,
     modal: state.modal,
+
   };
 }
 
@@ -51,6 +53,11 @@ class App extends React.Component<IAppProps, void> {
 
   @requireAuth
   loginIn() {
+  }
+
+  shouldHideNavi(): boolean {
+    // Match verifying page
+    return /\/verify/.test(this.props.location.pathname)
   }
 
   render() {
@@ -80,7 +87,7 @@ class App extends React.Component<IAppProps, void> {
             hasError={ session.get('hasError', false) }
             isVisible={ modal.get('opened', false) } />
         }
-        <Navigator testid="navigator">
+        <Navigator testid="navigator" isVisible={ !this.shouldHideNavi() }>
 
           <NavigatorItem mr>
             <Link to="/">
@@ -120,7 +127,7 @@ class App extends React.Component<IAppProps, void> {
           <NavigatorItem isVisible={ isLoggedIn } mr>
             <Avatar size={ 30 }
               src={ isLoggedIn && session.get('user').get('avatar') }
-              />
+            />
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn }>

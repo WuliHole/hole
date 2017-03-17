@@ -1,20 +1,26 @@
 import * as React from 'react';
-
+import cls = require('classnames')
 interface INavigatorProps extends React.Props<any> {
-  testid?: string;
+  testid?: string
+  isVisible?: boolean
 }
 
 export default function Navigator({
   children = null,
-  testid = ''
+  testid = '',
+  isVisible = true
 }: INavigatorProps) {
   return (
     <nav
       data-testid={ testid }
-      className={
-        'flex items-center p1 bg-white border-bottom ' }
+      className={ cls(
+        'flex items-center p1 bg-white border-bottom ',
+        {
+          hide: !isVisible
+        })
+      }
       id="nav"
-      >
+    >
       { children }
     </nav>
   );
