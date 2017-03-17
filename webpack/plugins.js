@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SplitByPathPlugin = require('webpack-split-by-path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const sourceMap = process.env.TEST || process.env.NODE_ENV !== 'production'
   ? [new webpack.SourceMapDevToolPlugin({ filename: null, test: /\.tsx?$/ })]
   : [];
@@ -17,6 +17,7 @@ const basePlugins = [
     __TEST__: JSON.stringify(process.env.TEST || false),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   }),
+
   new HtmlWebpackPlugin({
     template: './src/index.html',
     inject: 'body',
@@ -25,6 +26,7 @@ const basePlugins = [
   new CopyWebpackPlugin([
     { from: 'src/assets', to: 'assets' },
   ]),
+  new ExtractTextPlugin("styles.css", { allChunks: true }),
 
 ].concat(sourceMap);
 
@@ -38,8 +40,9 @@ const devPlugins = [
 ];
 
 const prodPlugins = [
+
   new webpack.optimize.CommonsChunkPlugin(
-    { name: ['index'], minChunks: Infinity }
+    { name: ['commin'], minChunks: Infinity, async: true }
   ),
 
   new SplitByPathPlugin([
@@ -50,6 +53,7 @@ const prodPlugins = [
       warnings: false,
     },
   }),
+
 ];
 
 module.exports = basePlugins
