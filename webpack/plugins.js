@@ -26,7 +26,7 @@ const basePlugins = [
   new CopyWebpackPlugin([
     { from: 'src/assets', to: 'assets' },
   ]),
-  new ExtractTextPlugin("styles.css", { allChunks: true }),
+  new ExtractTextPlugin('styles.css', { allChunks: true }),
 
 ].concat(sourceMap);
 
