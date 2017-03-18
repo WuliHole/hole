@@ -1,5 +1,5 @@
 'use strict';
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -33,7 +33,7 @@ exports.css = {
   test: /\.css$/,
 
   loader: isProduction
-    ? ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
+    ? ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
     : 'style-loader!css-loader!postcss-loader',
 
   exclude: /node_modules/,
@@ -43,10 +43,10 @@ exports.less = {
   test: /\.less$/,
 
   loader: isProduction
-    ? ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+    ? ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
     : null,
 
-  loaders: !isProduction && ['style', 'css', 'less']
+  loaders: !isProduction && ['style', 'css', 'less'],
 }
 
 exports.pluginCss = {
