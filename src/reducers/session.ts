@@ -2,10 +2,20 @@ import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
+
   LOGOUT_USER,
+
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
-  SIGNUP_USER_PENDING
+  SIGNUP_USER_PENDING,
+
+  SET_USER_PASSWORD_PENDING,
+  SET_USER_PASSWORD_ERROR,
+  SET_USER_PASSWORD_SUCCESS,
+
+  UPDATE_USER_PENDING,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_SUCCESS
 } from '../constants';
 
 import { fromJS } from 'immutable';
@@ -40,10 +50,25 @@ function sessionReducer(state = INITIAL_STATE,
 
     case SIGNUP_USER_ERROR:
     case LOGIN_USER_ERROR:
+    case SET_USER_PASSWORD_ERROR:
+    case UPDATE_USER_ERROR:
       return state.merge(fromJS({
         hasError: true,
         isLoading: false,
       }));
+
+    case SET_USER_PASSWORD_PENDING:
+    case UPDATE_USER_PENDING:
+      return state.merge({
+        isLoading: true
+      })
+
+    case SET_USER_PASSWORD_SUCCESS:
+    case UPDATE_USER_SUCCESS:
+      return state.merge({
+        isLoading: false,
+        ...action.payload
+      })
 
     case LOGOUT_USER:
       return state.merge(INITIAL_STATE);

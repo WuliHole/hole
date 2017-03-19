@@ -1,4 +1,10 @@
+import assert from '../utils/assert'
 import { login, signup } from '../api/auth/';
+import {
+  setPassword as setUserPassword,
+  update as updateUserInfo
+} from '../api/user'
+
 import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
@@ -7,7 +13,15 @@ import {
   FORM_RESET,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
-  SIGNUP_USER_PENDING
+  SIGNUP_USER_PENDING,
+
+  SET_USER_PASSWORD_PENDING,
+  SET_USER_PASSWORD_SUCCESS,
+  SET_USER_PASSWORD_ERROR,
+
+  UPDATE_USER_PENDING,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
 } from '../constants';
 import { closeModal } from './modal';
 
@@ -61,6 +75,53 @@ export function loginUser() {
       },
     });
   };
+}
+
+export function setPassword() {
+  return (dispatch, getState) => {
+    const password = getState().form.setPassword.password.value
+    const uid = getState().session.get('user').get('id')
+    assert(!!uid)
+
+    return dispatch({
+      types: [
+        SET_USER_PASSWORD_PENDING,
+        SET_USER_PASSWORD_SUCCESS,
+        SET_USER_PASSWORD_ERROR,
+      ],
+      payload: {
+        promise: setUserPassword(uid, password)
+      },
+    });
+  }
+}
+
+export function update(formName: string) {
+  return (dispatch, getState) => {
+    const form = getState().form[formName]
+    const uid = getState().session.get('user').get('id')
+    const data = {}
+
+    for (let filed in form) {
+      if (filed.startsWith('_')) {
+        continue
+      }
+      if (form[filed].value) {
+        data[filed] = form[filed].value
+      }
+    }
+
+    return dispatch({
+      types: [
+        UPDATE_USER_PENDING,
+        UPDATE_USER_SUCCESS,
+        UPDATE_USER_ERROR,
+      ],
+      payload: {
+        promise: updateUserInfo(uid, data)
+      },
+    });
+  }
 }
 
 export function logoutUser() {
