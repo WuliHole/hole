@@ -67,6 +67,9 @@ function _getStorageConfig() {
   return {
     key: 'typescript-react-redux-seed',
     serialize: (store) => {
+      store.session = store.session.set('isLoading', false)
+      store.session = store.session.set('hasError', false)
+
       return store && store.session ?
         JSON.stringify(store.session.toJS()) : store;
     },

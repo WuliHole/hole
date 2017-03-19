@@ -7,12 +7,12 @@ const HTTPheaders = {
   'Content-Type': 'application/json'
 }
 
-const http = (method: string) => (path, data = {}) =>
+const http = (method: string) => (path, data = {}, json = true) =>
   fetch(BASE_URL + path, {
     method: method,
     headers: HTTPheaders,
     body: JSON.stringify(data)
-  }).then(response => response.json())
+  }).then(response => json ? response.json() : response)
 
 export const post = http('post')
 export const get = http('get')

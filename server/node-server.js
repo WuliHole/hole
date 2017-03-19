@@ -83,6 +83,18 @@ app.post('/api/article/list',
   }
 )
 
+app.post('/api/user/:id/resetPassword', (req, res) => {
+  setTimeout(() => res.status(200).send(), 3000)
+})
+
+app.put('/api/user/:id', (req, res) => {
+  setTimeout(
+    () => res
+      .status(200)
+      .send(JSON.stringify({ last: 'Andrew', userName: 'pythonic' }))
+    , 3000)
+})
+
 app.post('/api/comment', (req, res) => {
   const user = authPassport.getUserById(req.body.authorId, users)
   res.status(200).send(JSON.stringify({
