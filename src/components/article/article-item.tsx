@@ -10,6 +10,7 @@ import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import { EditorState } from 'draft-js'
 import Moment = require('moment')
 import Avatar from '../avatar'
+import { animated } from '../transition/utils'
 import './item.less'
 
 import { Serlizer } from '../editor/utils/serializer'
@@ -26,7 +27,7 @@ interface ItemProps {
   maxLength?: number
 }
 
-export default ({
+const item = ({
   articleInfo,
   className,
   maxLength,
@@ -43,7 +44,7 @@ export default ({
     'article-list-item-title',
     'text-decoration-none'
   )
-  const {title, content, author, id, createAt} = articleInfo
+  const { title, content, author, id, createAt } = articleInfo
   const href = `/@${author.first}/${linkifyTitle(title)}/${id}`
   const date = new Date(createAt)
   return (
@@ -58,7 +59,7 @@ export default ({
           style={ {
             verticalAlign: 'text-bottom'
           } }
-          >
+        >
           <div>{ author.first } { author.last }</div>
           <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
         </div>
@@ -87,6 +88,9 @@ export default ({
     </div >
   )
 }
+const AnimatedItem = animated<ItemProps>({ transitionName: 'fadeIn' })(item)
+export default AnimatedItem
+
 
 function truncateWords(
   content: Draft.Model.Encoding.RawDraftContentState,

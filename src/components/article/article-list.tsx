@@ -17,7 +17,7 @@ export default
   }
 
   render() {
-    let {data, isLoading, hasError} = this.props
+    let { data, isLoading, hasError } = this.props
     const ArticlesInfo = data.toJS()
 
     if (isLoading) {
@@ -47,7 +47,7 @@ export default
               key={ article.id }
               articleInfo={ article }
               maxLength={ 150 }
-              >
+            >
             </ArticleItem>
           })
         }
@@ -55,3 +55,4 @@ export default
     )
   }
 }
+
