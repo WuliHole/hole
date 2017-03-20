@@ -9,6 +9,8 @@ import { setPassword, update } from '../../actions/session'
 import ResetPassWord from './setPassword.form'
 import Personalization from './personalizaion.form'
 import { Link } from 'react-router'
+import Transition from '../../components/transition'
+
 const connect = require('react-redux').connect
 
 interface IVerifyPageProps extends React.Props<any> {
@@ -81,30 +83,38 @@ class VerifyPage extends React.Component<IVerifyPageProps, VerifyPageState> {
           } }>
             {
               this.state.stage === VERIFY_STAGE.setPassword
-              && <ResetPassWord
-                onSubmit={ isPending ? () => { } : this.setPassword }
-                isPending={ isPending }
-              />
+              && <Transition>
+                <ResetPassWord
+                  onSubmit={ isPending ? () => { } : this.setPassword }
+                  isPending={ isPending }
+                />
+              </Transition>
             }
+
             {
               this.state.stage === VERIFY_STAGE.personalization
-              && <Personalization
+              && <Transition><Personalization
                 onSubmit={ isPending ? () => { } : this.updateProfile }
                 isPending={ isPending }
               />
-            }{
+              </Transition>
+            }
+
+            {
               this.state.stage === VERIFY_STAGE.done
               &&
-              <div>
-                <Alert status="success" isVisible>
-                  <h1 className="center">
-                    注册完成
+              <Transition>
+                <div>
+                  <Alert status="success" isVisible>
+                    <h1 className="center">
+                      注册完成
                   </h1>
-                </Alert>
-                <Button >
-                  <Link to="/">回到首页</Link>
-                </Button>
-              </div>
+                  </Alert>
+                  <Button >
+                    <Link to="/">回到首页</Link>
+                  </Button>
+                </div>
+              </Transition>
             }
           </div>
         </Board>
