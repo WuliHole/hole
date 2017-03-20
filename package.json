@@ -102,6 +102,7 @@
     "postcss-modules-local-by-default": "^1.0.2",
     "raw-loader": "^0.5.1",
     "react": "^15.3.0",
+    "react-addons-css-transition-group": "^15.4.2",
     "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.4",
