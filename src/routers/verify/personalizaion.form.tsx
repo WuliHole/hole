@@ -16,7 +16,7 @@ interface IPersonalizationProps extends React.Props<any> {
   isPending: boolean;
   hasError: boolean;
   fields?: {
-    userName: any;
+    nickName: any;
     bio: any;
   };
 };
@@ -37,7 +37,7 @@ class Personalization
       isPending,
       hasError,
       fields: {
-        userName,
+        nickName,
         bio
       }
     } = this.props
@@ -62,16 +62,16 @@ class Personalization
             <h1 className="center">个性化设置</h1>
             <FormGroup >
               <Input
-                type="text" fieldDefinition={ userName }
+                type="text" fieldDefinition={ nickName }
                 id="qa-uname-input"
                 className={ classnames({
-                  'border-color-error': !userName.valid,
-                  'border-color-right': userName.valid,
+                  'border-color-error': !nickName.valid,
+                  'border-color-right': nickName.valid,
                 }) }
                 placeholder="昵称" />
               <FormError
-                isVisible={ !!(userName.touched && userName.error) }>
-                { userName.error }
+                isVisible={ !!(nickName.touched && nickName.error) }>
+                { nickName.error }
               </FormError>
             </FormGroup>
 
@@ -122,7 +122,7 @@ class Personalization
 export default ReduxForm.reduxForm({
   form: 'personalization',
   fields: [
-    'userName',
+    'nickName',
     'bio',
   ],
   validate: Personalization.validate,

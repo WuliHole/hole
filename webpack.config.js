@@ -17,9 +17,9 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].[hash].js',
-    publicPath: '/',
-    sourceMapFilename: '[name].[hash].js.map',
+    filename: process.env.NODE_ENV === 'production' ? '[name].[hash].js' : '[name].js',
+    publicPath: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:8080/',
+    sourceMapFilename: process.env.NODE_ENV === 'production' ? '[name].[hash].js.map' : '[name].js.map',
     chunkFilename: '[id].chunk.js',
   },
 

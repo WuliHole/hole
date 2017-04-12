@@ -15,7 +15,7 @@ const persistState = require('redux-localstorage');
 import promiseMiddleware from '../middleware/promise-middleware';
 import logger from './logger';
 import rootReducer from '../reducers';
-
+import { getCookie } from '../utils/cookie'
 declare const __DEV__: boolean; // from webpack
 
 function configureStore(initialState) {
@@ -69,12 +69,13 @@ function _getStorageConfig() {
     serialize: (store) => {
       store.session = store.session.set('isLoading', false)
       store.session = store.session.set('hasError', false)
-
       return store && store.session ?
         JSON.stringify(store.session.toJS()) : store;
     },
     deserialize: (state) => ({
-      session: state ? fromJS(JSON.parse(state)) : fromJS({}),
+      session: state ? fromJS(JSON.parse(state)) : fromJS({
+        user: { id: getCookie('uid') }
+      }),
     }),
   };
 }

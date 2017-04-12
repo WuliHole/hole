@@ -4,7 +4,7 @@ import assert from '../../utils/assert'
 export function setPassword(userId: number, password: string) {
   assert(userId, 'illegal param userId')
   assert(password, 'illegal param password')
-  return update(userId, { password })
+  return post('/user/setPassword', { password })
 }
 
 
