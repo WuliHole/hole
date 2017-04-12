@@ -7,7 +7,7 @@ const LOGIN_ERR_MSG = `
 export function login(user) {
   return new Promise((resolve, reject) => {
     return post('/auth/login', user)
-      .then((json: any) => resolve(json.meta))
+      .then((json: any) => resolve(json))
       .then(null, (err) => reject(new Error(LOGIN_ERR_MSG)));
   });
 }

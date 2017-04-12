@@ -72,8 +72,7 @@ class App extends React.Component<IAppProps, void> {
     } = this.props;
     const token = session.get('token', false);
     const isLoggedIn = token && token !== null && typeof token !== 'undefined';
-    const firstName = session.getIn(['user', 'first'], '');
-    const lastName = session.getIn(['user', 'last'], '');
+    const nickName = session.getIn(['user', 'nickName'], '');
 
     return (
       <div>
@@ -125,9 +124,10 @@ class App extends React.Component<IAppProps, void> {
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn } mr>
-            <Avatar size={ 30 }
+            {/*<Avatar size={ 30 }
               src={ isLoggedIn && session.get('user').get('avatar') }
-            />
+            />*/}
+            <div className="h5">{ nickName }</div>
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn }>

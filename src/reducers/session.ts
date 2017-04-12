@@ -19,7 +19,7 @@ import {
 } from '../constants';
 
 import { fromJS } from 'immutable';
-
+import { getCookie } from '../utils/cookie'
 const INITIAL_STATE = fromJS({
   token: null,
   user: {},
@@ -42,8 +42,8 @@ function sessionReducer(state = INITIAL_STATE,
 
     case LOGIN_USER_SUCCESS:
       return state.merge(fromJS({
-        token: action.payload.token,
-        user: action.payload.profile,
+        token: getCookie('uid'),
+        user: action.payload,
         hasError: false,
         isLoading: false,
       }));
@@ -64,10 +64,15 @@ function sessionReducer(state = INITIAL_STATE,
       })
 
     case SET_USER_PASSWORD_SUCCESS:
-    case UPDATE_USER_SUCCESS:
       return state.merge({
         isLoading: false,
         ...action.payload
+      })
+
+    case UPDATE_USER_SUCCESS:
+      return state.merge({
+        isLoading: false,
+        user: action.payload
       })
 
     case LOGOUT_USER:
