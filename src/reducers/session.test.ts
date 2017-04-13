@@ -33,11 +33,12 @@ describe('Session Reducer', () => {
         sessionReducer,
         state,
         LOGIN_USER_SUCCESS,
-        { token: 1234 });
+        { bio: 'abc', name: 'abc@test.com' });
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
-      expect(state.get('token')).toBe(1234);
+      expect(state.getIn(['user', 'bio'])).toBe('abc');
+      expect(state.getIn(['user', 'name'])).toBe('abc@test.com');
     });
   });
 
