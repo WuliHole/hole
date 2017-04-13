@@ -99,7 +99,6 @@ export function setPassword() {
 export function update(formName: string) {
   return (dispatch, getState) => {
     const form = getState().form[formName]
-    const uid = getState().session.get('user').get('id')
     const data = {}
 
     for (let filed in form) {
@@ -118,7 +117,7 @@ export function update(formName: string) {
         UPDATE_USER_ERROR,
       ],
       payload: {
-        promise: updateUserInfo(uid, data)
+        promise: updateUserInfo(data)
       },
     });
   }

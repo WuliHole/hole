@@ -8,6 +8,6 @@ export function setPassword(userId: number, password: string) {
 }
 
 
-export function update(userId, data = {}) {
-  return put(`/user/${userId}`, data)
+export function update(data = {}) {
+  return put(`/user`, data)
 }
