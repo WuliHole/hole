@@ -1,7 +1,6 @@
 import * as React from 'react';
 const connect = require('react-redux').connect;
 import { Link } from 'react-router'
-
 import { loginUser, logoutUser, signUpUser } from '../actions/session';
 import { openModal, closeModal } from '../actions/modal';
 import Button from '../components/button';
@@ -74,6 +73,10 @@ class App extends React.Component<IAppProps, void> {
     const isLoggedIn = token && token !== null && typeof token !== 'undefined';
     const nickName = session.getIn(['user', 'nickName'], '');
 
+    const avatar = <Avatar size={ 30 }
+      src={ isLoggedIn && session.get('user').get('avatar') }
+    />
+
     return (
       <div>
         {
@@ -124,10 +127,7 @@ class App extends React.Component<IAppProps, void> {
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn } mr>
-            {/*<Avatar size={ 30 }
-              src={ isLoggedIn && session.get('user').get('avatar') }
-            />*/}
-            <div className="h5">{ nickName }</div>
+
           </NavigatorItem>
 
           <NavigatorItem isVisible={ isLoggedIn }>

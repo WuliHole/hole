@@ -12,6 +12,7 @@
     "redux-mock-store": "registry:dt/redux-mock-store#0.0.6+20160907111255"
   },
   "dependencies": {
+    "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20170317163524",
     "react-router": "registry:npm/react-router#2.4.0+20160628165748",
     "react-router-redux": "registry:npm/react-router-redux#4.0.0+20160602212457",
     "redux-thunk": "registry:npm/redux-thunk#2.0.0+20160525185520"
