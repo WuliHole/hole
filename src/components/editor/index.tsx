@@ -8,6 +8,7 @@ import {
   ContentBlock,
   getDefaultKeyBinding,
   convertToRaw
+
 } from 'draft-js'
 import { Serlizer } from './utils/serializer'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
@@ -77,7 +78,7 @@ export default class HoleEditor
     const isFocus = this.isFocus()
     const placeholder = this.props.placeholder || HoleEditor.placeholder
     return (
-      <div onClick={ this.focus }>
+      <div >
         <Editor
           editorState={ this.state.editorState }
           onChange={ this.onChange }
@@ -87,7 +88,7 @@ export default class HoleEditor
           blockStyleFn={ this.blockStyleFn }
           handleReturn={ this.handleBeforeInput }
           placeholder={ placeholder }
-          />
+        />
         { this.editor && this.props.children }
       </div>
     );

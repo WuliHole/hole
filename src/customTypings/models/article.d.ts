@@ -6,7 +6,7 @@ interface ArticleModel {
   id: string | number,
   title: string,
   content: any,
-  createAt: string,
+  createAt: number,
   author: User
 }
 

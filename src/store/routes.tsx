@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IndexRoute, Route, Router } from 'react-router'
+import { Route, Router } from 'react-router'
 import { rootRoute } from '../routers'
 
 export default history => (

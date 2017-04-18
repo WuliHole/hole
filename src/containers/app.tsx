@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { PropTypes } from 'react'
 const connect = require('react-redux').connect;
-import { Link } from 'react-router'
+import { Link, History } from 'react-router'
 import { loginUser, logoutUser, signUpUser } from '../actions/session';
 import { openModal, closeModal } from '../actions/modal';
+import { create } from '../actions/article';
 import Button from '../components/button';
 import Content from '../components/content';
 import LoginModal from '../components/login/login-modal';
@@ -21,6 +23,9 @@ import { List, ListItem } from 'material-ui/List'
 import * as injectTapEven from 'react-tap-event-plugin'
 import IconAdd from 'material-ui/svg-icons/content/add'
 import IconButton from 'material-ui/IconButton'
+import Snackbar from 'material-ui/Snackbar';
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+
 
 injectTapEven()
 
@@ -32,19 +37,22 @@ interface IAppProps extends React.Props<any> {
   modal: any;
   openLoginModal: () => void;
   closeLoginModal: () => void;
+  createPost: () => Promise<any>
   location: Location
+  history: History
+  article
 };
 
 interface AppState {
-  anchorEl: any
-  showPopMenu: boolean
+  anchorEl?: any
+  showPopMenu?: boolean
 }
 function mapStateToProps(state) {
   return {
     session: state.session,
     router: state.router,
     modal: state.modal,
-
+    article: state.article
   };
 }
 
@@ -55,16 +63,28 @@ function mapDispatchToProps(dispatch) {
     logout: () => dispatch(logoutUser()),
     openLoginModal: () => dispatch(openModal()),
     closeLoginModal: () => dispatch(closeModal()),
+    createPost: () => dispatch(create())
   };
 }
 
+const muiTheme = getMuiTheme({
+
+  fontFamily: 'Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, \
+   Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif',
+
+})
 class App extends React.Component<IAppProps, AppState> {
   public hadleCommit: () => void
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       anchorEl: null,
-      showPopMenu: false
+      showPopMenu: false,
     }
   }
 
@@ -73,8 +93,11 @@ class App extends React.Component<IAppProps, AppState> {
   }
 
   shouldHideNavi(): boolean {
+    const path = this.props.location.pathname
     // Match verifying page
-    return /\/verify/.test(this.props.location.pathname)
+    return /\/verify/.test(path)
+      // Match createNew
+      || /createNew/.test(path)
   }
 
   handleOnClick = (ev) => {
@@ -88,6 +111,13 @@ class App extends React.Component<IAppProps, AppState> {
     this.setState({ showPopMenu: false })
   }
 
+  createPost = () => {
+    this.props.createPost()
+      .then(
+      () => this.context.router.push('createNew')
+      )
+  }
+
   render() {
     const {
       children,
@@ -96,6 +126,7 @@ class App extends React.Component<IAppProps, AppState> {
       logout,
       signup,
       modal,
+      article,
       closeLoginModal
     } = this.props;
     const token = session.get('token', false);
@@ -105,9 +136,11 @@ class App extends React.Component<IAppProps, AppState> {
     const avatar = <Avatar size={ 30 }
       src={ isLoggedIn && session.get('user').get('avatar') }
     />
+    const { hasError, errMsg = '~' } = article.toJS()
+
 
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ muiTheme }>
         <div>
           {
             modal.get('opened') &&
@@ -135,9 +168,13 @@ class App extends React.Component<IAppProps, AppState> {
             </NavigatorItem>
 
             <NavigatorItem mr>
-              <IconButton>
-                <IconAdd />
-              </IconButton>
+              <IconButton onClick={ this.createPost }><IconAdd /></IconButton>
+              <Snackbar
+                open={ !!hasError }
+                message={ errMsg }
+                autoHideDuration={ 3500 }
+                action="Create new post failed"
+              />
             </NavigatorItem>
 
             <NavigatorItem isVisible={ !isLoggedIn } mr>
@@ -185,6 +222,7 @@ class App extends React.Component<IAppProps, AppState> {
     );
   };
 };
+
 
 export default connect(
   mapStateToProps,

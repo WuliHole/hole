@@ -15,7 +15,7 @@ describe('Comment Component', () => {
     id: 1,
     title: 'give me a ball',
     content: getContentState('hello world'),
-    createAt: '2017-1-10',
+    createAt: 11111111,
     author: user
   }
 
