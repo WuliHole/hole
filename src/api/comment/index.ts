@@ -15,7 +15,7 @@ export function fetch(options: CommentQueryOptions = { postId: '' }) {
 export interface CreateCommentParams {
   postId: string
   authorId: string
-  content: Draft.Model.Encoding.RawDraftContentState
+  content: any
 }
 
 export function create(params: CreateCommentParams) {

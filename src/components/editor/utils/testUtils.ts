@@ -1,6 +1,6 @@
 export function getContentState(
   stringContent: string
-): Draft.Model.Encoding.RawDraftContentState {
+): any {
   const contentState = {
     entityMap: {},
     blocks: [
@@ -19,5 +19,5 @@ export function getContentState(
       }
     ]
   }
-  return contentState as Draft.Model.Encoding.RawDraftContentState
+  return contentState as any
 }

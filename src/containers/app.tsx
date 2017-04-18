@@ -13,6 +13,17 @@ import { requireAuth } from '../middleware/requireAuth';
 import Avatar from '../components/avatar'
 import Icon from '../components/icon'
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Popover from 'material-ui/Popover/Popover'
+import Menu from 'material-ui/Menu/'
+import MenuItem from 'material-ui/MenuItem'
+import { List, ListItem } from 'material-ui/List'
+import * as injectTapEven from 'react-tap-event-plugin'
+import IconAdd from 'material-ui/svg-icons/content/add'
+import IconButton from 'material-ui/IconButton'
+
+injectTapEven()
+
 interface IAppProps extends React.Props<any> {
   session: any;
   login: () => void;
@@ -24,6 +35,10 @@ interface IAppProps extends React.Props<any> {
   location: Location
 };
 
+interface AppState {
+  anchorEl: any
+  showPopMenu: boolean
+}
 function mapStateToProps(state) {
   return {
     session: state.session,
@@ -43,11 +58,14 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class App extends React.Component<IAppProps, void> {
+class App extends React.Component<IAppProps, AppState> {
   public hadleCommit: () => void
   constructor(props) {
     super(props);
-
+    this.state = {
+      anchorEl: null,
+      showPopMenu: false
+    }
   }
 
   @requireAuth
@@ -57,6 +75,17 @@ class App extends React.Component<IAppProps, void> {
   shouldHideNavi(): boolean {
     // Match verifying page
     return /\/verify/.test(this.props.location.pathname)
+  }
+
+  handleOnClick = (ev) => {
+    this.setState({
+      anchorEl: ev.target,
+      showPopMenu: true
+    })
+  }
+
+  handleRequestClose = () => {
+    this.setState({ showPopMenu: false })
   }
 
   render() {
@@ -78,70 +107,81 @@ class App extends React.Component<IAppProps, void> {
     />
 
     return (
-      <div>
-        {
-          modal.get('opened') &&
-          <LoginModal
-            login={ login }
-            signup={ signup }
-            onClose={ closeLoginModal }
-            isPending={ session.get('isLoading', false) }
-            hasError={ session.get('hasError', false) }
-            isVisible={ modal.get('opened', false) } />
-        }
-        <Navigator testid="navigator" isVisible={ !this.shouldHideNavi() }>
+      <MuiThemeProvider>
+        <div>
+          {
+            modal.get('opened') &&
+            <LoginModal
+              login={ login }
+              signup={ signup }
+              onClose={ closeLoginModal }
+              isPending={ session.get('isLoading', false) }
+              hasError={ session.get('hasError', false) }
+              isVisible={ modal.get('opened', false) } />
+          }
+          <Navigator testid="navigator" isVisible={ !this.shouldHideNavi() }>
 
-          <NavigatorItem mr>
-            <Link to="/">
-              <Logo />
-            </Link>
-          </NavigatorItem>
+            <NavigatorItem mr>
+              <Link to="/">
+                <Logo />
+              </Link>
+            </NavigatorItem>
 
 
-          <div className="flex flex-auto"></div>
+            <div className="flex flex-auto"></div>
 
-          <NavigatorItem mr>
-            <Link to="/article">Artciles</Link>
-          </NavigatorItem>
+            <NavigatorItem mr>
+              <Link to="/article">Artciles</Link>
+            </NavigatorItem>
 
-          <NavigatorItem mr>
-            <Icon
-              name={ 'xie' }
-              style={ { fontSize: '14px' } }
-              onClick={ this.loginIn.bind(this) }>
-              写文章
-            </Icon>
-          </NavigatorItem>
+            <NavigatorItem mr>
+              <IconButton>
+                <IconAdd />
+              </IconButton>
+            </NavigatorItem>
 
-          <NavigatorItem isVisible={ !isLoggedIn } mr>
-            <Button
-              style={ {
-                background: 'rgba(0,0,0,0)',
-                fontSize: '14px',
-                color: '#449bf7',
-                fontWeight: 300
-              } }
-              onClick={ this.loginIn.bind(this) }>
-              登录/注册
+            <NavigatorItem isVisible={ !isLoggedIn } mr>
+              <Button
+                style={ {
+                  background: 'rgba(0,0,0,0)',
+                  fontSize: '14px',
+                  color: '#449bf7',
+                  fontWeight: 300
+                } }
+                onClick={ this.loginIn.bind(this) }>
+                登录/注册
             </Button>
-          </NavigatorItem>
+            </NavigatorItem>
 
-          <NavigatorItem isVisible={ isLoggedIn } mr>
+            <NavigatorItem isVisible={ isLoggedIn } >
+              <div onClick={ this.handleOnClick }
+                style={ { cursor: 'pointer' } }
+              >
+                { avatar }
+              </div>
+              <Popover
+                open={ this.state.showPopMenu }
+                anchorEl={ this.state.anchorEl }
+                targetOrigin={ { horizontal: 'right', vertical: 'top' } }
+                anchorOrigin={ { horizontal: 'right', vertical: 'bottom' } }
+                onRequestClose={ this.handleRequestClose }
+              >
+                <List style={ { minWidth: '150px' } }>
+                  <ListItem onClick={ logout } primaryText="退出"
+                    className="center"
+                    style={ { fontSize: '14px' } }>
+                  </ListItem>
+                </List>
+              </Popover>
+            </NavigatorItem>
 
-          </NavigatorItem>
+          </Navigator>
 
-          <NavigatorItem isVisible={ isLoggedIn }>
-            <Button onClick={ logout } className="bg-red white">
-              Logout
-            </Button>
-          </NavigatorItem>
-
-        </Navigator>
-
-        <Content isVisible={ true }>
-          { children }
-        </Content>
-      </div >
+          <Content isVisible={ true }>
+            { children }
+          </Content>
+        </div >
+      </MuiThemeProvider>
     );
   };
 };

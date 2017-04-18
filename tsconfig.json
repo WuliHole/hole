@@ -1,6 +1,10 @@
 {
   "compileOnSave": false,
   "buildOnSave": false,
+  "baseUrl": "types",
+  "typeRoots": [
+    "types"
+  ],
   "compilerOptions": {
     "module": "commonjs",
     // "moduleResolution": "classic",

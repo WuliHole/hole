@@ -1,5 +1,5 @@
 import { convertToRaw, convertFromRaw, ContentState } from 'draft-js'
-type RawContentState = Draft.Model.Encoding.RawDraftContentState
+type RawContentState = any
 
 export class Serlizer {
 

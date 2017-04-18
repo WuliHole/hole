@@ -2,12 +2,10 @@
 
 
 
-
-
 interface ArticleModel {
   id: string | number,
   title: string,
-  content: Draft.Model.Encoding.RawDraftContentState,
+  content: any,
   createAt: string,
   author: User
 }

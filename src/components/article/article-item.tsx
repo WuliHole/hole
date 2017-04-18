@@ -93,9 +93,9 @@ export default AnimatedItem
 
 
 function truncateWords(
-  content: Draft.Model.Encoding.RawDraftContentState,
+  content: any,
   maxLength: number
-): Draft.Model.Encoding.RawDraftContentState {
+): any {
   let textLength: number = 0
   let hasTruc: boolean = false
 

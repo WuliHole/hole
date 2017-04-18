@@ -14,7 +14,7 @@ export default function Navigator({
     <nav
       data-testid={ testid }
       className={ cls(
-        'flex items-center p1 bg-white border-bottom ',
+        'flex items-center p1 pl2 pr2 bg-white border-bottom ',
         {
           hide: !isVisible
         })

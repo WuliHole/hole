@@ -1,13 +1,13 @@
 
 interface IComment {
   author: User
-  content: Draft.Model.Encoding.RawDraftContentState
+  content: any
   id: string
   date: string
 }
 
 interface ICommentServerResponse {
   author: User
-  content: Draft.Model.Encoding.RawDraftContentState
+  content: any
   postId: string
 }

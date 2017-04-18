@@ -1,8 +1,8 @@
 type PluginEditorProps = {
   plugins: any[]
   decorators: any[]
-} & Draft.Component.Base.DraftEditorProps
-type EditorState = Draft.Model.ImmutableData.EditorState
+} & any
+type EditorState = any
 declare module 'draft-js-plugins-editor' {
   export function createEditorStateWithText(s): EditorState
 

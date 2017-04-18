@@ -21,11 +21,11 @@ describe('immutableToJS', () => {
   };
 
   it('should ignore regular JS structures', () => {
-    expect(mockState).toEqual(immutableToJS(mockState));
+    expect(mockState).toEqual(immutableToJS(mockState) as any);
   });
 
   it('should convert Immutable structures to JS structures', () => {
-    expect(mockState).toEqual(immutableToJS(stateWithImmutable));
+    expect(mockState).toEqual(immutableToJS(stateWithImmutable) as any);
   });
 });
 
