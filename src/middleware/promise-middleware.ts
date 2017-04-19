@@ -27,14 +27,14 @@ export default function promiseMiddleware({ dispatch }) {
      */
     return promise.then(
       result => {
-        dispatch({
+        return dispatch({
           type: FULFILLED,
           payload: result,
           meta,
         });
       },
       error => {
-        dispatch({
+        return dispatch({
           type: REJECTED,
           payload: error,
           meta,

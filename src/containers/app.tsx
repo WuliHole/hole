@@ -14,7 +14,7 @@ import NavigatorItem from '../components/navigator-item';
 import { requireAuth } from '../middleware/requireAuth';
 import Avatar from '../components/avatar'
 import Icon from '../components/icon'
-
+import { isRejectAction } from '../actions/utils'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Popover from 'material-ui/Popover/Popover'
 import Menu from 'material-ui/Menu/'
@@ -114,7 +114,7 @@ class App extends React.Component<IAppProps, AppState> {
   createPost = () => {
     this.props.createPost()
       .then(
-      () => this.context.router.push('createNew')
+      s => !isRejectAction(s) && this.context.router.push('createNew')
       )
   }
 

@@ -9,6 +9,10 @@ export function fetchArticleList() {
 }
 
 export function createNew({ title = 'New post', content = {} }) {
-  return post('/post', { title, content })
+  return new Promise((resolve, reject) => {
+    return post('/post', { title, content })
+      .then((json: any) => resolve(json))
+      .then(null, (err) => reject(new Error(err.message)));
+  });
 }
 
