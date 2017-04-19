@@ -82,7 +82,11 @@ app.post('/api/article/list',
     })
   }
 )
-
+app.post('/api/post',
+  (req, res) => {
+    res.status(200).send({})
+  }
+)
 app.post('/api/user/:id/resetPassword', (req, res) => {
   setTimeout(() => res.status(200).send(), 3000)
 })
