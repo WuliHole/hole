@@ -3,6 +3,8 @@ import Article from './article'
 import Reading from './reading'
 import Verify from './verify'
 import CreateNew from './createNew'
+import Profile from './profile'
+
 export const rootRoute = {
   childRoutes: [{
     path: '/',
@@ -11,7 +13,8 @@ export const rootRoute = {
       Article,
       Reading,
       Verify,
-      CreateNew
+      CreateNew,
+      Profile
     ]
   }]
 }

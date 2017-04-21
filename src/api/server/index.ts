@@ -10,12 +10,16 @@ const HTTPheaders = {
   'x-csrf-token': csrfToken,
 }
 
+function shouldHaveBody(method: string) {
+  return ['get', 'head'].indexOf(method) === -1
+}
+
 const http = (method: string) => (path, data = {}, json = true) =>
   fetch(BASE_URL + path, {
     method: method,
     headers: HTTPheaders,
     credentials: 'same-origin',
-    body: JSON.stringify(data)
+    body: shouldHaveBody(method) && JSON.stringify(data)
   }).then(response => json ? response.json() : response)
 
 export const post = http('post')

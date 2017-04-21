@@ -98,6 +98,7 @@ class App extends React.Component<IAppProps, AppState> {
     return /\/verify/.test(path)
       // Match createNew
       || /createNew/.test(path)
+      || /profile/.test(path)
   }
 
   handleOnClick = (ev) => {
