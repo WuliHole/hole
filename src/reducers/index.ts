@@ -5,9 +5,12 @@ import session from './session';
 import modal from './modal';
 import article from './article'
 import comment from './comment'
-
+import profile from './profile'
+import posts from './posts'
 const rootReducer = combineReducers({
   session,
+  profile,
+  posts,
   modal,
   article,
   comment,

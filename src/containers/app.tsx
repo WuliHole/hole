@@ -17,8 +17,6 @@ import Icon from '../components/icon'
 import { isRejectAction } from '../actions/utils'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Popover from 'material-ui/Popover/Popover'
-import Menu from 'material-ui/Menu/'
-import MenuItem from 'material-ui/MenuItem'
 import { List, ListItem } from 'material-ui/List'
 import * as injectTapEven from 'react-tap-event-plugin'
 import IconAdd from 'material-ui/svg-icons/content/add'
@@ -98,6 +96,7 @@ class App extends React.Component<IAppProps, AppState> {
     return /\/verify/.test(path)
       // Match createNew
       || /createNew/.test(path)
+      || /profile/.test(path)
   }
 
   handleOnClick = (ev) => {

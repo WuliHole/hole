@@ -4,14 +4,16 @@ import './style.less'
 interface Props {
   src: string
   size?: number
+  style?: React.CSSProperties
 }
+export default ({ src = '', size = 64, style = {} }: Props) => {
 
-export default ({src = '', size = 64}: Props) => {
   return <img style={ {
     width: `${size}px`,
-    height: `${size}px`
+    height: `${size}px`,
+    ...style
   } }
     src={ src }
-    className="avatar circle float-left" alt="avatar"
-    />
+    className="avatar circle " alt="avatar"
+  />
 }
