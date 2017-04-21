@@ -5,7 +5,9 @@ import {
 
   CREATE_POST_ERROR,
   CREATE_POST_PENDING,
-  CREATE_POST_SUCCESS
+  CREATE_POST_SUCCESS,
+
+
 } from '../constants/article.action.types';
 
 import { fromJS, List } from 'immutable';
@@ -42,6 +44,7 @@ function articleReducer(state = INITIAL_STATE,
         hasError: false,
         isLoading: false,
       }));
+
 
     case CREATE_POST_ERROR:
     case FETCH_ARTICLE_LIST_ERROR:

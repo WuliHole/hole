@@ -16,6 +16,7 @@ import Container from '../components/container'
 import Transition from '../components/transition'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
+import GoBack from '../widgets/goback'
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
 const { InlineToolbar } = inlineToolbarPlugin;
@@ -49,9 +50,6 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
     super(props)
   }
 
-  goBack = () => {
-    this.props.history.goBack()
-  }
 
   getUserInfo() {
     return this.props.session.get('user').toJS()
@@ -65,14 +63,9 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
       <AppBar
         title="新建文章"
         titleStyle={ { textAlign: 'center' } }
-        iconElementLeft={
-          <IconButton onClick={ this.goBack }>
-            <KeyboardBackspace />
-          </IconButton>
-        }
+        iconElementLeft={ <GoBack history={ this.props.history } /> }
         iconElementRight={ Save }
       >
-
       </AppBar>
       <div className="p1">
         <Container size={ 4 } center>
