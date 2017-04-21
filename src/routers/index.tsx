@@ -4,6 +4,7 @@ import Reading from './reading'
 import Verify from './verify'
 import CreateNew from './createNew'
 import Profile from './profile'
+import Post from './post'
 
 export const rootRoute = {
   childRoutes: [{
@@ -14,7 +15,8 @@ export const rootRoute = {
       Reading,
       Verify,
       CreateNew,
-      Profile
+      Profile,
+      Post
     ]
   }]
 }
