@@ -17,13 +17,12 @@
     "lint-css": "stylelint --syntax less \"./src/**/*.less\"",
     "lint-ts": "tslint \"src/**/*.tsx\" \"src/**/*.ts\" \"test/**/*.tsx\" \"test/**/*.ts\"",
     "lint-js": "eslint \"**/*.js\" --ignore-path .gitignore",
-    "postinstall": "npm run typings && npm run build",
+    "postinstall": "npm run build",
     "start": "cross-env NODE_ENV=production node server/node-server.js",
     "pretest": "npm run lint",
     "test": "karma start --singleRun true",
     "test:watch": "karma start --singleRun false",
-    "posttest": "istanbul check-coverage --statement 75 --branch 50 --function 50",
-    "typings": "typings install"
+    "posttest": "istanbul check-coverage --statement 75 --branch 50 --function 50"
   },
   "repository": {
     "type": "git"
