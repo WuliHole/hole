@@ -22,6 +22,7 @@ interface EditorProps {
   editorState?: EditorState
   placeholder?: string
   onChange?: (s: EditorState) => any
+  readOnly?: boolean
 }
 
 export default class HoleEditor
@@ -88,6 +89,7 @@ export default class HoleEditor
           blockStyleFn={ this.blockStyleFn }
           handleReturn={ this.handleBeforeInput }
           placeholder={ placeholder }
+          readOnly={ this.props.readOnly || true }
         />
         { this.editor && this.props.children }
       </div>

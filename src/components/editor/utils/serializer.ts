@@ -1,13 +1,18 @@
-import { convertToRaw, convertFromRaw, ContentState } from 'draft-js'
-type RawContentState = any
+import {
+  convertToRaw,
+  convertFromRaw,
+  ContentState,
+  RawDraftContentState
+} from 'draft-js'
+
 
 export class Serlizer {
 
-  public static serialize(contentState: ContentState): RawContentState {
+  public static serialize(contentState: ContentState): RawDraftContentState {
     return convertToRaw(contentState)
   }
 
-  public static deserialize(rawState: RawContentState): ContentState {
+  public static deserialize(rawState: RawDraftContentState): ContentState {
     try {
       return convertFromRaw(rawState)
     } catch (e) {
