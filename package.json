@@ -37,6 +37,7 @@
     "express": "^4.13.4",
     "helmet": "^2.0.0",
     "http-proxy": "^1.13.2",
+    "material-ui": "^0.17.4",
     "winston": "^2.1.1"
   },
   "devDependencies": {
