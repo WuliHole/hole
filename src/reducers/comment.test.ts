@@ -37,8 +37,10 @@ describe('Comment Reducer', () => {
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
-      expect(state.get('comments').get(res.meta.postId)).toBeTruthy(state)
-      expect(state.get('comments').get(res.meta.postId).size).toBe(1, state);
+      expect(state.get('comments').get(res.postId.toString())).toBeTruthy(state)
+      expect(state.get('comments').get(
+        res.postId.toString()).size
+      ).toBe(1, state);
     });
   });
 
@@ -73,11 +75,11 @@ describe('Comment Reducer', () => {
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
-      expect(state.get('comments').get(res.meta.postId)).toBeTruthy(state)
+      expect(state.get('comments').get(res.postId.toString())).toBeTruthy(state)
 
       expect(
-        state.get('comments').get(res.meta.postId).size
-      ).toBe(2, state.get(res.meta.postId));
+        state.get('comments').get(res.postId.toString()).size
+      ).toBe(2, state.get(res.postId.toString()));
     });
   });
 
@@ -95,28 +97,26 @@ describe('Comment Reducer', () => {
 
 function mockResponse() {
   return {
-    meta: {
-      content: {
-        entityMap: {},
-        blocks: [
-          {
-            key: 'bk1gc',
-            text: 'asdasd',
-            type: 'unstyled',
-            depth: 0,
-            inlineStyleRanges: [],
-            entityRanges: [],
-            data: {}
-          }]
-      },
-      id: 'a8fjv',
-      postId: '2jmkiv',
-      author: {
-        'avatar': 'http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk',
-        'first': 'Super',
-        'last': 'Dave',
-        'id': '3dddazz'
-      }
+    comment: {
+      entityMap: {},
+      blocks: [
+        {
+          key: 'bk1gc',
+          text: 'asdasd',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        }]
+    },
+    id: 255,
+    postId: 201,
+    author: {
+      'avatar': 'http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk',
+      'first': 'Super',
+      'last': 'Dave',
+      'id': '3dddazz'
     }
   }
 }

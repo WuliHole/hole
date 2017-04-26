@@ -7,15 +7,18 @@ import { getContentState } from '../editor/utils/testUtils'
 describe('CommentTable Component', () => {
   it('should render 3 comment', () => {
     const user: User = {
-      id: 'asdasd',
-      first: 'jack',
-      last: 'chan',
+      id: 233,
+      nickName: 'jack',
+      createdAt: '',
+      name: '',
+      verified: true,
+      bio: 'hello',
       avatar: 'http://google.com'
     }
 
     const comment: IComment = {
       author: user,
-      content: getContentState(''),
+      comment: getContentState(''),
       date: '201524',
       id: 'jckmks',
     }
@@ -29,13 +32,13 @@ describe('CommentTable Component', () => {
       comment,
       {
         author: user,
-        content: getContentState(''),
+        comment: getContentState(''),
         date: '2011524',
         id: 'zxccc',
       },
       {
         author: user,
-        content: getContentState(''),
+        comment: getContentState(''),
         date: '201524',
         id: 'jckccamks',
       }

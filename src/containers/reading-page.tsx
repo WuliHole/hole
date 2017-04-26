@@ -2,7 +2,7 @@ const connect = require('react-redux').connect;
 import * as React from 'react';
 import Container from '../components/container';
 import Icon from '../components/icon';
-import { updateArticleList } from '../actions/article';
+import { getById } from '../actions/posts';
 import { ArticleList, ArticleItem } from '../components/article'
 import { List, Map } from 'immutable'
 import Alert from '../components/alert'
@@ -12,94 +12,99 @@ import {
 } from '../components/comment'
 
 import { postComment } from '../actions/comment'
+import { findPostById } from '../redux-selector/posts'
+import { getCommentByPostId } from '../redux-selector/comments'
+import CircularProgress from 'material-ui/CircularProgress'
 
 interface IReadingPageProps extends React.Props<any> {
   article
-  comments
+  comments: List<IComment>
   user
-  routeParams: {
-    articleTitle: string
-    userName: string
+  getPostById: (id: string) => Promise<any>
+  posts: Map<keyof { meta, isLoading: boolean }, any>
+  post: Post<any>
+  params: {
+    postTitle: string
+    id: string
   }
   postComment
 }
 
-function mapStateToProps(state) {
+
+function mapStateToProps(state, props: IReadingPageProps) {
   return {
     article: state.article,
     router: state.router,
     user: state.session.get('user'),
-    comments: state.comment.get('comments')
+    post: findPostById(state, props),
+    comments: getCommentByPostId(state, props),
+    posts: state.posts
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    getPostById: id => dispatch(getById(id)),
     postComment: (params) => dispatch(postComment(params))
   }
 }
 
-export function findTargetArticle(props) {
-  const {article} = props;
-  const {userName, articleTitle, id} = props.routeParams
-  const articles = article.get('articleList')
-  return articles.find(articleInfo => articleInfo.get('id') === id)
-}
 
 /**
  * @return List<IComment>  imuutable list
  */
 
 type CommentTable = { [keys: string]: List<IComment> }
-export function findCommentByPostId(table: CommentTable, postId: string) {
-  return Map(table).find((comment, key) => key === postId)
-}
 
-export function strip(title: string): string {
-  return title ? title.replace(/-/g, '') : ''
-}
 
 class ReadingPage extends React.Component<IReadingPageProps, void> {
+
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    if (!this.post) {
+      this.props.getPostById(this.props.params.id)
+    }
+  }
+
+  get post() {
+    return this.props.post
+  }
+
+  get comments() {
+    return this.props.comments
+  }
+
   render() {
-    const articleImmutable = findTargetArticle(this.props)
+    const post = this.post
 
-    const targetArticle = articleImmutable
-      ? articleImmutable.toJS()
-      : null
-
-
-    if (!targetArticle) {
+    if (!post) {
       return <div className="not-found">
-        <Alert status="error" isVisible={ true }>
-          <span className="not-found-text">
-            <Icon name="jinggao" />文章未找到
-              </span>
+        <Alert status="info" isVisible={ true }>
+          <CircularProgress />
         </Alert>
       </div>
     }
 
     const commetTable = this.props.comments
-    const commentsImmutable = findCommentByPostId(commetTable, targetArticle.id)
-    const comments = commentsImmutable ? commentsImmutable.toJS() : []
+    const comments = this.comments ? this.comments.toJS() : []
 
     return <div >
       <div className="bg-white">
-        <Container size={ targetArticle ? 3 : 1 } center>
+        <Container size={ post ? 3 : 1 } center>
           <ArticleItem
-            articleInfo={ targetArticle }
-            />
+            articleInfo={ post }
+          />
         </Container>
       </div>
 
       <CommentForm
         user={ this.props.user.toJS() }
-        article={ targetArticle }
+        article={ post }
         postComment={ this.props.postComment }
-        >
+      >
       </CommentForm>
       <CommentTable comments={ comments } />
     </div>

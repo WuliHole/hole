@@ -1,8 +1,7 @@
 import { post, put, get } from '../server'
 import assert from '../../utils/assert'
 
-export function setPassword(userId: number, password: string) {
-  assert(userId, 'illegal param userId')
+export function setPassword(password: string) {
   assert(password, 'illegal param password')
   return post('/user/setPassword', { password })
 }

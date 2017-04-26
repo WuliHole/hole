@@ -9,8 +9,8 @@ interface CommentRowProps {
   children?
 }
 
-export default ({comment, children = null}: CommentRowProps) => {
-  if (typeof comment.content === undefined) {
+export default ({ comment, children = null }: CommentRowProps) => {
+  if (typeof comment.comment === undefined) {
     throw new Error(`invalid params ${comment}`)
   }
 
@@ -20,9 +20,9 @@ export default ({comment, children = null}: CommentRowProps) => {
     <div className="mt2">
       <Editor
         editorState={
-          EditorState.createWithContent((Serlizer.deserialize(comment.content)))
+          EditorState.createWithContent((Serlizer.deserialize(comment.comment)))
         }
-        />
+      />
     </div>
     { children }
   </div>

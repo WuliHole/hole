@@ -13,7 +13,7 @@ import CommentTable from './commentTable'
 import { Map } from 'immutable'
 interface ICommentFormProps {
   user: User
-  article: ArticleModel
+  article: Post<any>
   postComment: IPostComment,
   children?
 }
@@ -25,8 +25,8 @@ const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin;
 
 let _postComment: IPostComment
-let _article: ArticleModel
-let _authorId: string
+let _article: Post<any>
+let _authorId: number
 
 const ButtonPlugin = createButtonPlugin({
   text: '提交',
@@ -48,7 +48,7 @@ const ButtonPlugin = createButtonPlugin({
 
     if (_postComment) {
       _postComment({
-        postId: (_article.id) as string,
+        postId: (_article.id),
         content,
         authorId: _authorId
       }).then(() => {
@@ -61,7 +61,7 @@ const ButtonPlugin = createButtonPlugin({
   }
 })
 
-const {Button} = ButtonPlugin
+const { Button } = ButtonPlugin
 
 const plugins = [
   inlineToolbarPlugin,
@@ -78,12 +78,15 @@ export default ({
   _postComment = postComment
   _article = article
   _authorId = user.id
-  return <Container size={ 3 } center>
-    <div className="clearfix m4 p2 bg-white">
+  return <Container size={ 3 } center className="mt3 mb3">
+
+    <div className="clearfix m4 p2  bg-white">
       <CommentAvatar user={ user } />
       <CommentAuthor user={ user } />
       <div className="comment-form mt3 ">
-        <HoleEditor plugins={ plugins } placeholder=".......写个评论" >
+        <HoleEditor
+          readOnly={ false }
+          plugins={ plugins } placeholder=".......写个评论" >
           <InlineToolbar></InlineToolbar>
           <SideToolbar></SideToolbar>
           <Button></Button>

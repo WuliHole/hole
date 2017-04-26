@@ -6,15 +6,18 @@ import { getContentState } from '../editor/utils/testUtils'
 describe('CommentRow Component', () => {
   it('should render user info', () => {
     const user: User = {
-      id: 'asdasd',
-      first: 'jack',
-      last: 'chan',
+      id: 222,
+      nickName: 'jack',
+      name: '',
+      createdAt: '',
+      verified: false,
+      bio: 'test',
       avatar: 'http://google.com'
     }
 
     const comment: IComment = {
       author: user,
-      content: getContentState(''),
+      comment: getContentState(''),
       date: '201524',
       id: 'jckmks',
     }

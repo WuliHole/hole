@@ -89,7 +89,7 @@ export default class HoleEditor
           blockStyleFn={ this.blockStyleFn }
           handleReturn={ this.handleBeforeInput }
           placeholder={ placeholder }
-          readOnly={ this.props.readOnly || true }
+          readOnly={ this.props.readOnly }
         />
         { this.editor && this.props.children }
       </div>

@@ -64,9 +64,9 @@ describe('Comment Async Actions', () => {
     }))
 
     return store.dispatch(postComment({
-      postId: '2dzikl',
+      postId: 22,
       content: getContentState('test comment'),
-      authorId: 'zimmkl'
+      authorId: 22
     }))
       .then((res) => { // return of async actions
         expect(store.getActions()).toEqual(expectedActions, res)

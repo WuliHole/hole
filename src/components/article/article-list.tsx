@@ -4,7 +4,7 @@ import ArticleItem from './article-item'
 import Container from '../container';
 import { List } from 'immutable'
 interface IArticleListProps extends React.Props<any> {
-  data: List<ArticleModel>
+  data: List<Post<any>>
   isLoading: boolean
   hasError: boolean
 }

@@ -80,8 +80,6 @@ export function loginUser() {
 export function setPassword() {
   return (dispatch, getState) => {
     const password = getState().form.setPassword.password.value
-    const uid = getState().session.get('user').get('id')
-    assert(!!uid)
 
     return dispatch({
       types: [
@@ -90,7 +88,7 @@ export function setPassword() {
         SET_USER_PASSWORD_ERROR,
       ],
       payload: {
-        promise: setUserPassword(uid, password)
+        promise: setUserPassword(password)
       },
     });
   }

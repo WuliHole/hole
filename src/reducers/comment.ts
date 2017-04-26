@@ -13,6 +13,7 @@ import {
 import { fromJS, List, Map } from 'immutable'
 
 const INITIAL_STATE = fromJS({
+  // key value pair  { postId : comment[] }
   comments: {},
   hasError: false,
   isLoading: false,
@@ -52,28 +53,20 @@ export default commentReducer
 
 
 function processPostComment(state, action) {
-  const comment = action.payload.meta as ICommentServerResponse
-  if (!comment.postId) {
-    throw new Error(
-      `unexcept postId : ${comment.postId}
-       payload : ${JSON.stringify(action.payload)}
-      `)
-  }
-
+  const comment = action.payload as ICommentServerResponse
   debug(`responseComment:\n${JSON.stringify(comment)}`)
-
   const oldTable = state.get('comments') as Map<string, List<any>>
 
-  let newTable
-  if (oldTable.get(comment.postId)) {
-    newTable = oldTable.set(
-      comment.postId,
-      oldTable.get(comment.postId).push(comment)).toJS()
-  } else {
-    newTable = oldTable.set(comment.postId, List([comment]))
-  }
-  debug(`postId:\n${comment.postId}`)
-  debug(`newTable:\n${JSON.stringify(newTable)}`)
+  const oldPosts = state
+    .get('comments')
+    .get(comment.postId.toString())
+
+  const newPosts = oldPosts
+    ? oldPosts.push(comment)
+    : List().push(comment)
+  const newTable = oldTable.merge({
+    [comment.postId]: newPosts
+  })
   return state.merge(fromJS({
     comments: newTable,
     hasError: false,

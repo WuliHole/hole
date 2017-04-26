@@ -1,6 +1,9 @@
 interface User {
-  first: string
-  last: string
-  avatar: string
-  id: string
+  avatar: string,
+  name: string,
+  verified: boolean,
+  nickName: string,
+  bio: string,
+  id: number,
+  createdAt: string
 }

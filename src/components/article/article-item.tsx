@@ -21,7 +21,7 @@ const { SideToolbar } = sideToolbarPlugin;
 const plugins = [inlineToolbarPlugin, sideToolbarPlugin];
 
 interface ItemProps {
-  articleInfo: ArticleModel
+  articleInfo: Post<any>
   className?: string
   children?
   maxLength?: number
@@ -44,9 +44,9 @@ const item = ({
     'article-list-item-title',
     'text-decoration-none'
   )
-  const { title, content, author, id, createAt } = articleInfo
-  const href = `/@${author.first}/${linkifyTitle(title)}/${id}`
-  const date = new Date(createAt)
+  const { title, content, author, id, createdAt } = articleInfo
+  const href = `/post/${title}/${id}`
+  const date = new Date(createdAt)
   return (
 
     <div className={ `article-list-item-wrap ${className || ' '}` }>
@@ -60,7 +60,7 @@ const item = ({
             verticalAlign: 'text-bottom'
           } }
         >
-          <div>{ author.first } { author.last }</div>
+          <div>{ author.nickName }</div>
           <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
         </div>
       </div>

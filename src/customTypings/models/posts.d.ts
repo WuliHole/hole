@@ -13,14 +13,13 @@
           },
  */
 interface Post<T> {
-
   id: number
   title: string
   content: T
   /**
    * user id which is author
    */
-  authorId: number
+  author: User
   /**
    * Date stirng
    */

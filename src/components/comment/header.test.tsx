@@ -4,14 +4,17 @@ import { CommentAuthor, CommentAvatar } from './header'
 import { getContentState } from '../editor/utils/testUtils'
 
 describe('Header Component', () => {
-
+  const user: User = {
+    id: 1111,
+    name: 'jack',
+    nickName: '5555',
+    createdAt: '',
+    verified: false,
+    bio: 'pppp',
+    avatar: 'http://google.com'
+  }
   it('should render user info', () => {
-    const user: User = {
-      id: 'asdasd',
-      first: 'jack',
-      last: 'chan',
-      avatar: 'http://google.com'
-    }
+
 
     const wrapper = mount(
       <CommentAuthor user={ user } />
@@ -20,13 +23,6 @@ describe('Header Component', () => {
   })
 
   it('should render user avatar', () => {
-    const user: User = {
-      id: 'asdasd',
-      first: 'jack',
-      last: 'chan',
-      avatar: 'http://google.com'
-    }
-
     const wrapper = mount(
       <CommentAvatar user={ user } />
     )

@@ -1,7 +1,11 @@
 import {
   GET_USER_POSTS_ERROR,
   GET_USER_POSTS_PENDING,
-  GET_USER_POSTS_SUCCESS
+  GET_USER_POSTS_SUCCESS,
+
+  GET_POST_BY_ID_ERROR,
+  GET_POST_BY_ID_PENDING,
+  GET_POST_BY_ID_SUCCESS
 } from '../constants/posts.action.types';
 
 import { fromJS, List } from 'immutable';
@@ -19,8 +23,11 @@ const INITIAL_STATE = fromJS({
 
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
+  const meta = state.get('meta') as List<any>
+
   switch (action.type) {
 
+    case GET_POST_BY_ID_PENDING:
     case GET_USER_POSTS_PENDING:
       return state.merge(fromJS({
         hasError: false,
@@ -28,7 +35,6 @@ function postsReducer(state = INITIAL_STATE,
       }));
 
     case GET_USER_POSTS_SUCCESS:
-      const meta = state.get('meta') as List<any>
       return state.merge(fromJS({
         meta: meta.merge(action.payload.meta),
         hasError: false,
@@ -36,6 +42,16 @@ function postsReducer(state = INITIAL_STATE,
         total: state.get('total') + (action.payload.count || 0)
       }))
 
+    case GET_POST_BY_ID_SUCCESS:
+
+      return state.merge(fromJS({
+        meta: meta.push(action.payload),
+        hasError: false,
+        isLoading: false,
+        total: state.get('total') + 1
+      }))
+
+    case GET_POST_BY_ID_ERROR:
     case GET_USER_POSTS_ERROR:
       return state.merge(fromJS({
         errMsg: action.payload.message,

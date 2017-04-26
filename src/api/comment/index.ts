@@ -13,8 +13,8 @@ export function fetch(options: CommentQueryOptions = { postId: '' }) {
 }
 
 export interface CreateCommentParams {
-  postId: string
-  authorId: string
+  postId: number
+  authorId: number
   content: any
 }
 
