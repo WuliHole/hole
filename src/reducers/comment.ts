@@ -53,6 +53,10 @@ export default commentReducer
 
 function processGetCommetList(state, action) {
   const comments = action.payload as ICommentServerResponse[]
+  if (comments.length === 0) {
+    return state
+  }
+
   debug(`responseComments:\n${JSON.stringify(comments)}`)
 
   const postId = comments[0].postId.toString()
