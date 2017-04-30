@@ -17,6 +17,7 @@
     "lint-css": "stylelint --syntax less \"./src/**/*.less\"",
     "lint-ts": "tslint \"src/**/*.tsx\" \"src/**/*.ts\" \"test/**/*.tsx\" \"test/**/*.ts\"",
     "lint-js": "eslint \"**/*.js\" --ignore-path .gitignore",
+    "preinstall": "lockdown",
     "postinstall": "npm run build",
     "start": "cross-env NODE_ENV=production node server/node-server.js",
     "pretest": "npm run lint",
@@ -37,6 +38,7 @@
     "express": "^4.13.4",
     "helmet": "^2.0.0",
     "http-proxy": "^1.13.2",
+    "lockdown": "^0.0.8-dev",
     "material-ui": "^0.17.4",
     "winston": "^2.1.1"
   },
