@@ -2,14 +2,18 @@ import { get, post } from '../server'
 import { InvalidParamExecption } from '../execptions'
 import { urlQueryConstructor } from '../utils/url'
 export interface CommentQueryOptions {
-  postId: string
+  limit: number
+  offset?: number
 }
 
-export function fetch(options: CommentQueryOptions = { postId: '' }) {
-  if (!options.postId) {
+export function getCommetList(
+  postId: number,
+  options: CommentQueryOptions = { limit: 10 }
+) {
+  if (!postId) {
     throw new InvalidParamExecption('fetch comment')
   }
-  return get(`/comment?${urlQueryConstructor(options)}`, {})
+  return get(`/post/${postId}/comments?${urlQueryConstructor(options)}`, {})
 }
 
 export interface CreateCommentParams {

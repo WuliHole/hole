@@ -11,7 +11,7 @@ import {
   CommentTable
 } from '../components/comment'
 
-import { postComment } from '../actions/comment'
+import { postComment, getComments, IGetComment } from '../actions/comment'
 import { findPostById } from '../redux-selector/posts'
 import { getCommentByPostId } from '../redux-selector/comments'
 import CircularProgress from 'material-ui/CircularProgress'
@@ -19,6 +19,7 @@ import CircularProgress from 'material-ui/CircularProgress'
 interface IReadingPageProps extends React.Props<any> {
   article
   comments: List<IComment>
+  getComments: IGetComment
   user
   getPostById: (id: string) => Promise<any>
   posts: Map<keyof { meta, isLoading: boolean }, any>
@@ -38,6 +39,7 @@ function mapStateToProps(state, props: IReadingPageProps) {
     user: state.session.get('user'),
     post: findPostById(state, props),
     comments: getCommentByPostId(state, props),
+
     posts: state.posts
   }
 }
@@ -45,7 +47,8 @@ function mapStateToProps(state, props: IReadingPageProps) {
 function mapDispatchToProps(dispatch) {
   return {
     getPostById: id => dispatch(getById(id)),
-    postComment: (params) => dispatch(postComment(params))
+    postComment: (params) => dispatch(postComment(params)),
+    getComments: (postId) => dispatch(getComments(postId))
   }
 }
 
@@ -66,6 +69,10 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
   componentDidMount() {
     if (!this.post) {
       this.props.getPostById(this.props.params.id)
+    }
+
+    if (!this.comments) {
+      this.props.getComments(parseInt(this.props.params.id, 10))
     }
   }
 

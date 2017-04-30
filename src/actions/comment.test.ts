@@ -1,7 +1,7 @@
 import nock = require('fetch-mock')
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { getComment, postComment } from './comment'
+import { getComments, postComment } from './comment'
 import { fromJS } from 'immutable'
 import * as Types from '../constants/comment.action.types'
 import { getContentState } from '../components/editor/utils/testUtils'
@@ -16,9 +16,9 @@ describe('Comment Async Actions', () => {
     nock.get('*', response)
 
     const expectedActions = [
-      { type: Types.FETCH_COMMENT_PENDING },
+      { type: Types.GET_COMMENT_LIST_PENDING },
       {
-        type: Types.FETCH_COMMENT_SUCCESS,
+        type: Types.GET_COMMENT_LIST_SUCCESS,
         payload: response,
         meta: undefined
       }
@@ -30,7 +30,7 @@ describe('Comment Async Actions', () => {
       isLoading: false,
     }))
 
-    return store.dispatch(getComment({ postId: '2dzikl' }))
+    return store.dispatch(getComments(222))
       .then((res) => { // return of async actions
         expect(store.getActions()).toEqual(expectedActions, res)
         nock.restore();

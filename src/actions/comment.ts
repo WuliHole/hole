@@ -3,29 +3,33 @@ import {
   POST_COMMENT_SUCCESS,
   POST_COMMENT_ERROR,
 
-  FETCH_COMMENT_ERROR,
-  FETCH_COMMENT_PENDING,
-  FETCH_COMMENT_SUCCESS,
+  GET_COMMENT_LIST_ERROR,
+  GET_COMMENT_LIST_PENDING,
+  GET_COMMENT_LIST_SUCCESS,
 } from '../constants/comment.action.types'
 
 import {
   CommentQueryOptions,
   CreateCommentParams,
-  fetch,
+  getCommetList,
   create
 } from '../api/comment'
 
-export type IGetComment = (options: CommentQueryOptions) => Promise<any>
-export function getComment(options: CommentQueryOptions) {
+export type IGetComment = (
+  postId: number,
+  options?: CommentQueryOptions
+) => Promise<any>
+
+export function getComments(postId: number, options?: CommentQueryOptions) {
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        FETCH_COMMENT_PENDING,
-        FETCH_COMMENT_SUCCESS,
-        FETCH_COMMENT_ERROR,
+        GET_COMMENT_LIST_PENDING,
+        GET_COMMENT_LIST_SUCCESS,
+        GET_COMMENT_LIST_ERROR,
       ],
       payload: {
-        promise: fetch(options)
+        promise: getCommetList(postId, options)
           .then((res) => {
             return res;
           }),

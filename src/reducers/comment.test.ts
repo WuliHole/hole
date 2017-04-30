@@ -4,9 +4,9 @@ import fireAction from '../../test-utils/fire-action';
 import commentReducer from '../reducers/comment';
 
 import {
-  FETCH_COMMENT_ERROR,
-  FETCH_COMMENT_PENDING,
-  FETCH_COMMENT_SUCCESS,
+  GET_COMMENT_LIST_ERROR,
+  GET_COMMENT_LIST_PENDING,
+  GET_COMMENT_LIST_SUCCESS,
 
   POST_COMMENT_ERROR,
   POST_COMMENT_PENDING,
@@ -56,7 +56,7 @@ describe('Comment Reducer', () => {
 
   describe('on FETCH_COMMENT_PENDING', () => {
     it('should be pending', () => {
-      state = fireAction(commentReducer, state, FETCH_COMMENT_PENDING);
+      state = fireAction(commentReducer, state, GET_COMMENT_LIST_PENDING);
       expect(state.get('isLoading')).toBe(true);
       expect(state.get('hasError')).toBe(false)
     });
@@ -69,7 +69,7 @@ describe('Comment Reducer', () => {
       state = fireAction(
         commentReducer,
         state,
-        FETCH_COMMENT_SUCCESS,
+        GET_COMMENT_LIST_SUCCESS,
         res
       );
 
@@ -85,7 +85,7 @@ describe('Comment Reducer', () => {
 
   describe('on FETCH_COMMENT_ERROR', () => {
     it('should has error', () => {
-      state = fireAction(commentReducer, state, FETCH_COMMENT_ERROR);
+      state = fireAction(commentReducer, state, GET_COMMENT_LIST_ERROR);
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(true);

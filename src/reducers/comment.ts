@@ -1,8 +1,8 @@
 import { debug } from '../utils/debug'
 import {
-  FETCH_COMMENT_ERROR,
-  FETCH_COMMENT_PENDING,
-  FETCH_COMMENT_SUCCESS,
+  GET_COMMENT_LIST_ERROR,
+  GET_COMMENT_LIST_PENDING,
+  GET_COMMENT_LIST_SUCCESS,
 
   POST_COMMENT_ERROR,
   POST_COMMENT_SUCCESS,
@@ -24,7 +24,7 @@ function commentReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
   switch (action.type) {
 
-    case FETCH_COMMENT_PENDING:
+    case GET_COMMENT_LIST_PENDING:
     case POST_COMMENT_PENDING:
       return state.merge(fromJS({
         hasError: false,
@@ -32,14 +32,14 @@ function commentReducer(state = INITIAL_STATE,
       }))
 
     // @FIX: implement fetch process after next verion
-    case FETCH_COMMENT_SUCCESS:
-      return processPostComment(state, action)
+    case GET_COMMENT_LIST_SUCCESS:
+      return processGetCommetList(state, action)
 
     case POST_COMMENT_SUCCESS:
       return processPostComment(state, action)
 
     case POST_COMMENT_ERROR:
-    case FETCH_COMMENT_ERROR:
+    case GET_COMMENT_LIST_ERROR:
       return state.merge(fromJS({
         hasError: true,
         isLoading: false,
@@ -51,21 +51,43 @@ function commentReducer(state = INITIAL_STATE,
 
 export default commentReducer
 
+function processGetCommetList(state, action) {
+  const comments = action.payload as ICommentServerResponse[]
+  debug(`responseComments:\n${JSON.stringify(comments)}`)
+
+  const postId = comments[0].postId.toString()
+  const oldComments: List<ICommentServerResponse>
+    = state.getIn(['comments', postId.toString()])
+
+  const newComments = oldComments
+    ? oldComments.concat(comments)
+    : List(comments) as any
+
+  const oldTable = state.get('comments') as Map<string, List<any>>
+  const newTable = oldTable.merge({
+    [postId]: newComments
+  })
+  return state.merge({
+    comments: newTable,
+    hasError: false,
+    isLoading: false,
+  })
+}
 
 function processPostComment(state, action) {
   const comment = action.payload as ICommentServerResponse
   debug(`responseComment:\n${JSON.stringify(comment)}`)
   const oldTable = state.get('comments') as Map<string, List<any>>
 
-  const oldPosts = state
+  const oldComments = state
     .get('comments')
     .get(comment.postId.toString())
 
-  const newPosts = oldPosts
-    ? oldPosts.push(comment)
+  const newComments = oldComments
+    ? oldComments.push(comment)
     : List().push(comment)
   const newTable = oldTable.merge({
-    [comment.postId]: newPosts
+    [comment.postId]: newComments
   })
   return state.merge(fromJS({
     comments: newTable,

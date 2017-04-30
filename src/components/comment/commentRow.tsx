@@ -13,10 +13,10 @@ export default ({ comment, children = null }: CommentRowProps) => {
   if (typeof comment.comment === undefined) {
     throw new Error(`invalid params ${comment}`)
   }
-
+  const author = comment.author
   return <div className="clearfix mt2 p2 bg-white">
-    <CommentAvatar user={ comment.author } />
-    <CommentAuthor user={ comment.author } />
+    { author && <CommentAvatar user={ author } /> }
+    { author && <CommentAuthor user={ author } /> }
     <div className="mt2">
       <Editor
         editorState={
