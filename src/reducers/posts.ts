@@ -24,7 +24,6 @@ const INITIAL_STATE = fromJS({
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
   const meta = state.get('meta') as List<any>
-
   switch (action.type) {
 
     case GET_POST_BY_ID_PENDING:
@@ -36,7 +35,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_USER_POSTS_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.concat(List(action.payload.meta)),
+        meta: meta.toJS().concat(action.payload.meta),
         hasError: false,
         isLoading: false,
         total: state.get('total') + (action.payload.count || 0)

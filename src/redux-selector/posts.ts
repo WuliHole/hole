@@ -9,12 +9,7 @@ type Posts = List<_Post>
 
 export const groupPostsByAuthorId = createSelector(
   [postsSelector],
-  (posts: Posts) => {
-    return posts.groupBy((p: any, index) => {
-      window[`$${index}`] = posts
-      return p.get('authorId')
-    })
-  }
+  (posts: Posts) => posts.groupBy((p: any, index) => p.get('authorId'))
 )
 
 const _findBy = (
