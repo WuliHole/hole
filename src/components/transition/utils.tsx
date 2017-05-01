@@ -57,7 +57,7 @@ export const animated = function <P>(animatedOptions: CSSTransitionGroupProps) {
         const props = this.props
 
         return < Transition >
-          <ChildComponent {...this.props} />
+          <ChildComponent {...this.props as any} />
         </Transition >
       }
     }
