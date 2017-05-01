@@ -8,7 +8,7 @@ import {
   GET_POST_BY_ID_SUCCESS
 } from '../constants/posts.action.types';
 
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 
 const INITIAL_STATE = fromJS({
   /**
@@ -36,7 +36,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_USER_POSTS_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.merge(action.payload.meta),
+        meta: meta.concat(List(action.payload.meta)),
         hasError: false,
         isLoading: false,
         total: state.get('total') + (action.payload.count || 0)
@@ -45,7 +45,7 @@ function postsReducer(state = INITIAL_STATE,
     case GET_POST_BY_ID_SUCCESS:
 
       return state.merge(fromJS({
-        meta: meta.push(action.payload),
+        meta: meta.push(Map(action.payload)),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1

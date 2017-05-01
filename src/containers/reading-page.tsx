@@ -23,7 +23,7 @@ interface IReadingPageProps extends React.Props<any> {
   user
   getPostById: (id: string) => Promise<any>
   posts: Map<keyof { meta, isLoading: boolean }, any>
-  post: Post<any>
+  post: Map<keyof Post<any>, any>
   params: {
     postTitle: string
     id: string
@@ -77,7 +77,7 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
   }
 
   get post() {
-    return this.props.post
+    return this.props.post && this.props.post.toJS()
   }
 
   get comments() {

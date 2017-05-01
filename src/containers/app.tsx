@@ -117,6 +117,15 @@ class App extends React.Component<IAppProps, AppState> {
       )
   }
 
+  navigateToProfile = () => {
+    this.setState({
+      showPopMenu: false
+    }, () => {
+      const uid = this.props.session.get('token')
+      this.context.router.push(`/profile/${uid}`)
+    })
+  }
+
   render() {
     const {
       children,
@@ -195,7 +204,7 @@ class App extends React.Component<IAppProps, AppState> {
               >
                 { avatar }
               </div>
-              <Popover
+              { this.state.showPopMenu && <Popover
                 open={ this.state.showPopMenu }
                 anchorEl={ this.state.anchorEl }
                 targetOrigin={ { horizontal: 'right', vertical: 'top' } }
@@ -203,12 +212,20 @@ class App extends React.Component<IAppProps, AppState> {
                 onRequestClose={ this.handleRequestClose }
               >
                 <List style={ { minWidth: '150px' } }>
+                  <ListItem
+                    onClick={ this.navigateToProfile }
+                    primaryText="我的主页"
+                    className="center"
+                    style={ { fontSize: '14px' } }>
+                  </ListItem>
+
                   <ListItem onClick={ logout } primaryText="退出"
                     className="center"
                     style={ { fontSize: '14px' } }>
                   </ListItem>
                 </List>
               </Popover>
+              }
             </NavigatorItem>
 
           </Navigator>

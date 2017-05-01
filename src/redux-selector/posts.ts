@@ -9,14 +9,18 @@ type Posts = List<_Post>
 
 export const groupPostsByAuthorId = createSelector(
   [postsSelector],
-  (posts: Posts) =>
-    posts.groupBy((p: any) => p.get('authorId'))
+  (posts: Posts) => {
+    return posts.groupBy((p: any, index) => {
+      window[`$${index}`] = posts
+      return p.get('authorId')
+    })
+  }
 )
 
 const _findBy = (
   field: keyof Post<RawDraftContentState>,
 ) => (posts: Posts, value) => {
-  return posts.find((p: _Post) => p[field] === value)
+  return posts.find((p) => p.get(field) === value)
 }
 
 

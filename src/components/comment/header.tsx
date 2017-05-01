@@ -7,6 +7,6 @@ export const CommentAvatar = ({ user }) => (
 
 export const CommentAuthor = ({ user }) => (
   <div className="overflow-hidden">
-    <p className="comment-user">{ user.first } { user.last }</p>
+    <p className="comment-user">{ user.nickName }</p>
   </div>
 )
