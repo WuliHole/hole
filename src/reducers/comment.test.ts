@@ -54,7 +54,7 @@ describe('Comment Reducer', () => {
   });
 
 
-  describe('on FETCH_COMMENT_PENDING', () => {
+  describe('on GET_COMMENT_LIST_PENDING', () => {
     it('should be pending', () => {
       state = fireAction(commentReducer, state, GET_COMMENT_LIST_PENDING);
       expect(state.get('isLoading')).toBe(true);
@@ -63,9 +63,9 @@ describe('Comment Reducer', () => {
   });
 
 
-  describe('on FETCH_COMMENT_SUCCESS', () => {
+  describe('on GET_COMMENT_LIST_SUCCESS', () => {
     it('should save one comment', () => {
-      const res = mockResponse()
+      const res = [mockResponse()]
       state = fireAction(
         commentReducer,
         state,
@@ -75,15 +75,17 @@ describe('Comment Reducer', () => {
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
-      expect(state.get('comments').get(res.postId.toString())).toBeTruthy(state)
+      expect(state.get('comments').get(
+        res[0].postId.toString())
+      ).toBeTruthy(state)
 
       expect(
-        state.get('comments').get(res.postId.toString()).size
-      ).toBe(2, state.get(res.postId.toString()));
+        state.get('comments').get(res[0].postId.toString()).size
+      ).toBe(2, state.get(res[0].postId.toString()));
     });
   });
 
-  describe('on FETCH_COMMENT_ERROR', () => {
+  describe('on GET_COMMENT_LIST_ERROR', () => {
     it('should has error', () => {
       state = fireAction(commentReducer, state, GET_COMMENT_LIST_ERROR);
 
