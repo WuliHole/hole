@@ -4,7 +4,7 @@ import { History } from 'react-router'
 import { Map, List } from 'immutable'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
-
+import { ContentState, EditorState } from 'draft-js'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
 import FlatButton from 'material-ui/FlatButton'
@@ -32,7 +32,7 @@ interface ICreateNewProps {
   history
   location
   session: Map<any, any>
-  updatePost: (id: number | string) => Promise<any>
+  updatePost: (id: number | string, content: ContentState) => Promise<any>
   posts
 }
 
@@ -46,12 +46,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updatePost: (id) => dispatch(update(id))
+    updatePost: (id, content) => dispatch(update(id, content))
   }
 }
 
 
 class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
+  private currentContent: ContentState
   constructor(props) {
     super(props)
   }
@@ -71,9 +72,14 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
   }
 
   updateCurrentPost = (): void => {
-    this.props.updatePost(this.currentPost.get('id'))
+    if (this.currentContent) {
+      this.props.updatePost(this.currentPost.get('id'), this.currentContent)
+    }
   }
 
+  onChange = (state: EditorState): void => {
+    this.currentContent = state.getCurrentContent()
+  }
 
   render() {
     const Save = <FlatButton label="保存" onClick={ this.updateCurrentPost } />
@@ -95,7 +101,7 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
               avatar={ avatar }
             />
             <CardText>
-              <Editor plugins={ plugins } >
+              <Editor plugins={ plugins } onChange={ this.onChange } >
                 <Transition><InlineToolbar></InlineToolbar>
                   <SideToolbar></SideToolbar>
                 </Transition>

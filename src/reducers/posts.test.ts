@@ -16,11 +16,11 @@ describe('Post Reducer', () => {
   describe('CREATE_POST_SUCCESS', () => {
     it('meta size should be 1', () => {
       let post1 = mockResponse()
-      const newState = fireAction(
+      state = fireAction(
         postsReducer, state, CREATE_POST_SUCCESS, post1
       )
-      expect(newState.get('meta').size).toEqual(1, newState.toJS())
-      expect(newState.get('editing')).toEqual(post1.id, newState.toJS())
+      expect(state.get('meta').size).toEqual(1, state.toJS())
+      expect(state.get('editing')).toEqual(post1.id, state.toJS())
     })
 
   })

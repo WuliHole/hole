@@ -1,5 +1,5 @@
 import { post, get, put } from '../server/';
-
+import { RawDraftContentState } from 'draft-js'
 const ARTICLE_LIST_ERR_MSG = `
   ARTICLE_LIST_ERR_MSG.
 `;
@@ -24,9 +24,11 @@ export function getPostById(postId: string | number) {
   })
 }
 
-export function updatePost(postId: string | number) {
+export function updatePost(
+  postId: string | number,
+  content: RawDraftContentState) {
   return new Promise((resolve, reject) => {
-    return put(`/post/${postId}`)
+    return put(`/post/${postId}`, { content })
       .then((json: any) => resolve(json))
       .then(null, (err) => reject(new Error(err.message)));
   })

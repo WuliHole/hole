@@ -17,7 +17,7 @@ import {
 } from '../constants/posts.action.types';
 import { getPosts } from '../api/user'
 import { getPostById, updatePost, createNew } from '../api/article'
-import { EditorState } from 'draft-js'
+import { EditorState, ContentState } from 'draft-js'
 import { Serlizer } from '../components/editor/utils/serializer'
 
 type POST_ID = string | number
@@ -80,7 +80,7 @@ export function create() {
 }
 
 
-export function update(postId: POST_ID) {
+export function update(postId: POST_ID, content: ContentState) {
   return dispatch => dispatch(({
     types: [
       UPDATE_POST_PENDING,
@@ -88,7 +88,7 @@ export function update(postId: POST_ID) {
       UPDATE_POST_ERROR
     ],
     payload: {
-      promise: updatePost(postId).then(res => res)
+      promise: updatePost(postId, Serlizer.serialize(content)).then(res => res)
     }
   }))
 }
