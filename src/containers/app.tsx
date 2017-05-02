@@ -4,7 +4,7 @@ const connect = require('react-redux').connect;
 import { Link, History } from 'react-router'
 import { loginUser, logoutUser, signUpUser } from '../actions/session';
 import { openModal, closeModal } from '../actions/modal';
-import { create } from '../actions/article';
+import { create } from '../actions/posts';
 import Button from '../components/button';
 import Content from '../components/content';
 import LoginModal from '../components/login/login-modal';
@@ -24,7 +24,6 @@ import IconButton from 'material-ui/IconButton'
 import Snackbar from 'material-ui/Snackbar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
-
 injectTapEven()
 
 interface IAppProps extends React.Props<any> {
@@ -38,7 +37,7 @@ interface IAppProps extends React.Props<any> {
   createPost: () => Promise<any>
   location: Location
   history: History
-  article
+  posts
 };
 
 interface AppState {
@@ -50,7 +49,7 @@ function mapStateToProps(state) {
     session: state.session,
     router: state.router,
     modal: state.modal,
-    article: state.article
+    posts: state.posts
   };
 }
 
@@ -134,7 +133,7 @@ class App extends React.Component<IAppProps, AppState> {
       logout,
       signup,
       modal,
-      article,
+      posts,
       closeLoginModal
     } = this.props;
     const token = session.get('token', false);
@@ -144,7 +143,7 @@ class App extends React.Component<IAppProps, AppState> {
     const avatar = <Avatar size={ 30 }
       src={ isLoggedIn && session.get('user').get('avatar') }
     />
-    const { hasError, errMsg = '~' } = article.toJS()
+    const { hasError, errMsg = '~' } = posts.toJS()
 
 
     return (

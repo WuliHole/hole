@@ -1,4 +1,4 @@
-import { post, get } from '../server/';
+import { post, get, put } from '../server/';
 
 const ARTICLE_LIST_ERR_MSG = `
   ARTICLE_LIST_ERR_MSG.
@@ -19,6 +19,14 @@ export function createNew({ title = 'New post', content = {} }) {
 export function getPostById(postId: string | number) {
   return new Promise((resolve, reject) => {
     return get(`/post/${postId}`)
+      .then((json: any) => resolve(json))
+      .then(null, (err) => reject(new Error(err.message)));
+  })
+}
+
+export function updatePost(postId: string | number) {
+  return new Promise((resolve, reject) => {
+    return put(`/post/${postId}`)
       .then((json: any) => resolve(json))
       .then(null, (err) => reject(new Error(err.message)));
   })
