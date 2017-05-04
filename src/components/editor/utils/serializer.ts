@@ -9,7 +9,9 @@ import {
 export class Serlizer {
 
   public static serialize(contentState: ContentState): RawDraftContentState {
-    return convertToRaw(contentState)
+    if (contentState) {
+      return convertToRaw(contentState)
+    }
   }
 
   public static deserialize(rawState: RawDraftContentState): ContentState {

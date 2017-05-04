@@ -22,8 +22,7 @@ import * as injectTapEven from 'react-tap-event-plugin'
 import IconAdd from 'material-ui/svg-icons/content/add'
 import IconButton from 'material-ui/IconButton'
 import Snackbar from 'material-ui/Snackbar';
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-
+import { muiTheme } from '../store/theme'
 injectTapEven()
 
 interface IAppProps extends React.Props<any> {
@@ -64,12 +63,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const muiTheme = getMuiTheme({
 
-  fontFamily: 'Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, \
-   Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif',
-
-})
 class App extends React.Component<IAppProps, AppState> {
   public hadleCommit: () => void
 

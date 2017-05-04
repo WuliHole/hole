@@ -26,6 +26,7 @@ import {
   CardTitle,
   CardText
 } from 'material-ui/Card';
+import { primary1Color } from '../../store/theme'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
 const connect = require('react-redux').connect
 
@@ -98,8 +99,11 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     return (
       <Transition>
         <AppBar
-          title="profile"
-          iconElementLeft={ <Goback history={ this.props.history } /> }
+          iconElementLeft={ <Goback style={ {
+            color: primary1Color
+          } }
+            history={ this.props.history } />
+          }
         />
 
         {/*profile container*/ }
@@ -153,17 +157,20 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                 : this.posts.map(p => {
                   const contentState = Serlizer.deserialize(p.content)
                   return <div key={ p.id } className="mt2 mb2">
-                    <CardHeader
-                      title={ p.title }
-                      titleStyle={ { fontSize: '2rem' } }
-                      subtitle={ Moment(new Date(p.createdAt))
-                        .locale('zh-cn')
-                        .format('L') }
-                      style={ { padding: '16px 0' } }
-                      subtitleStyle={
-                        { fontSize: '0.9rem', width: '90%', margin: '1rem 0' }
-                      }
-                    />
+                    <Link to={ `post/${p.title}/${p.id}` }>
+                      <CardHeader
+                        title={ p.title }
+                        titleStyle={ { fontSize: '2rem' } }
+                        subtitle={ Moment(new Date(p.createdAt))
+                          .locale('zh-cn')
+                          .format('L') }
+                        style={ { padding: '16px 0' } }
+                        subtitleStyle={
+                          { fontSize: '0.9rem', width: '90%', margin: '1rem 0' }
+                        }
+                      >
+                      </CardHeader>
+                    </Link>
                     <Editor editorState={
                       EditorState.createWithContent(contentState)
                     } />

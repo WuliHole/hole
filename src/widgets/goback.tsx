@@ -6,6 +6,7 @@ import KeyboardBackspace
 
 interface IGoBackProps {
   history
+  style?: React.CSSProperties
 }
 
 interface IGoBackState {
@@ -23,8 +24,8 @@ export default class GoBack extends
   }
 
   render() {
-    return <IconButton onClick={ this.goBack }>
-      <KeyboardBackspace />
+    return <IconButton onClick={ this.goBack } >
+      <KeyboardBackspace style={ this.props.style } />
     </IconButton>
   }
 }
