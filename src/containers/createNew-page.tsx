@@ -7,7 +7,7 @@ import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import { ContentState, EditorState } from 'draft-js'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
-import RaisedButton from 'material-ui/raisedButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import CircularProgress from 'material-ui/CircularProgress'
 import KeyboardBackspace
   from 'material-ui/svg-icons/hardware/keyboard-backspace'
