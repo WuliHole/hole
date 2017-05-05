@@ -157,7 +157,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                 : this.posts.map(p => {
                   const contentState = Serlizer.deserialize(p.content)
                   return <div key={ p.id } className="mt2 mb2">
-                    <Link to={ `post/${p.title}/${p.id}` }>
+                    <Link to={ `/post/${p.title}/${p.id}` }>
                       <CardHeader
                         title={ p.title }
                         titleStyle={ { fontSize: '2rem' } }
