@@ -27,7 +27,7 @@ minified version of the client.
 
 Open `http://localhost:8080` in your browser.
 
-> Note: Demo username/password can be found [here](blob/master/server/users.json)
+> Note: Demo username/password can be found [here](/server/users.json)
 
 ### Tests
 
