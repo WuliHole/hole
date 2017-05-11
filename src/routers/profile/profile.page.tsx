@@ -28,6 +28,7 @@ import {
 } from 'material-ui/Card';
 import { primary1Color } from '../../store/theme'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
+import './profile.less'
 const connect = require('react-redux').connect
 
 type store = {
@@ -65,7 +66,7 @@ interface ProfileState {
 
 }
 
-class Profile extends React.Component<ProfileProps, ProfileState> {
+class Profile extends React.PureComponent<ProfileProps, ProfileState> {
 
   get userId() {
     return this.props.params.uid
@@ -108,8 +109,11 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 
         {/*profile container*/ }
 
-        <Container size={ 5 } center>
-          <Container size={ 3 } center className="pt3 pb3">
+        <Container size={ 5 } center
+          backgroundTheme="background-color-gray"
+          style={ { marginTop: '14px' } }
+        >
+          <Container size={ 4 } center className="profile">
             {
               this.profile
                 ? <CardHeader
@@ -148,8 +152,8 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         </Container>
 
         {/*posts container*/ }
-        <Container size={ 5 } center>
-          <Container size={ 3 } center>
+        <Container size={ 5 } center backgroundTheme="background-color-gray">
+          <Container size={ 4 } center className="profile-posts mt2">
 
             {
               !this.posts

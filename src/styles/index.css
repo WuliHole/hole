@@ -32,3 +32,7 @@
 @import 'basscss-border';
 @import 'basscss-hide';
 @import './icon/iconfont';
+
+.background-color-gray {
+  background-color: #fafafa;
+}

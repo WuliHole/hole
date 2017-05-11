@@ -6,7 +6,8 @@ interface IContainerProps extends React.Props<any> {
   center: boolean;
   testid?: string;
   style?: React.CSSProperties
-  className?: string
+  className?: string,
+  backgroundTheme?: string
 };
 
 export default function Container({
@@ -15,9 +16,10 @@ export default function Container({
   children = null,
   testid = '',
   style = {},
-  className = ''
+  className = '',
+  backgroundTheme = 'bg-white'
 }: IContainerProps) {
-  const containerClasses = classNames('clearfix', 'bg-white', {
+  const containerClasses = classNames('clearfix', backgroundTheme, {
     'max-width-1': size === 1,
     'max-width-2': size === 2,
     'max-width-3': size === 3,
