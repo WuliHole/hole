@@ -1,23 +1,24 @@
 import * as React from 'react'
 import * as classnames from 'classnames'
 import { Link } from 'react-router'
+import Moment = require('moment')
 import Transition from '../../components/transition'
 import Container from '../../components/container'
 import { EditorState } from 'draft-js'
 import Editor from '../../components/editor'
 import { Serlizer } from '../../components/editor/utils/serializer'
-import Avatar from '../../components/avatar'
 import AppBar from 'material-ui/AppBar'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 import Divider from 'material-ui/Divider'
 import Chip from 'material-ui/Chip'
 import Goback from '../../widgets/goback'
+import ProfileForm from '../../widgets/profile'
 
 import { getProfile } from '../../actions/profile'
 import { getUserPosts } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
-import Moment = require('moment')
+
 import {
   Card,
   CardActions,
@@ -92,11 +93,20 @@ class Profile extends React.PureComponent<ProfileProps, ProfileState> {
     }
   }
 
+  onSave = () => {
+
+  }
 
   render() {
     const loader = <CircularProgress
       style={ { marginLeft: '45%', marginTop: '5rem' } }
     />
+
+    const profileForm = <ProfileForm
+      profile={ this.profile }
+      onSave={ this.onSave }
+    />
+
     return (
       <Transition>
         <AppBar
@@ -116,36 +126,7 @@ class Profile extends React.PureComponent<ProfileProps, ProfileState> {
           <Container size={ 4 } center className="profile">
             {
               this.profile
-                ? <CardHeader
-                  title={ this.profile.get('nickName') }
-                  titleStyle={ { fontSize: '2rem' } }
-                  subtitle={ this.profile.get('bio') }
-                  style={ { padding: '16px 0' } }
-                  subtitleStyle={
-                    { fontSize: '0.9rem', width: '90%', margin: '1rem 0' }
-                  }
-                  avatar={
-                    <Avatar
-                      size={ 96 }
-                      src={ this.profile.get('avatar') }
-                      style={ { float: 'right' } }
-                    />
-                  }
-                >
-                  <span className="block"
-                    style={ { fontSize: '.9rem', lineHeight: '2rem' } }
-                  >
-                    加入日期:{
-                      Moment(
-                        new Date(this.profile.get('createdAt')),
-                        'YYYYMMDD'
-                      ).locale('zh-cn').format('L')
-                    }
-
-                  </span>
-                  <Divider />
-
-                </CardHeader>
+                ? profileForm
                 : loader
             }
           </Container>
