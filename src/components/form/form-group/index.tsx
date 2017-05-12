@@ -1,17 +1,21 @@
-import * as React from 'react';
+import * as React from 'react'
+import * as classnames from 'classnames'
 
 interface IFormGroupProps extends React.Props<any> {
   testid?: string;
+  className?: string
 };
 
 export default function FormGroup({
   children = null,
-  testid = ''
+  testid = '',
+  className = '',
 }: IFormGroupProps) {
+  const cls = classnames('py2', className)
   return (
     <div
       data-testid={ testid }
-      className="py2">
+      className={ cls }>
       { children }
     </div>
   );

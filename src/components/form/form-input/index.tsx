@@ -35,7 +35,7 @@ export default function Input({
       className={ `block col-12 mb1 input ${className}` }
       type={ type }
       placeholder={ placeholder }
-      value={ value }
+      defaultValue={ value }
       onBlur={ onBlur }
       onChange={ onChange }
       onFocus={ onFocus } />

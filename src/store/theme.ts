@@ -7,7 +7,7 @@ import {
 } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 export const primary1Color = '#FDBD39'
-export const secondaryColor = '#8bc34a'
+export const secondaryColor = '#449bf7'
 export const accent1Color = secondaryColor
 export const gray = '#bcb5b9'
 
