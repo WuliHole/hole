@@ -18,7 +18,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import './profileWidget.less'
 interface IProfileWidgetProps {
   profile: Map<keyof User, any>
-  onSave: () => any
+  onSave: (formName: string) => any
 }
 
 interface IProfileWidgetState {
@@ -26,7 +26,7 @@ interface IProfileWidgetState {
 }
 
 export default class ProfileWidget
-  extends React.PureComponent<IProfileWidgetProps, IProfileWidgetState> {
+  extends React.Component<IProfileWidgetProps, IProfileWidgetState> {
   state = {
     readOnly: true
   }
@@ -40,7 +40,7 @@ export default class ProfileWidget
   }
 
   onSubmit = () => {
-    this.props.onSave().then(this.toggleState)
+    this.props.onSave('profile').then(this.toggleState)
   }
 
   render() {
@@ -78,14 +78,12 @@ export default class ProfileWidget
         {
           !this.state.readOnly
           &&
-          <Transition>
-            <ProfileForm
-              profile={ this.props.profile.toJS() }
-              isPending={ false }
-              hasError={ false }
-              onSubmit={ this.onSubmit }
-            />
-          </Transition>
+          <ProfileForm
+            profile={ this.props.profile.toJS() }
+            isPending={ false }
+            hasError={ false }
+            onSubmit={ this.onSubmit }
+          />
         }
       </div>
     )

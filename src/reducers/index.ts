@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 const { routerReducer } = require('react-router-redux');
-const formReducer = require('redux-form').reducer;
+import { reducer as formReducer } from 'redux-form'
 import session from './session';
 import modal from './modal';
 import comment from './comment'

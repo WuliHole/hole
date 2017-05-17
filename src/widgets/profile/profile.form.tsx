@@ -12,13 +12,15 @@ import Divider from 'material-ui/Divider'
 import Avatar from '../../components/avatar'
 import { CardHeader } from 'material-ui/Card'
 import './profile.form.less'
-const ReduxForm = require('redux-form')
+import { reduxForm } from 'redux-form'
+import Uploader from '../../components/uploader/qiniuUploader'
 
 type OptionalField = 'avatar' | 'bio' | 'nickName'
 type ProfileFields = OptionalField[]
 
 interface IProfileFormProps {
-  handleSubmit: () => void;
+  onSubmit: () => void;
+  handleSubmit?: () => void;
   isPending: boolean;
   hasError: boolean;
   profile: User
@@ -29,12 +31,33 @@ interface IProfileFormProps {
   };
 }
 
-interface IProfileFormState {
-
+/**
+ *  Fix issue: https://github.com/erikras/redux-form/issues/1192
+ */
+function reduxFormPropsFilter(props) {
+  const a = [
+    `initialValue`,
+    `autofill`,
+    `onUpdate`,
+    `valid`,
+    `invalid`,
+    `dirty`,
+    `pristine`,
+    `active`,
+    `touched`,
+    `visited`,
+    `autofilled`,
+    `value`]
+  const newProps = {}
+  for (let p in props) {
+    if (a.indexOf(p) === -1) {
+      newProps[p] = props[p]
+    }
+  }
+  return newProps
 }
 
-class ProfileForm
-  extends React.PureComponent<IProfileFormProps, IProfileFormState> {
+class ProfileForm extends React.Component<IProfileFormProps, void> {
   constructor(props) {
     super(props)
   }
@@ -44,8 +67,9 @@ class ProfileForm
       handleSubmit,
       isPending,
       profile,
-      fields: { bio, nickName, avatar }
+      fields: { bio, nickName, avatar },
     } = this.props
+
     return <div className="ProfileForm" >
       <Form handleSubmit={ handleSubmit }>
         <Alert
@@ -63,8 +87,10 @@ class ProfileForm
             <FormGroup className="profile-field-nickName" >
               <TextField
                 name="nickName"
+                id="qa-nickName"
                 defaultValue={ profile.nickName }
                 underlineShow={ !!nickName.touched }
+                {...reduxFormPropsFilter(nickName) }
                 errorText={
                   !!(nickName.touched && nickName.error)
                   && nickName.error
@@ -83,13 +109,16 @@ class ProfileForm
               multiLine
               underlineShow={ !!bio.touched }
               rowsMax={ 4 }
+              {...reduxFormPropsFilter(bio) }
               errorText={
                 !!(bio.touched && bio.error)
                 && bio.error
               }
             />
           </FormGroup>
-
+          <Uploader>
+            hhhhh
+          </Uploader>
           <FormGroup >
             <Button type="submit"
               style={ {
@@ -107,18 +136,19 @@ class ProfileForm
   }
 
   static validate(values) {
-
+    const errors = { nickName: '', bio: '' }
+    return errors
   }
 }
 
 
-export default ReduxForm.reduxForm({
+export default reduxForm({
   form: 'profile',
   fields: [
     'nickName',
     // 'avatar',
-    'bio',
-  ] as ProfileFields,
+    'bio'
+  ],
   validate: ProfileForm.validate,
-})(ProfileForm)
+} as any)(ProfileForm)
 

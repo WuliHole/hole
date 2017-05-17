@@ -14,11 +14,11 @@ import Divider from 'material-ui/Divider'
 import Chip from 'material-ui/Chip'
 import Goback from '../../widgets/goback'
 import ProfileForm from '../../widgets/profile'
-
+import RaisedButton from 'material-ui/RaisedButton'
 import { getProfile } from '../../actions/profile'
 import { getUserPosts } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
-
+import { update } from '../../actions/session'
 import {
   Card,
   CardActions,
@@ -42,9 +42,11 @@ interface ProfileProps extends React.Props<any> {
   session: any;
   history
   location
+  form
   profile: Map<store, any>
   getProfile: (uid: string | number | any) => Promise<any>
   getUserPosts: (uid: string | number | any) => Promise<any>
+  updateProfile: (formName: string) => Promise<any>
   groupedPostsByAuthorId: OrderedMap<string, Post<any>>
   params
 }
@@ -59,7 +61,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getProfile: (uid) => dispatch(getProfile(uid)),
-    getUserPosts: (uid) => dispatch(getUserPosts(uid))
+    getUserPosts: (uid) => dispatch(getUserPosts(uid)),
+    updateProfile: (formName) => dispatch(update(formName))
   }
 }
 
@@ -67,7 +70,7 @@ interface ProfileState {
 
 }
 
-class Profile extends React.PureComponent<ProfileProps, ProfileState> {
+class Profile extends React.Component<ProfileProps, ProfileState> {
 
   get userId() {
     return this.props.params.uid
@@ -85,7 +88,6 @@ class Profile extends React.PureComponent<ProfileProps, ProfileState> {
   componentDidMount() {
     if (!this.profile) {
       this.props.getProfile(this.userId)
-
     }
 
     if (!this.posts) {
@@ -93,8 +95,8 @@ class Profile extends React.PureComponent<ProfileProps, ProfileState> {
     }
   }
 
-  onSave = () => {
-
+  onSave = (formName: string) => {
+    return this.props.updateProfile(formName)
   }
 
   render() {
@@ -126,7 +128,10 @@ class Profile extends React.PureComponent<ProfileProps, ProfileState> {
           <Container size={ 4 } center className="profile">
             {
               this.profile
-                ? profileForm
+                ? <ProfileForm
+                  profile={ this.profile }
+                  onSave={ this.onSave }
+                />
                 : loader
             }
           </Container>
