@@ -70,11 +70,12 @@ type Task = {
  */
 export default function initQiniuBuilder({
   button,
-  tokenUrl,
+  tokenUrl = '/api/uptoken',
   listener
  }: Options): QiniuUploader {
   return new UploaderBuilder()
     .debug(__DEV__ || __TEST__)
+    .domain('http://up-z1.qiniu.com')
     .button(button)
     .tokenUrl(tokenUrl)
     .interceptor(defaultInterceptor)
