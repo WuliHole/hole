@@ -19,6 +19,8 @@ import { getProfile } from '../../actions/profile'
 import { getUserPosts } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
 import { update } from '../../actions/session'
+import { isRejectAction } from '../../actions/utils'
+import { GET_PROFILE_SUCCESS } from '../../constants/profile'
 import {
   Card,
   CardActions,
@@ -46,7 +48,7 @@ interface ProfileProps extends React.Props<any> {
   profile: Map<store, any>
   getProfile: (uid: string | number | any) => Promise<any>
   getUserPosts: (uid: string | number | any) => Promise<any>
-  updateProfile: (formName: string) => Promise<any>
+  updateProfile: (formName: string, sync?: boolean) => Promise<any>
   groupedPostsByAuthorId: OrderedMap<string, Post<any>>
   params
 }
@@ -54,7 +56,8 @@ interface ProfileProps extends React.Props<any> {
 function mapStateToProps(state) {
   return {
     profile: state.profile,
-    groupedPostsByAuthorId: groupPostsByAuthorId(state)
+    groupedPostsByAuthorId: groupPostsByAuthorId(state),
+    session: state.session
   }
 }
 
@@ -62,7 +65,17 @@ function mapDispatchToProps(dispatch) {
   return {
     getProfile: (uid) => dispatch(getProfile(uid)),
     getUserPosts: (uid) => dispatch(getUserPosts(uid)),
-    updateProfile: (formName) => dispatch(update(formName))
+    updateProfile: (formName, sync = false) => {
+      return dispatch(update(formName)).then(state => {
+        if (!isRejectAction(state)) {
+          dispatch({
+            type: GET_PROFILE_SUCCESS,
+            payload: state.payload,
+            meta: state.meta
+          })
+        }
+      })
+    }
   }
 }
 
@@ -76,7 +89,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     return this.props.params.uid
   }
 
-  get profile() {
+  get profile(): Map<keyof User, any> {
     return this.props.profile.getIn(['meta', this.userId])
   }
 
@@ -96,7 +109,9 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 
   onSave = (formName: string) => {
-    return this.props.updateProfile(formName)
+    let myUserId = this.props.session.getIn(['user,id'])
+    const stateSync = this.profile.get('id') === myUserId
+    return this.props.updateProfile(formName, stateSync)
   }
 
   render() {

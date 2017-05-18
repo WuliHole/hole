@@ -28,9 +28,12 @@ function profileReducer(state = INITIAL_STATE,
       }));
 
     case GET_PROFILE_SUCCESS:
+      let meta = (state.get('meta') as Map<any, any>)
+      let data = action.payload
+      let oldData = meta.get(`${data.id}`)
       return state.merge(fromJS({
-        meta: (state.get('meta') as Map<any, any>).merge({
-          [action.payload.id]: action.payload
+        meta: meta.merge({
+          [action.payload.id]: oldData ? oldData.merge(data) : data
         }),
         hasError: false,
         isLoading: false,

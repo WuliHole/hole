@@ -14,7 +14,8 @@ import Avatar from '../../components/avatar'
 import Transition from '../../components/transition/'
 import ProfileForm from './profile.form'
 import RaisedButton from 'material-ui/RaisedButton'
-
+import TextField from 'material-ui/TextField'
+import FormGroup from '../../components/form/form-group'
 import './profileWidget.less'
 interface IProfileWidgetProps {
   profile: Map<keyof User, any>
@@ -61,7 +62,13 @@ export default class ProfileWidget
       </RaisedButton>
     )
 
-
+    const profile = this.props.profile.toJS()
+    const disableStyle = this.state.readOnly
+      ? {
+        cursor: 'default',
+        color: 'rgba(0,0,0,0.87)'
+      }
+      : {}
     return (
       <div>
         <CardHeader
@@ -79,11 +86,45 @@ export default class ProfileWidget
           !this.state.readOnly
           &&
           <ProfileForm
-            profile={ this.props.profile.toJS() }
+            profile={ profile }
             isPending={ false }
             hasError={ false }
             onSubmit={ this.onSubmit }
           />
+        }{
+          this.state.readOnly
+          &&
+          <div className="ProfileForm">
+            <div className="profile-form-avatar inline-block">
+              <Avatar src={ profile.avatar } />
+            </div>
+            <div className="profile-form-nickName inline-block">
+              <FormGroup className="profile-field-nickName" >
+                <TextField
+                  inputStyle={ disableStyle }
+                  disabled
+                  underlineShow={ false }
+                  name="nickName"
+                  id="qa-nickName"
+                  defaultValue={ profile.nickName }
+                />
+              </FormGroup>
+            </div>
+            <Divider className="profile-field-nickName-divider" />
+            <FormGroup>
+              <div className="label-bio h1">简介</div>
+              <TextField
+                disabled
+                textareaStyle={ disableStyle }
+                name="bio"
+                underlineShow={ false }
+                defaultValue={ profile.bio }
+                fullWidth
+                multiLine
+                rowsMax={ 4 }
+              />
+            </FormGroup>
+          </div>
         }
       </div>
     )

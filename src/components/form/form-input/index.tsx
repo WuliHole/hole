@@ -5,6 +5,7 @@ interface IFieldDefinition {
   onBlur?: () => void;
   onChange?: () => void;
   onFocus?: () => void;
+  name?: string
 }
 
 interface IInputProps extends React.Props<any> {
@@ -26,11 +27,13 @@ export default function Input({
     value,
     onBlur,
     onChange,
-    onFocus
+    onFocus,
+    name
   } = fieldDefinition;
 
   return (
     <input
+      name={ name }
       id={ id }
       className={ `block col-12 mb1 input ${className}` }
       type={ type }

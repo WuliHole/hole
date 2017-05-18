@@ -1,8 +1,8 @@
 import React = require('react')
-import { default as initQiniuUploader, Options } from './initQiniuBuilder'
+import { default as initQiniuUploader } from './initQiniuBuilder'
 
 
-interface IUploaderProps extends Options {
+interface IUploaderProps extends UpdateOptions {
 
 }
 
@@ -25,3 +25,7 @@ export default
   }
 }
 
+const CDN_HOST = 'http://oq3qzwm4b.bkt.clouddn.com/'
+export function filePublicPathGen(fileKey: string) {
+  return `${CDN_HOST}${fileKey}`
+}

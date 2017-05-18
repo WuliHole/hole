@@ -12,9 +12,15 @@ import Divider from 'material-ui/Divider'
 import Avatar from '../../components/avatar'
 import { CardHeader } from 'material-ui/Card'
 import './profile.form.less'
-import { reduxForm } from 'redux-form'
-import Uploader from '../../components/uploader/qiniuUploader'
+import { reduxForm, change } from 'redux-form'
+import { connect } from 'react-redux'
 
+window['change'] = change
+import {
+  default as Uploader,
+  filePublicPathGen
+} from '../../components/uploader/qiniuUploader'
+import { debug } from '../../utils/debug'
 type OptionalField = 'avatar' | 'bio' | 'nickName'
 type ProfileFields = OptionalField[]
 
@@ -24,11 +30,17 @@ interface IProfileFormProps {
   isPending: boolean;
   hasError: boolean;
   profile: User
+  readonly?: boolean
+  dispatch?
   fields?: {
     nickName: any;
     bio: any;
     avatar: any
   };
+}
+
+interface State {
+  avatar: string
 }
 
 /**
@@ -57,9 +69,40 @@ function reduxFormPropsFilter(props) {
   return newProps
 }
 
-class ProfileForm extends React.Component<IProfileFormProps, void> {
+
+@reduxForm({
+  form: ProfileForm.formName,
+  fields: [
+    'nickName',
+    'bio',
+    'avatar',
+  ],
+  validate: ProfileForm.validate,
+} as any)
+export default class ProfileForm
+  extends React.PureComponent<IProfileFormProps, State> {
+  static formName = 'profile'
+  private avatar: string
+
   constructor(props) {
     super(props)
+    this.state = {
+      avatar: undefined
+    }
+  }
+
+  updateAvatarOnUpdateSuccess = (task: UploaderTask) => {
+    if (task.result.key) {
+      const avatar = filePublicPathGen(task.result.key)
+      this.setState({ avatar })
+      this.props.dispatch(change(ProfileForm.formName, 'avatar', avatar))
+    } else {
+      debug(`[Qiniu]:file update failed,current task:\n ${task}`)
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({ avatar: undefined })
   }
 
   render() {
@@ -81,7 +124,11 @@ class ProfileForm extends React.Component<IProfileFormProps, void> {
 
 
           <div className="profile-form-avatar inline-block">
-            <Avatar src={ profile.avatar } />
+            <Uploader listener={ {
+              onTaskSuccess: this.updateAvatarOnUpdateSuccess,
+            } }>
+              <Avatar src={ this.state.avatar || profile.avatar } />
+            </Uploader>
           </div>
           <div className="profile-form-nickName inline-block">
             <FormGroup className="profile-field-nickName" >
@@ -116,13 +163,10 @@ class ProfileForm extends React.Component<IProfileFormProps, void> {
               }
             />
           </FormGroup>
-          <Uploader>
-            hhhhh
-          </Uploader>
           <FormGroup >
             <Button type="submit"
               style={ {
-                width: '100%', backgroundColor: '#449bf7', fontWeight: 100
+                width: '88px', backgroundColor: '#449bf7', fontWeight: 100,
               } }
               className="block "
               id="qa-submit-button"
@@ -142,13 +186,5 @@ class ProfileForm extends React.Component<IProfileFormProps, void> {
 }
 
 
-export default reduxForm({
-  form: 'profile',
-  fields: [
-    'nickName',
-    // 'avatar',
-    'bio'
-  ],
-  validate: ProfileForm.validate,
-} as any)(ProfileForm)
+
 
