@@ -1,4 +1,5 @@
 declare var require
+/* istanbul ignore next */
 /* tslint:disable */
 export default {
   path: 'createNew',

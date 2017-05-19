@@ -5,7 +5,7 @@ import Verify from './verify'
 import CreateNew from './createNew'
 import Profile from './profile'
 import Post from './post'
-
+/* istanbul ignore next */
 export const rootRoute = {
   childRoutes: [{
     path: '/',
