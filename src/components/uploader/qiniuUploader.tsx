@@ -3,7 +3,7 @@ import { default as initQiniuUploader } from './initQiniuBuilder'
 
 
 interface IUploaderProps extends UpdateOptions {
-
+  onClick?(e: Event, QiniuUploader)
 }
 
 export default
@@ -14,7 +14,11 @@ export default
     this.uploader = initQiniuUploader(this.props)
   }
 
-  chooseFile = () => {
+  chooseFile = (e) => {
+    if (this.props.onClick) {
+      this.props.onClick(e, this.uploader)
+      return
+    }
     this.uploader.chooseFile()
   }
 
@@ -25,7 +29,7 @@ export default
   }
 }
 
-const CDN_HOST = 'http://oq3qzwm4b.bkt.clouddn.com/'
+export const CDN_HOST = 'http://oq3qzwm4b.bkt.clouddn.com/'
 export function filePublicPathGen(fileKey: string) {
   return `${CDN_HOST}${fileKey}`
 }
