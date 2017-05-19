@@ -65,10 +65,6 @@ export function loginUser() {
       payload: {
         promise: login(user)
           .then((res) => {
-            dispatch({
-              type: FORM_RESET,
-              form: 'login',
-            });
             dispatch(closeModal())
             return res;
           }),
