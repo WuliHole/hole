@@ -49,7 +49,7 @@ function postsReducer(state = INITIAL_STATE,
         meta: meta.toJS().concat(action.payload.meta),
         hasError: false,
         isLoading: false,
-        total: state.get('total') + (action.payload.count || 0)
+        total: state.get('total') + action.payload.meta.length
       }))
 
     case GET_POST_BY_ID_SUCCESS:
@@ -81,6 +81,8 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_ERROR:
     case GET_USER_POSTS_ERROR:
+    case CREATE_POST_ERROR:
+    case UPDATE_POST_ERROR:
       return state.merge(fromJS({
         errMsg: action.payload.message,
         hasError: true,

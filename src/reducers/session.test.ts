@@ -8,6 +8,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  UPDATE_USER_PENDING
 } from '../../src/constants/index';
 
 let state = sessionReducer();
@@ -28,7 +31,7 @@ describe('Session Reducer', () => {
   });
 
   describe('on LOGIN_USER_SUCCESS', () => {
-    it('should save the username', () => {
+    it('should save the username and bio', () => {
       state = fireAction(
         sessionReducer,
         state,
@@ -43,7 +46,7 @@ describe('Session Reducer', () => {
   });
 
   describe('on LOGIN_USER_ERROR', () => {
-    it('should save the username', () => {
+    it('should has Error', () => {
       state = fireAction(sessionReducer, state, LOGIN_USER_ERROR);
 
       expect(state.get('isLoading')).toBe(false);
@@ -59,6 +62,44 @@ describe('Session Reducer', () => {
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
       expect(state.get('token')).toBeNull();
+      expect(state.get('user')).toBe(Map({}));
+    });
+  });
+
+  describe('on UPDATE_USER', () => {
+
+    it('should has Error', () => {
+      state = fireAction(sessionReducer, state, UPDATE_USER_ERROR)
+      expect(state.get('isLoading')).toBe(false);
+      expect(state.get('hasError')).toBe(true);
+    })
+
+    it('should update the session.user success', () => {
+      let localState = sessionReducer();
+      const user: User = {
+        nickName: 'newName',
+        name: '',
+        id: 25,
+        bio: 'test bio ',
+        createdAt: '',
+        verified: true,
+        avatar: 'pppppp'
+      }
+
+      localState = fireAction(
+        sessionReducer,
+        localState,
+        UPDATE_USER_SUCCESS,
+        user
+      )
+      expect(localState.get('isLoading')).toBe(false)
+      expect(localState.get('hasError')).toBe(false)
+      expect(localState.get('token')).toBeNull()
+      expect(localState.getIn(['user', 'nickName'])).toBe(user.nickName)
+      expect(localState.getIn(['user', 'name'])).toBe(user.name)
+      expect(localState.getIn(['user', 'id'])).toBe(user.id)
+      expect(localState.getIn(['user', 'avatar'])).toBe(user.avatar)
+      expect(localState.getIn(['user', 'bio'])).toBe(user.bio)
     });
   });
 });
