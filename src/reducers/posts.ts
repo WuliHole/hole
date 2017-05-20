@@ -23,7 +23,7 @@ const INITIAL_STATE = fromJS({
   /**
    * post[]
    */
-  meta: [],
+  meta: {},
   total: 0,
   hasError: false,
   isLoading: false,
@@ -32,7 +32,8 @@ const INITIAL_STATE = fromJS({
 
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
-  const meta = state.get('meta') as List<any>
+  const meta = state.get('meta') as Map<string, POST>
+
   switch (action.type) {
 
     case GET_POST_BY_ID_PENDING:
@@ -46,7 +47,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_USER_POSTS_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.toJS().concat(action.payload.meta),
+        meta: meta.merge(mapPosts(action.payload.meta) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + action.payload.meta.length
@@ -54,7 +55,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.push(Map(action.payload)),
+        meta: meta.set(action.payload.id, Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -62,7 +63,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.push(Map(action.payload)),
+        meta: meta.set(action.payload.id, Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -71,10 +72,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.update(
-          meta.findIndex((v: POST) => v.get('id') === action.payload.id),
-          (v) => v.merge(Map(action.payload))
-        ),
+        meta: meta.set(action.payload.id, Map(action.payload) as POST),
         isLoading: false,
         hasError: false
       }))
@@ -91,6 +89,12 @@ function postsReducer(state = INITIAL_STATE,
     default:
       return state;
   }
+}
+
+function mapPosts(posts: Post<any>[]) {
+  let map = {}
+  posts.forEach(p => map[p.id] = p)
+  return map
 }
 
 export default postsReducer;

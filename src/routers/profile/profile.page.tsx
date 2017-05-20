@@ -21,6 +21,7 @@ import { Map, List, OrderedMap } from 'immutable'
 import { update } from '../../actions/session'
 import { isRejectAction } from '../../actions/utils'
 import { GET_PROFILE_SUCCESS } from '../../constants/profile'
+import { unique } from '../../utils/arrayUtils'
 import {
   Card,
   CardActions,
@@ -49,9 +50,11 @@ interface ProfileProps extends React.Props<any> {
   getProfile: (uid: string | number | any) => Promise<any>
   getUserPosts: (uid: string | number | any) => Promise<any>
   updateProfile: (formName: string, sync?: boolean) => Promise<any>
-  groupedPostsByAuthorId: OrderedMap<string, Post<any>>
+  groupedPostsByAuthorId: GroupedPosts
   params
 }
+
+type GroupedPosts = OrderedMap<number, Map<string, Map<keyof Post<any>, any>>>
 
 function mapStateToProps(state) {
   return {
@@ -94,7 +97,15 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 
   get posts(): Post<any>[] {
-    return this.props.groupedPostsByAuthorId.toJS()[this.userId]
+    const id = parseInt(this.userId, 10)
+    const posts = this.props.groupedPostsByAuthorId.get(id)
+    return posts
+      ? posts
+        .toSet()
+        .sortBy(p => new Date(p.get('createdAt')))
+        .reverse()
+        .toJS()
+      : []
   }
 
   // load profile if didn't  find the profile of target user .
@@ -103,9 +114,10 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
       this.props.getProfile(this.userId)
     }
 
-    if (!this.posts) {
+    if (!this.posts || this.posts.length < 10) {
       this.props.getUserPosts(this.userId)
     }
+
   }
 
   onSave = (formName: string) => {
@@ -159,7 +171,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
             {
               !this.posts
                 ? loader
-                : this.posts.map(p => {
+                : unique(this.posts, p => p.id).map(p => {
                   const contentState = Serlizer.deserialize(p.content)
                   return <div key={ p.id } className="mt2 mb2">
                     <Link to={ `/post/${p.title}/${p.id}` }>
@@ -176,9 +188,12 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
                       >
                       </CardHeader>
                     </Link>
-                    <Editor editorState={
-                      EditorState.createWithContent(contentState)
-                    } />
+                    <Editor
+                      editorState={
+                        EditorState.createWithContent(contentState)
+                      }
+                      readOnly
+                    />
                     <Divider />
                   </div>
                 })

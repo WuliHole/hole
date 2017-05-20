@@ -20,6 +20,7 @@ interface Post<T> {
    * user id which is author
    */
   author: User
+  authorId: number
   /**
    * Date stirng
    */

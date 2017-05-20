@@ -69,13 +69,13 @@ describe('Post Reducer', () => {
       let post2 = mockResponse()
       post2.title = 'newTitle'
       post2.createdAt = '2017-3-2'
-      const newPost = Map(post2)
+      const newPost = post2
       const newState = fireAction(
         postsReducer, state, UPDATE_POST_SUCCESS, newPost
       )
-      const newPosts = newState.get('meta').get(0)
-      expect(newPosts.get('title')).toEqual('newTitle', newState.toJS())
-      expect(newPosts.get('createdAt')).toEqual('2017-3-2', newState.toJS())
+      const newPosts = newState.get('meta').get(post2.id)
+      expect(newPosts.get('title')).toBe('newTitle', newState.toJS())
+      expect(newPosts.get('createdAt')).toBe('2017-3-2', newState.toJS())
     })
   })
 
@@ -89,7 +89,7 @@ describe('Post Reducer', () => {
       const newState = fireAction(
         postsReducer, localState, GET_POST_BY_ID_SUCCESS, newPost
       )
-      const newPosts = newState.get('meta').get(0)
+      const newPosts = newState.get('meta').get(post2.id)
       expect(newState.get('meta').size).toBe(localState.get('meta').size + 1)
       expect(newPosts.get('title')).toEqual('newTitle', newState.toJS())
       expect(newPosts.get('createdAt')).toEqual('2017-3-222', newState.toJS())
@@ -101,12 +101,12 @@ describe('Post Reducer', () => {
       let localState = postsReducer()
       const newPost = {
         meta: [
-          mockResponse(),
-          mockResponse(),
-          mockResponse(),
-          mockResponse(),
-          mockResponse(),
-          mockResponse()
+          mockResponse(1),
+          mockResponse(2),
+          mockResponse(3),
+          mockResponse(4),
+          mockResponse(5),
+          mockResponse(6)
         ]
       }
       const newState = fireAction(
@@ -121,9 +121,9 @@ describe('Post Reducer', () => {
 });
 
 
-function mockResponse(): Post<any> {
+function mockResponse(id?: number): Post<any> {
   return {
-    id: 255,
+    id: id || 255,
     title: 'hello',
     content: {
       entityMap: {},
@@ -140,6 +140,7 @@ function mockResponse(): Post<any> {
     },
     createdAt: '',
     updatedAt: '',
+    authorId: 25,
     author: {
       'avatar': 'http://images.yibencezi.com/FqSfRyyFKt0f5E7YyeLcxi1VkEMk',
       id: 201,

@@ -5,7 +5,7 @@ import { getIdFromRouter, getTitlefromRouter } from './router'
 const postsSelector = state => state.posts.get('meta')
 
 type _Post = Map<keyof Post<RawDraftContentState>, any>
-type Posts = List<_Post>
+type Posts = Map<string, _Post>
 
 export const groupPostsByAuthorId = createSelector(
   [postsSelector],
