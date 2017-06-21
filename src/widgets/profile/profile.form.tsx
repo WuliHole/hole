@@ -15,7 +15,6 @@ import './profile.form.less'
 import { reduxForm, change } from 'redux-form'
 import { connect } from 'react-redux'
 
-window['change'] = change
 import {
   default as Uploader,
   filePublicPathGen

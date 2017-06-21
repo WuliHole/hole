@@ -12,8 +12,8 @@ export default ({ comments }: CommentTableProps) => {
     return null
   }
 
-  return <Container size={ 3 } center>
-    <div className="clearfix ml4 mr4 mb4 ">
+  return <Container size={ 3 } center backgroundTheme="">
+    <div className="clearfix">
       {
         List(comments)
           .map(comment => <CommentRow key={ comment.id } comment={ comment } />)

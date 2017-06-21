@@ -3,6 +3,8 @@ import { Modal, ModalContent } from '../modal';
 import LoginForm from './login-form';
 import SignUpForm from './reg-form'
 import Icon from '../icon'
+import { openModal } from '../../actions/modal'
+import RaisedButton from 'material-ui/RaisedButton'
 
 interface ILoginModalProps extends React.Props<any> {
   isVisible: boolean;
@@ -18,6 +20,24 @@ enum Panel {
   singup
 }
 
+export interface LoginButtonProps {
+  text?: string
+  buttonStyle?
+  className?: string
+  style?
+}
+export function makeLoginButton(dispatch) {
+  return ({ text = '登录', buttonStyle = {}, style = {}, className = '', }) => (
+    <RaisedButton
+      className={ ' ' + className }
+      secondary
+      style={ style }
+      onClick={ () => dispatch(openModal()) }
+      buttonStyle={ buttonStyle } >
+      { text }
+    </RaisedButton>
+  )
+}
 
 export default class LoginModal extends React.Component<ILoginModalProps, any> {
   state = {
@@ -50,7 +70,7 @@ export default class LoginModal extends React.Component<ILoginModalProps, any> {
             onClick={ onClose }
             name="guanbi"
             style={ { position: 'absolute', right: '0px' } }
-            >
+          >
           </Icon>
           <div style={ { padding: '7rem' } }>
             <div style={ {

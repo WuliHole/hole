@@ -16,6 +16,7 @@ interface ICommentFormProps {
   article: Post<any>
   postComment: IPostComment,
   children?
+  submitButton?: JSX.Element
 }
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
@@ -27,9 +28,10 @@ const { SideToolbar } = sideToolbarPlugin;
 let _postComment: IPostComment
 let _article: Post<any>
 let _authorId: number
+let text: string = '提交'
 
 const ButtonPlugin = createButtonPlugin({
-  text: '提交',
+  text,
   theme: 'comment-submit',
   onClick: (e, store) => {
     const editorState = store.getItem('getEditorState')() as EditorState
@@ -73,28 +75,28 @@ export default ({
   user,
   article,
   postComment,
-  children = null
+  children = null,
+  submitButton = <Button />
 }: ICommentFormProps) => {
   _postComment = postComment
   _article = article
-  _authorId = user.id
-  return <Container size={ 3 } center className="mt3 mb3">
-
-    <div className="clearfix m4 p2  bg-white">
-      <CommentAvatar user={ user } />
-      <CommentAuthor user={ user } />
-      <div className="comment-form mt3 ">
-        <HoleEditor
-          readOnly={ false }
-          plugins={ plugins } placeholder=".......写个评论" >
-          <InlineToolbar></InlineToolbar>
-          <SideToolbar></SideToolbar>
-          <Button></Button>
-        </HoleEditor>
-      </div>
+  _authorId = user && user.id
+  return <div className="clearfix  p2  bg-white">
+    { user && <CommentAvatar user={ user } /> }
+    { user && <CommentAuthor user={ user } /> }
+    <div className="comment-form mt3 ">
+      <HoleEditor
+        readOnly={ false }
+        plugins={ plugins }
+        placeholder=".......写个评论"
+      >
+        <InlineToolbar></InlineToolbar>
+        <SideToolbar></SideToolbar>
+        { submitButton }
+      </HoleEditor>
     </div>
     { children }
-  </Container>
+  </div>
 }
 
 
