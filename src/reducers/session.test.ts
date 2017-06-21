@@ -62,7 +62,7 @@ describe('Session Reducer', () => {
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
       expect(state.get('token')).toBeNull();
-      expect(state.get('user')).toBe(Map({}));
+      expect(state.get('user')).toBe(undefined);
     });
   });
 
