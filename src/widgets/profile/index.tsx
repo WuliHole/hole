@@ -58,7 +58,7 @@ export default class ProfileWidget
         secondary
         onClick={ this.toggleState }
         buttonStyle={ { color: '#fff' } } >
-        编辑
+        { this.state.readOnly ? '编辑' : '取消' }
       </RaisedButton>
     )
 
