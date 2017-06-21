@@ -29,7 +29,7 @@ export default
   }
 }
 
-export const CDN_HOST = 'http://oq3qzwm4b.bkt.clouddn.com/'
+export const CDN_HOST = 'http://lowsweet.qiniudn.com/'
 export function filePublicPathGen(fileKey: string) {
   return `${CDN_HOST}${fileKey}`
 }

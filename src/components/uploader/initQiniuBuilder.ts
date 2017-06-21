@@ -11,7 +11,7 @@ export default function initQiniuBuilder({
  }: UpdateOptions): QiniuUploader {
   return new UploaderBuilder()
     .debug(__DEV__ || __TEST__)
-    .domain('http://up-z1.qiniu.com')
+    .domain('http://up-z0.qiniu.com')
     .button(button)
     .tokenUrl(tokenUrl)
     .interceptor(defaultInterceptor)
