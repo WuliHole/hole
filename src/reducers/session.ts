@@ -22,7 +22,7 @@ import { fromJS } from 'immutable';
 import { getCookie } from '../utils/cookie'
 const INITIAL_STATE = fromJS({
   token: null,
-  user: {},
+  user: undefined,
   hasError: false,
   isLoading: false,
 });

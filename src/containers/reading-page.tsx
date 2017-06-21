@@ -10,7 +10,10 @@ import {
   default as CommentForm,
   CommentTable
 } from '../components/comment'
-
+import {
+  makeLoginButton,
+  LoginButtonProps
+} from '../components/login/login-modal'
 import { postComment, getComments, IGetComment } from '../actions/comment'
 import { findPostById } from '../redux-selector/posts'
 import { getCommentByPostId } from '../redux-selector/comments'
@@ -29,6 +32,7 @@ interface IReadingPageProps extends React.Props<any> {
     id: string
   }
   postComment
+  loginButton: () => (props: LoginButtonProps) => JSX.Element
 }
 
 
@@ -48,7 +52,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getPostById: id => dispatch(getById(id)),
     postComment: (params) => dispatch(postComment(params)),
-    getComments: (postId) => dispatch(getComments(postId))
+    getComments: (postId) => dispatch(getComments(postId)),
+    loginButton: () => ReadingPage.loginButton(dispatch),
   }
 }
 
@@ -98,23 +103,58 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
     const commetTable = this.props.comments
     const comments = this.comments ? this.comments.toJS() : []
 
+    let loginButton
+    if (!this.props.user) {
+      const LoginButton = this.props.loginButton()
+      loginButton = (
+        < LoginButton
+          text="登录以评论"
+          className="font-size-m"
+          style={ {
+            background: 'rgba(0,0,0,0)',
+            boxShadow: 'none'
+          } }
+          buttonStyle={ {
+            width: '100px',
+            borderRadius: '24px',
+            background: '#02b875',
+            color: '#fff'
+          } }
+        />
+      )
+    }
     return <div >
       <div className="bg-white">
-        <Container size={ post ? 3 : 1 } center>
+        <Container size={ post ? 3 : 1 }
+          center
+          style={ { minHeight: '320px' } }>
           <ArticleItem
             articleInfo={ post }
           />
         </Container>
       </div>
-
-      <CommentForm
-        user={ this.props.user.toJS() }
-        article={ post }
-        postComment={ this.props.postComment }
+      <Container size={ 3 } center
+        style={ { minHeight: '80px' } }
+        className="mt3 mb3"
+        backgroundTheme=""
       >
-      </CommentForm>
-      <CommentTable comments={ comments } />
+        <CommentForm
+          user={ this.props.user && this.props.user.toJS() }
+          article={ post }
+          postComment={ this.props.postComment }
+          submitButton={ loginButton }
+        >
+        </CommentForm>
+        <div style={ { marginTop: '30px' } }>
+          <CommentTable comments={ comments } />
+        </div>
+      </Container>
+
     </div>
+  }
+
+  static loginButton(dispatch) {
+    return makeLoginButton(dispatch)
   }
 }
 
