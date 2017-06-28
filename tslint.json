@@ -6,7 +6,6 @@
       "check-space"
     ],
     "curly": true,
-    "eofline": true,
     "forin": true,
     "indent": [
       true,
@@ -16,7 +15,7 @@
     "label-undefined": true,
     "max-line-length": [
       true,
-      80
+      140
     ],
     "no-arg": true,
     "no-bitwise": true,
