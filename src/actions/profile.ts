@@ -2,6 +2,9 @@ import * as ActionTypes from '../constants/profile'
 import { getProfile as reqGetProfile } from '../api/user'
 
 export function getProfile(userId: string | number) {
+  if (!userId) {
+    return
+  }
   return (dispatch, getState) => {
     return dispatch({
       types: [

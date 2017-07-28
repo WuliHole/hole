@@ -7,7 +7,7 @@ import Container from '../../components/container'
 import { EditorState } from 'draft-js'
 import Editor from '../../components/editor'
 import { Serlizer } from '../../components/editor/utils/serializer'
-import AppBar from 'material-ui/AppBar'
+import CommonAppBar from '../../widgets/commonAppBar'
 import Paper from 'material-ui/Paper'
 import CircularProgress from 'material-ui/CircularProgress'
 import Divider from 'material-ui/Divider'
@@ -19,7 +19,7 @@ import { getProfile } from '../../actions/profile'
 import { getUserPosts } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
 import { update } from '../../actions/session'
-import { isRejectAction } from '../../actions/utils'
+import { isRejectedAction } from '../../actions/utils'
 import { GET_PROFILE_SUCCESS } from '../../constants/profile'
 import { unique } from '../../utils/arrayUtils'
 import {
@@ -31,6 +31,7 @@ import {
   CardText
 } from 'material-ui/Card';
 import { primary1Color } from '../../store/theme'
+import isLogin from '../../store/isLogin'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
 import './profile.less'
 const connect = require('react-redux').connect
@@ -70,7 +71,7 @@ function mapDispatchToProps(dispatch) {
     getUserPosts: (uid) => dispatch(getUserPosts(uid)),
     updateProfile: (formName, sync = false) => {
       return dispatch(update(formName)).then(state => {
-        if (!isRejectAction(state)) {
+        if (!isRejectedAction(state)) {
           dispatch({
             type: GET_PROFILE_SUCCESS,
             payload: state.payload,
@@ -89,7 +90,14 @@ interface ProfileState {
 class Profile extends React.Component<ProfileProps, ProfileState> {
 
   get userId() {
-    return this.props.params.uid
+    let uid
+    if (this.props.params.uid) {
+      uid = this.props.params.uid
+    }
+    if (this.props.session.getIn(['user', 'id'])) {
+      uid = this.props.session.getIn(['user', 'id']).toString()
+    }
+    return uid
   }
 
   get profile(): Map<keyof User, any> {
@@ -138,13 +146,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 
     return (
       <Transition>
-        <AppBar
-          iconElementLeft={ <Goback style={ {
-            color: primary1Color
-          } }
-            history={ this.props.history } />
-          }
-        />
+        <CommonAppBar history={ this.props.history } />
 
         {/*profile container*/ }
 

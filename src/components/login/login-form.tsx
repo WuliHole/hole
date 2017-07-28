@@ -36,7 +36,7 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
         password
       }
     } = this.props;
-    
+
     return (
       <Form handleSubmit={ handleSubmit }>
         <Alert
@@ -89,7 +89,7 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
             } }
             className="block "
             id="qa-login-button"
-            >
+          >
             登录
           </Button>
 

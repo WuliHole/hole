@@ -1,0 +1,37 @@
+
+.homepage {
+  background-color: #000;
+  min-height: 100vh;
+
+  .content {
+    background-color: #000;
+    min-height: 100vh;
+  }
+
+  &-title {
+    animation: b 1.5s forwards;
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+    padding-top: 35%;
+    position: relative;
+  }
+
+  &-subtitle {
+    animation: b 1.5s forwards;
+    color: rgba(255, 255, 255, 0.4);
+    position: relative;
+  }
+}
+
+@keyframes b {
+
+  0% {
+    opacity: 0;
+    top: 15px;
+  }
+
+  100% {
+    opacity: 1;
+    top: 0;
+  }
+}

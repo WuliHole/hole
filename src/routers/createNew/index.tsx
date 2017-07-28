@@ -1,4 +1,6 @@
+import { loginRequired } from '../routeUtils'
 declare var require
+
 /* istanbul ignore next */
 /* tslint:disable */
 export default {
@@ -7,5 +9,6 @@ export default {
     require.ensure([], (require) => {
       cb(null, require('../../containers/createNew-page').default)
     })
-  }
+  },
+  onEnter: loginRequired('/login')
 }

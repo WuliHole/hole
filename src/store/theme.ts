@@ -13,8 +13,9 @@ export const gray = '#bcb5b9'
 
 export const muiTheme = getMuiTheme({
 
-  fontFamily: 'Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, \
-   Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif',
+  // fontFamily: 'Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, \
+  //  Microsoft YaHei, Noto Sans CJK SC, WenQuanYi Micro Hei, Arial, sans-serif',
+  fontFamily: `Roboto, sans-serif`,
   palette: {
     primary1Color: primary1Color,
 
@@ -38,7 +39,7 @@ export const muiTheme = getMuiTheme({
   },
   appBar: {
     color: '#fff',
-
+    height: 48,
     textColor: '#ffffff',
     padding: 75
   },
