@@ -18,7 +18,7 @@ import rootReducer from '../reducers';
 import { getCookie } from '../utils/cookie'
 declare const __DEV__: boolean; // from webpack
 
-function configureStore(initialState) {
+export function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
@@ -65,7 +65,7 @@ function _enableHotLoader(store) {
 
 function _getStorageConfig() {
   return {
-    key: 'typescript-react-redux-seed',
+    key: 'hole-session',
     serialize: (store) => {
       store.session = store.session.set('isLoading', false)
       store.session = store.session.set('hasError', false)
@@ -74,10 +74,12 @@ function _getStorageConfig() {
     },
     deserialize: (state) => ({
       session: state ? fromJS(JSON.parse(state)) : fromJS({
-        user: { id: getCookie('uid') }
+        // user: getCookie('uid') ? { id: getCookie('uid') } : undefined
       }),
     }),
   };
 }
 
-export default configureStore;
+const store = configureStore({})
+export default store;
+

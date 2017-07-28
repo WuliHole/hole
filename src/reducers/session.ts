@@ -35,7 +35,7 @@ function sessionReducer(state = INITIAL_STATE,
     case LOGIN_USER_PENDING:
       return state.merge(fromJS({
         token: null,
-        user: {},
+        user: undefined,
         hasError: false,
         isLoading: true,
       }));

@@ -22,6 +22,9 @@ import { Serlizer } from '../components/editor/utils/serializer'
 
 type POST_ID = string | number
 export function getUserPosts(uid: string | number) {
+  if (!uid) {
+    return
+  }
   return (dispatch, getState) => {
     return dispatch({
       types: [

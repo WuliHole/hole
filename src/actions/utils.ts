@@ -3,6 +3,6 @@
  *  ex :
  *     type:App/CREATE_POST_ERROR
  */
-export function isRejectAction(res) {
-  return /ERROR/.test(res.type)
+export function isRejectedAction(res) {
+  return /ERROR/.test(res.type) || !!res.payload.errMsg
 }

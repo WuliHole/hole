@@ -14,7 +14,7 @@ import NavigatorItem from '../components/navigator-item';
 import { requireAuth } from '../middleware/requireAuth';
 import Avatar from '../components/avatar'
 import Icon from '../components/icon'
-import { isRejectAction } from '../actions/utils'
+import { isRejectedAction } from '../actions/utils'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Popover from 'material-ui/Popover/Popover'
 import { List, ListItem } from 'material-ui/List'
@@ -23,12 +23,13 @@ import IconAdd from 'material-ui/svg-icons/content/add'
 import IconButton from 'material-ui/IconButton'
 import Snackbar from 'material-ui/Snackbar';
 import { muiTheme } from '../store/theme'
+import Profile from '../routers/profile/profile.page'
+import isLogin from '../store/isLogin'
 injectTapEven()
 
 interface IAppProps extends React.Props<any> {
   session: any;
   login: () => void;
-  logout: () => void;
   signup: () => void;
   modal: any;
   openLoginModal: () => void;
@@ -40,8 +41,6 @@ interface IAppProps extends React.Props<any> {
 };
 
 interface AppState {
-  anchorEl?: any
-  showPopMenu?: boolean
 }
 function mapStateToProps(state) {
   return {
@@ -65,81 +64,15 @@ function mapDispatchToProps(dispatch) {
 
 
 class App extends React.Component<IAppProps, AppState> {
-  public hadleCommit: () => void
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      anchorEl: null,
-      showPopMenu: false,
-    }
-  }
-
-  @requireAuth
-  loginIn() {
-  }
-
-  shouldHideNavi(): boolean {
-    const path = this.props.location.pathname
-    // Match verifying page
-    return /\/verify/.test(path)
-      // Match createNew
-      || /createNew/.test(path)
-      || /profile/.test(path)
-  }
-
-  handleOnClick = (ev) => {
-    this.setState({
-      anchorEl: ev.target,
-      showPopMenu: true
-    })
-  }
-
-  handleRequestClose = () => {
-    this.setState({ showPopMenu: false })
-  }
-
-  createPost = () => {
-    this.props.createPost()
-      .then(
-      s => !isRejectAction(s) && this.context.router.push('createNew')
-      )
-  }
-
-  navigateToProfile = () => {
-    this.setState({
-      showPopMenu: false
-    }, () => {
-      const uid = this.props.session.get('token')
-      this.context.router.push(`/profile/${uid}`)
-    })
-  }
-
   render() {
     const {
       children,
       session,
       login,
-      logout,
       signup,
       modal,
-      posts,
       closeLoginModal
     } = this.props;
-    const token = session.get('token', false);
-    const isLoggedIn = token && token !== null && typeof token !== 'undefined';
-    const nickName = session.getIn(['user', 'nickName'], '');
-
-    const avatar = <Avatar size={ 30 }
-      src={ isLoggedIn && session.get('user').get('avatar') }
-    />
-    const { hasError, errMsg = '~' } = posts.toJS()
-
-
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
         <div>
@@ -153,76 +86,6 @@ class App extends React.Component<IAppProps, AppState> {
               hasError={ session.get('hasError', false) }
               isVisible={ modal.get('opened', false) } />
           }
-          <Navigator testid="navigator" isVisible={ !this.shouldHideNavi() }>
-
-            <NavigatorItem mr>
-              <Link to="/">
-                <Logo />
-              </Link>
-            </NavigatorItem>
-
-
-            <div className="flex flex-auto"></div>
-
-            <NavigatorItem mr>
-              <Link to="/article">Artciles</Link>
-            </NavigatorItem>
-
-            <NavigatorItem mr>
-              <IconButton onClick={ this.createPost }><IconAdd /></IconButton>
-              <Snackbar
-                open={ !!hasError }
-                message={ errMsg }
-                autoHideDuration={ 3500 }
-                action="Create new post failed"
-              />
-            </NavigatorItem>
-
-            <NavigatorItem isVisible={ !isLoggedIn } mr>
-              <Button
-                style={ {
-                  background: 'rgba(0,0,0,0)',
-                  fontSize: '14px',
-                  color: '#449bf7',
-                  fontWeight: 300
-                } }
-                onClick={ this.loginIn.bind(this) }>
-                登录/注册
-            </Button>
-            </NavigatorItem>
-
-            <NavigatorItem isVisible={ isLoggedIn } >
-              <div onClick={ this.handleOnClick }
-                style={ { cursor: 'pointer' } }
-              >
-                { avatar }
-              </div>
-              { this.state.showPopMenu && <Popover
-                open={ this.state.showPopMenu }
-                anchorEl={ this.state.anchorEl }
-                targetOrigin={ { horizontal: 'right', vertical: 'top' } }
-                anchorOrigin={ { horizontal: 'right', vertical: 'bottom' } }
-                onRequestClose={ this.handleRequestClose }
-              >
-                <List style={ { minWidth: '150px' } }>
-                  <ListItem
-                    onClick={ this.navigateToProfile }
-                    primaryText="我的主页"
-                    className="center"
-                    style={ { fontSize: '14px' } }>
-                  </ListItem>
-
-                  <ListItem onClick={ logout } primaryText="退出"
-                    className="center"
-                    style={ { fontSize: '14px' } }>
-                  </ListItem>
-                </List>
-              </Popover>
-              }
-            </NavigatorItem>
-
-          </Navigator>
-
           <Content isVisible={ true }>
             { children }
           </Content>

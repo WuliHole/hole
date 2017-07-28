@@ -28,7 +28,7 @@ export default function promiseMiddleware({ dispatch }) {
     return promise.then(
       result => {
         return dispatch({
-          type: FULFILLED,
+          type: result.errMsg ? REJECTED : FULFILLED,
           payload: result,
           meta,
         });

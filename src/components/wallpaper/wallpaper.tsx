@@ -2,7 +2,7 @@ import React = require('react')
 import './wallpaper.less'
 
 interface WallPaperProps {
-  src?: string
+  src: string
   style?: React.CSSProperties
   className?: string
 }
