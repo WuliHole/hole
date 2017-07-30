@@ -118,7 +118,7 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
       { this.elementRight() }
     </div>
     return <AppBar
-      iconElementLeft={ <Link to="/"><Logo /></Link> }
+      iconElementLeft={ <Link to="/" className="text-decoration-none"><Logo /></Link> }
       iconElementRight={
         rightElement
       }
