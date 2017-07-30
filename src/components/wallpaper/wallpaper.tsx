@@ -7,11 +7,17 @@ interface WallPaperProps {
   className?: string
 }
 
-export const defualtWallPaper = 'http://lowsweet.qiniudn.com/bg?imageView2/1/w/1599/h/1500'
+export const defualtWallPaper = '../../assets/pattern.png'
+export const defualWallpaperStyle: React.CSSProperties = {
+  backgroundRepeat: 'repeat',
+  backgroundPosition: 'center'
+}
 
 export class WallPaper extends React.Component<WallPaperProps, void> {
+  static defualtWallPaper = defualtWallPaper
+  static defualStyle = defualWallpaperStyle
+
   private e: HTMLDivElement
-  static GradientColor = 'rgba(0, 0, 0, 0.75)'
 
   constructor(props) {
     super(props)
@@ -22,9 +28,7 @@ export class WallPaper extends React.Component<WallPaperProps, void> {
       const bg = new Image()
       bg.src = this.props.src || ''
       bg.onload = () => {
-        const color = WallPaper.GradientColor
-        this.e.classList.add('bg-image')
-        this.e.style.backgroundImage = `linear-gradient(${color}, ${color}),url('${this.props.src}')`
+        this.e.style.backgroundImage = `url('${this.props.src}')`
       }
     }
   }
