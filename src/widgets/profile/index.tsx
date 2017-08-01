@@ -55,7 +55,7 @@ export default class ProfileWidget
     const editButton = (
       <RaisedButton
         className="profile-submit-button"
-        secondary
+        primary
         onClick={ this.toggleState }
         buttonStyle={ { color: '#fff' } } >
         { this.state.readOnly ? '编辑' : '取消' }

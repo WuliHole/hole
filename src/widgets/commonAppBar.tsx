@@ -1,4 +1,5 @@
 import React = require('react')
+import * as classnames from 'classnames'
 import AppBar from 'material-ui/AppBar'
 import Logo from '../components/logo'
 import Avatar from '../components/avatar'
@@ -16,6 +17,7 @@ interface CommonAppBarProps {
   user?: User
   history: HistoryBase
   openLoginModal?: any
+  fixed?: boolean
 }
 
 interface CommonAppBarState {
@@ -114,15 +116,20 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
   }
 
   render() {
+    const { fixed = true } = this.props
     const rightElement = <div className="app-bar-right-element">
       { this.elementRight() }
     </div>
-    return <AppBar
-      iconElementLeft={ <Link to="/" className="text-decoration-none"><Logo /></Link> }
-      iconElementRight={
-        rightElement
-      }
-    />
+    const cls = classnames({ fixed })
+    const style = fixed ? { top: 0, width: '100%', zIndex: 999 } : {}
+    return <div className={ cls } style={ style }>
+      <AppBar
+        iconElementLeft={ <Link to="/" className="text-decoration-none"><Logo /></Link> }
+        iconElementRight={
+          rightElement
+        }
+      />
+    </div>
   }
 }
 

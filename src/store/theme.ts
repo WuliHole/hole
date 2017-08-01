@@ -6,10 +6,11 @@ import {
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
-export const primary1Color = '#FDBD39'
-export const secondaryColor = '#449bf7'
+export const primary1Color = '#2592F6'
+export const secondaryColor = '#37C936'
 export const accent1Color = secondaryColor
-export const gray = '#bcb5b9'
+export const gray = '#88959E'
+export const buttonBgColor = '#E7F3FF'
 
 export const muiTheme = getMuiTheme({
 
@@ -43,6 +44,10 @@ export const muiTheme = getMuiTheme({
     textColor: '#ffffff',
     padding: 75
   },
+  menuItem: {
+    hoverColor: buttonBgColor,
+    selectedTextColor: primary1Color,
+  },
   raisedButton: {
     primaryTextColor: '#fff',
     primaryColor: primary1Color,
@@ -50,8 +55,11 @@ export const muiTheme = getMuiTheme({
     secondaryTextColor: '#fff'
 
   },
-  svgIcon: {
+  icon: {
     color: gray
+  },
+  svgIcon: {
+    color: gray,
   },
 })
 
