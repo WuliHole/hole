@@ -2,11 +2,12 @@ declare var require
 /* istanbul ignore next */
 /* tslint:disable */
 export default {
-  // path: 'profile/:uid',
-  path: '/profile/:uid',
+  path: '/dashboard/123',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
-      cb(null, require('./profile.page').default)
+      cb(null, {
+        viewContent: require('../../profile/profile.page').default
+      })
     })
   },
 }

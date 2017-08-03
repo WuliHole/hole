@@ -42,12 +42,6 @@ export default
             <Container size={ 4 } center className="modal">
               <div className="modal-title flex items-center">
                 <Logo textColor="#fff" />
-                {/* <div className="homepage-title h2">
-                  HOLE
-                </div>
-                <div className="homepage-subtitle font-size-s" >
-                  Alpha
-                </div> */}
               </div>
               <div className="modal-content">
                 <div>

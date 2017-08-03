@@ -1,11 +1,14 @@
 declare var require
+import t from './routers/profile'
 /* istanbul ignore next */
 /* tslint:disable */
 export default {
-  path: '/dashboard',
-  getComponent(nextState, cb) {
+  // path: 'profile/:uid',
+  path: 'dashboard',
+  childRoutes: [t],
+  getComponents(location, cb) {
     require.ensure([], (require) => {
-      cb(null, require('./dashboard.page').default)
+      cb(null, { children: require('./dashboard.page').default, })
     })
   }
 }

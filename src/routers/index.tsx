@@ -12,6 +12,7 @@ import isLogin from '../store/isLogin'
 import toJS from '../utils/immutable-to-js'
 import Home from './home'
 import Logout from './loggedOut'
+import DashBoard from './dashboard'
 /* istanbul ignore next */
 export const rootRoute = {
   childRoutes: [{
@@ -38,7 +39,8 @@ export const rootRoute = {
       Verify,
       CreateNew,
       Profile,
-      Post
+      Post,
+      DashBoard
     ]
   }]
 }

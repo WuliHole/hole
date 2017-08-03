@@ -38,6 +38,7 @@ interface IAppProps extends React.Props<any> {
   location: Location
   history: History
   posts
+  components
 };
 
 interface AppState {
