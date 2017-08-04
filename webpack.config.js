@@ -5,6 +5,7 @@ const proxy = require('./server/webpack-dev-proxy');
 const loaders = require('./webpack/loaders');
 const plugins = require('./webpack/plugins');
 const postcssInit = require('./webpack/postcss');
+const localIp = require('ip').address()
 // const applicationEntries = process.env.NODE_ENV === 'development'
 //   ? ['webpack-hot-middleware/client?reload=true']
 //   : [];
@@ -23,7 +24,7 @@ module.exports = {
 
     publicPath: process.env.NODE_ENV === 'production'
       ? '/'
-      : 'http://localhost:8080/',
+      : `http://${localIp}:8080/`,
 
     sourceMapFilename: process.env.NODE_ENV === 'production'
       ? '[name].[hash].js.map'
@@ -56,6 +57,7 @@ module.exports = {
 
   devServer: {
     historyApiFallback: { index: '/' },
+    disableHostCheck: true,
     proxy: Object.assign({}, proxy(), { '/api/*': 'http://localhost:3000' }),
   },
 
