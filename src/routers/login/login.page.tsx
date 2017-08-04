@@ -36,8 +36,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     this.props.login()
       .then((res) => {
         if (!isRejectedAction(res)) {
-          const user: User = this.props.session.get('user').toJS()
-          this.props.history.push(`/profile/${user.id}`)
+          this.props.history.push(`/dashboard/recent-post`)
         }
       })
   }

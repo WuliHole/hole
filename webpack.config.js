@@ -5,7 +5,6 @@ const proxy = require('./server/webpack-dev-proxy');
 const loaders = require('./webpack/loaders');
 const plugins = require('./webpack/plugins');
 const postcssInit = require('./webpack/postcss');
-
 // const applicationEntries = process.env.NODE_ENV === 'development'
 //   ? ['webpack-hot-middleware/client?reload=true']
 //   : [];

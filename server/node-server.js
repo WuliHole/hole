@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const genKey = require('draft-js').genKey
+const compression = require('compression')
 let users;
 
 /**
@@ -33,7 +34,7 @@ authPassport.readUsers()
 // Enable various security helpers.
 app.use(helmet());
 
-
+app.use(compression())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 

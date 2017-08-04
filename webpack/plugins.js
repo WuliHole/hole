@@ -1,5 +1,4 @@
 'use strict';
-
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -7,6 +6,8 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SplitByPathPlugin = require('webpack-split-by-path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const sourceMap = process.env.TEST || process.env.NODE_ENV !== 'production'
   ? [new webpack.SourceMapDevToolPlugin({ filename: null, test: /\.tsx?$/ })]
   : [];
@@ -15,7 +16,9 @@ const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: process.env.NODE_ENV !== 'production',
     __TEST__: JSON.stringify(process.env.TEST || false),
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production')
+    },
   }),
 
   new HtmlWebpackPlugin({
@@ -26,7 +29,7 @@ const basePlugins = [
   new CopyWebpackPlugin([
     { from: 'src/assets', to: 'assets' },
   ]),
-  new ExtractTextPlugin('styles.css', { allChunks: true }),
+  new ExtractTextPlugin('[name]-[contenthash].css'),
 
 ].concat(sourceMap);
 
@@ -40,14 +43,35 @@ const devPlugins = [
 ];
 
 const prodPlugins = [
+  new BundleAnalyzerPlugin(),
 
-  new webpack.optimize.CommonsChunkPlugin(
-    { name: ['commin'], minChunks: Infinity, async: true }
-  ),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: ({ resource }) => (
+      resource &&
+      resource.indexOf('node_modules') >= 0 &&
+      resource.match(/\.js$/)
+    ),
+  }),
 
-  new SplitByPathPlugin([
-    { name: 'vendor', path: [path.join(__dirname, '..', 'node_modules/')] },
-  ]),
+  new webpack.optimize.CommonsChunkPlugin({
+    async: 'common-in-lazy',
+    minChunks: ({ resource } = {}) => (
+      resource &&
+      resource.includes('node_modules') &&
+      /draft-js/.test(resource)
+    ),
+  }),
+
+  new webpack.optimize.CommonsChunkPlugin({
+    async: 'used-twice',
+    minChunks: (module, count) => (
+      count >= 2
+    ),
+  }),
+
+  new webpack.optimize.DedupePlugin(),
+
   new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
