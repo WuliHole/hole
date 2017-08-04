@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux'
 import { getUserPosts, create } from '../../actions/posts'
 import { isRejectedAction } from '../../actions/utils'
 import './dashboard.less'
+import Container from '../../components/container';
 
 function mapStateToProps(state) {
   return state
@@ -18,13 +19,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onCreate: bindActionCreators(create, dispatch)
+    onCreate: bindActionCreators(create, dispatch),
+    dispatch
   }
 }
 
 interface ViewProps {
-  history: HistoryBase,
+  history: HistoryBase
   viewContent: JSX.Element
+  posts
+  session
+  profile
+  dispatch
   onCreate: () => Promise<any>
 }
 
@@ -51,47 +57,80 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
 
   render() {
     const { history, viewContent } = this.props
-    const l = []
-    l.push(['浏览', <RemoveRedEye />])
-    l.push(['设置', <Settings />])
+    const l = [
+      { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post' },
+      { text: '设置', icon: <Settings />, path: '/dashboard/setting' }
+    ]
     const sideBar = (
       <div style={ { height: '100vh', position: 'fixed', ...style.paper } } className="sidebar">
         <Paper style={ style.paper }>
-
-          <Menu selectedMenuItemStyle={ style.selectedMenuItem } >
-            <div className="flex items-center m3">
-              <RaisedButton
-                buttonStyle={ style.raisedBtn.button }
-                onClick={ this.createPost }
-                style={ style.raisedBtn.container }
-                secondary >
-                新建文章
+          <div className="flex items-center m3">
+            <RaisedButton
+              buttonStyle={ style.raisedBtn.button }
+              onClick={ this.createPost }
+              style={ style.raisedBtn.container }
+              secondary >
+              新建文章
               </RaisedButton >
-            </div>
-            { l.map((i, index) => {
-              const text = i[0]
-              const icon = i[1]
-              return < MenuItem
-                key={ text }
-                onClick={ e => this.setState({ selectedItem: text }) }
-                className={ text === this.state.selectedItem ? 'profile-item-active' : '' }
-                primaryText={ text }
-                style={ style.item }
-                leftIcon={ icon }
-              />
-            })
-            }
-          </Menu>
+          </div>
+          { l.map((i, index) => {
+            const { text, icon, path } = i
+            return < MenuItem
+              key={ text }
+              onClick={ e => {
+                this.setState({ selectedItem: text })
+                if (path) {
+                  this.props.history.push(path)
+                }
+              } }
+              className={ text === this.state.selectedItem ? 'menu-item-active' : '' }
+              primaryText={ text }
+              style={ style.item }
+              leftIcon={ icon }
+            />
+          })
+          }
         </Paper>
       </div>
     )
+
     return <Transition>
       <div className="dashboard">
         <CommonAppBar history={ history } />
         { sideBar }
-        { viewContent }
+        <div className="content-container">
+          { this.props.viewContent
+            &&
+            <Container center size={ 4 } style={ { padding: '3rem', marginTop: '4rem' } }>
+              { this.renderContent() }
+            </Container>
+          }
+        </div>
       </div>
     </Transition>
+  }
+
+  renderContent() {
+    const {
+       viewContent,
+      session,
+      history,
+      profile,
+      posts,
+      dispatch
+      } = this.props
+    if (viewContent) {
+      const props = {
+        renderAppBar: false,
+        session,
+        posts: posts.get('meta'),
+        profile: profile.get('meta'),
+        history,
+        dispatch
+      }
+      const newViewContent = React.cloneElement(viewContent, props)
+      return newViewContent
+    }
   }
 }
 

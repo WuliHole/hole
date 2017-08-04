@@ -65,6 +65,7 @@ function mapDispatchToProps(dispatch) {
 
 
 class App extends React.Component<IAppProps, AppState> {
+
   render() {
     const {
       children,
@@ -74,6 +75,8 @@ class App extends React.Component<IAppProps, AppState> {
       modal,
       closeLoginModal
     } = this.props;
+
+
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
         <div>

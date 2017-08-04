@@ -6,9 +6,8 @@ import Moment = require('moment')
 import Transition from '../../components/transition'
 import Container from '../../components/container'
 import { EditorState } from 'draft-js'
-
-import { Serlizer } from '../../components/editor/utils/serializer'
 import CommonAppBar from '../../widgets/commonAppBar'
+import { Serlizer } from '../../components/editor/utils/serializer'
 import CircularProgress from 'material-ui/CircularProgress'
 import Goback from '../../widgets/goback'
 import ProfileForm from '../../widgets/profile'
@@ -43,15 +42,16 @@ interface ProfileProps extends React.Props<any> {
   updateProfile: (formName: string, sync?: boolean) => Promise<any>
   groupedPostsByAuthorId: GroupedPosts
   params
+  renderAppBar?: boolean
 }
 
 type GroupedPosts = OrderedMap<number, Map<string, Map<keyof Post<any>, any>>>
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
   return {
     profile: state.profile,
     groupedPostsByAuthorId: groupPostsByAuthorId(state),
-    session: state.session
+    session: state.session,
   }
 }
 
@@ -120,6 +120,7 @@ class Profile extends React.Component<ProfileProps, void> {
   }
 
   render() {
+    const { renderAppBar = true } = this.props
     const profileForm = <ProfileForm
       profile={ this.profile }
       onSave={ this.onSave }
@@ -128,10 +129,9 @@ class Profile extends React.Component<ProfileProps, void> {
     return (
       <Transition >
         <div style={ { marginTop: 50 } }>
-          <CommonAppBar history={ this.props.history } />
+          { renderAppBar && <CommonAppBar history={ this.props.history } /> }
           { this.content() }
         </div>
-
       </Transition>
     )
   }
@@ -140,7 +140,7 @@ class Profile extends React.Component<ProfileProps, void> {
     const loader = <CircularProgress
       style={ { marginLeft: '45%', marginTop: '5rem' } }
     />
-    return <Container size={ 5 } center backgroundTheme="background-color-gray profile-container" style={ { marginTop: '14px' } }>
+    return <Container size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px' } }>
       {/*profile container*/ }
       <Container size={ 4 } center className="profile">
         {
