@@ -22,8 +22,7 @@ interface ILoginFormProps {
   };
 };
 
-// Making this a class-based component until redux-form typings support
-// stateless functional components.
+
 class LoginForm extends React.Component<ILoginFormProps, void> {
   render() {
     const {

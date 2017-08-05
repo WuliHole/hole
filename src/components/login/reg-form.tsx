@@ -22,8 +22,7 @@ interface ISignUpFormProps {
   };
 };
 
-// Making this a class-based component until redux-form typings support
-// stateless functional components.
+
 class SignUpForm extends React.Component<ISignUpFormProps, void> {
   render() {
     const {
@@ -75,7 +74,7 @@ class SignUpForm extends React.Component<ISignUpFormProps, void> {
             } }
             className="block "
             id="qa-signup-button"
-            >
+          >
             发送验证邮件
           </Button>
         </FormGroup>

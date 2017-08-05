@@ -1,3 +1,5 @@
+import { notLoggedInRequired } from '../routeUtils'
+
 declare var require
 /* istanbul ignore next */
 /* tslint:disable */
@@ -7,5 +9,6 @@ export default {
     require.ensure([], (require) => {
       cb(null, require('./logout.page').default)
     })
-  }
+  },
+  onEnter: notLoggedInRequired('/')
 }
