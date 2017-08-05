@@ -1,9 +1,5 @@
-
-/**
- * function f provide value to make sure if it exist
- */
-export function unique<T>(xs: T[], f?: (value: T) => any): T[] {
-  if (!xs) {
+export function unique<T>(xs: T[], valueExtractor?: (value: T) => any): T[] {
+  if (!Array.isArray(xs)) {
     throw new Error('invalid array')
   }
 
@@ -15,7 +11,7 @@ export function unique<T>(xs: T[], f?: (value: T) => any): T[] {
   let result = []
 
   xs.forEach(v => {
-    const value = f ? f(v) : v
+    const value = valueExtractor ? valueExtractor(v) : v
     if (mem.indexOf(value) === -1) {
       result.push(v)
       mem.push(value)
