@@ -15,9 +15,6 @@ const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: process.env.NODE_ENV !== 'production',
     __TEST__: JSON.stringify(process.env.TEST || false),
-    'process.env': {
-      'NODE_ENV': JSON.stringify('production'),
-    },
   }),
 
   new HtmlWebpackPlugin({
@@ -42,6 +39,11 @@ const devPlugins = [
 ];
 
 const prodPlugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production'),
+    },
+  }),
   // new BundleAnalyzerPlugin(),
 
   new webpack.optimize.CommonsChunkPlugin({

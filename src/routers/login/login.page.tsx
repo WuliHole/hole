@@ -1,4 +1,5 @@
 import React = require('react')
+import { PropTypes } from 'react'
 import LoginForm from '../../components/login/login-form'
 const connect = require('react-redux').connect
 import { loginUser } from '../../actions/session'
@@ -29,17 +30,25 @@ function mapDispatchToProps(dispatch) {
 }
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
-  constructor(props) {
+  static contextTypes = {
+    displayError: PropTypes.func
+  }
+
+  constructor(props, context) {
     super(props)
   }
+
   handleSubmit = () => {
     this.props.login()
       .then((res) => {
         if (!isRejectedAction(res)) {
           this.props.history.push(`/dashboard/recent-post`)
+        } else {
+          (this.context.displayError as DisplayError)(res.payload.errMsg)
         }
       })
   }
+
   render() {
     return <div className="LoginPage" >
       <WallPaper src={ defualtWallPaper }>

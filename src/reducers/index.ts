@@ -6,12 +6,14 @@ import modal from './modal';
 import comment from './comment'
 import profile from './profile'
 import posts from './posts'
+import toast from './toast'
 const rootReducer = combineReducers({
   session,
   profile,
   posts,
   modal,
   comment,
+  toast,
   routing: routerReducer,
   form: formReducer,
 });

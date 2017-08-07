@@ -1,30 +1,22 @@
 import * as React from 'react';
-import { PropTypes } from 'react'
+import { PropTypes, } from 'react'
 const connect = require('react-redux').connect;
+import { bindActionCreators } from 'redux'
 import { Link, History } from 'react-router'
 import { loginUser, logoutUser, signUpUser } from '../actions/session';
 import { openModal, closeModal } from '../actions/modal';
 import { create } from '../actions/posts';
-import Button from '../components/button';
 import Content from '../components/content';
 import LoginModal from '../components/login/login-modal';
-import Logo from '../components/logo';
-import Navigator from '../components/navigator';
-import NavigatorItem from '../components/navigator-item';
-import { requireAuth } from '../middleware/requireAuth';
-import Avatar from '../components/avatar'
-import Icon from '../components/icon'
+
 import { isRejectedAction } from '../actions/utils'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Popover from 'material-ui/Popover/Popover'
-import { List, ListItem } from 'material-ui/List'
+
 import * as injectTapEven from 'react-tap-event-plugin'
-import IconAdd from 'material-ui/svg-icons/content/add'
-import IconButton from 'material-ui/IconButton'
-import Snackbar from 'material-ui/Snackbar';
 import { muiTheme } from '../store/theme'
-import Profile from '../routers/profile/profile.page'
-import isLogin from '../store/isLogin'
+import Toast from '../components/toast'
+import { message, error, removeFirst } from '../actions/toast'
+import { List } from 'immutable'
 injectTapEven()
 
 interface IAppProps extends React.Props<any> {
@@ -38,17 +30,23 @@ interface IAppProps extends React.Props<any> {
   location: Location
   history: History
   posts
-  components
+  toast
+  displayMessage: typeof message
+  displayError: typeof error
+  shiftToast: typeof removeFirst
 };
+
 
 interface AppState {
 }
+
 function mapStateToProps(state) {
   return {
     session: state.session,
     router: state.router,
     modal: state.modal,
-    posts: state.posts
+    posts: state.posts,
+    toast: state.toast
   };
 }
 
@@ -59,12 +57,39 @@ function mapDispatchToProps(dispatch) {
     logout: () => dispatch(logoutUser()),
     openLoginModal: () => dispatch(openModal()),
     closeLoginModal: () => dispatch(closeModal()),
-    createPost: () => dispatch(create())
+    createPost: () => dispatch(create()),
+    displayMessage: bindActionCreators(message, dispatch),
+    displayError: bindActionCreators(error, dispatch),
+    shiftToast: bindActionCreators(removeFirst, dispatch)
   };
 }
 
 
+
 class App extends React.Component<IAppProps, AppState> {
+  static childContextTypes = {
+    displayError: PropTypes.func,
+    displayMessage: PropTypes.func,
+    shiftToast: PropTypes.func
+  }
+
+  getChildContext() {
+    const { displayError, displayMessage } = this
+    return {
+      displayError,
+      displayMessage,
+    }
+  }
+
+  displayMessage: DisplayMessage = (message: string, duration = 3000) => {
+    this.props.displayMessage(message)
+    setTimeout(() => this.props.shiftToast('message'), duration)
+  }
+
+  displayError: DisplayError = (error: string, duration = 3000) => {
+    this.props.displayError(error)
+    setTimeout(() => this.props.shiftToast('error'), duration)
+  }
 
   render() {
     const {
@@ -73,13 +98,16 @@ class App extends React.Component<IAppProps, AppState> {
       login,
       signup,
       modal,
-      closeLoginModal
+      closeLoginModal,
+      toast
     } = this.props;
-
+    const messages = toast.get('messages')
+    const errors = toast.get('errors')
 
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
         <div>
+          <Toast messages={ messages } error={ errors } />
           {
             modal.get('opened') &&
             <LoginModal
