@@ -21,8 +21,8 @@ injectTapEven()
 
 interface IAppProps extends React.Props<any> {
   session: any;
-  login: () => void;
-  signup: () => void;
+  login: () => Promise<any>;
+  signup: () => Promise<any>;
   modal: any;
   openLoginModal: () => void;
   closeLoginModal: () => void;
@@ -91,6 +91,26 @@ class App extends React.Component<IAppProps, AppState> {
     setTimeout(() => this.props.shiftToast('error'), duration)
   }
 
+  login = () => {
+    this.props.login()
+      .then(res => {
+        if (isRejectedAction(res)) {
+          this.displayError(res.payload.errMsg)
+        } else {
+          this.props.closeLoginModal()
+        }
+      })
+  }
+
+  signup = () => {
+    this.props.signup()
+      .then(res => {
+        if (isRejectedAction(res)) {
+          this.displayError(res.payload.errMsg)
+        }
+      })
+  }
+
   render() {
     const {
       children,
@@ -111,8 +131,8 @@ class App extends React.Component<IAppProps, AppState> {
           {
             modal.get('opened') &&
             <LoginModal
-              login={ login }
-              signup={ signup }
+              login={ this.login }
+              signup={ this.signup }
               onClose={ closeLoginModal }
               isPending={ session.get('isLoading', false) }
               hasError={ session.get('hasError', false) }

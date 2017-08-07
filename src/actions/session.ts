@@ -67,7 +67,6 @@ export function loginUser() {
       payload: {
         promise: login(user)
           .then((res) => {
-            dispatch(closeModal())
             return res;
           }),
       },

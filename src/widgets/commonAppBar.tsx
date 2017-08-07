@@ -1,4 +1,5 @@
 import React = require('react')
+import { PropTypes } from 'react'
 import * as classnames from 'classnames'
 import AppBar from 'material-ui/AppBar'
 import Logo from '../components/logo'
@@ -12,6 +13,7 @@ import { logoutUser } from '../actions/session'
 import { openModal } from '../actions/modal'
 import isLogin from '../store/isLogin'
 import './commonAppBar.less'
+import { isRejectedAction } from '../actions/utils'
 interface CommonAppBarProps {
   logout?: any
   user?: User
@@ -41,6 +43,10 @@ function mapDispatchToProps(dispatch) {
 
 @connect(mapStateToProps, mapDispatchToProps)
 class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState> {
+  static contextType = {
+    displayError: PropTypes.func
+  }
+
   state = {
     showPopMenu: false,
     anchorEl: null
@@ -65,7 +71,14 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
 
   logout = () => {
     this.props.logout()
-    this.props.history.push('/logged-out')
+      .then(res => {
+        if (!isRejectedAction(res)) {
+          this.props.history.push('/logged-out')
+        } else {
+          const error: DisplayError = this.context.displayError
+          error(res.payload.errMsg)
+        }
+      })
   }
 
   elementRight() {

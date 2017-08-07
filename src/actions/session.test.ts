@@ -68,7 +68,6 @@ describe('LOGIN_USER async actions', () => {
 
     const expectedActions = [
       { type: Types.LOGIN_USER_PENDING },
-      { type: 'MODAL/CLOSE' },
       {
         type: Types.LOGIN_USER_SUCCESS,
         payload: response,
