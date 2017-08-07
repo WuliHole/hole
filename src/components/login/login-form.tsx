@@ -38,19 +38,6 @@ class LoginForm extends React.Component<ILoginFormProps, void> {
 
     return (
       <Form handleSubmit={ handleSubmit }>
-        <Alert
-          testid="alert-loading"
-          isVisible={ isPending }>
-          Loading...
-        </Alert>
-        <Alert
-          testid="alert-error"
-          id="qa-alert"
-          isVisible={ hasError }
-          status="error">
-          <Icon name="jinggao" />Invalid username and password
-        </Alert>
-
         <FormGroup testid="login-username">
           <Input
             type="text" fieldDefinition={ username }

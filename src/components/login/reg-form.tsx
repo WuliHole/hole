@@ -37,21 +37,6 @@ class SignUpForm extends React.Component<ISignUpFormProps, void> {
 
     return (
       <Form handleSubmit={ handleSubmit }>
-        <Alert
-          testid="alert-loading"
-          isVisible={ isPending }>
-          正在发送验证邮件
-        </Alert>
-        { email.touched &&
-          <Alert
-            testid="alert-error"
-            id="qa-alert"
-            isVisible={ hasError }
-            status="error">
-            <Icon name="jinggao" />邮箱已注册
-        </Alert>
-        }
-
         <FormGroup testid="signup-username">
           <Input
             type="text" fieldDefinition={ email }

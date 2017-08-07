@@ -3,7 +3,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
 
-  LOGOUT_USER,
+  LOGOUT_USER_PENDING,
+  LOGOUT_USER_ERROR,
+  LOGOUT_USER_SUCCESS,
 
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
@@ -52,12 +54,14 @@ function sessionReducer(state = INITIAL_STATE,
     case LOGIN_USER_ERROR:
     case SET_USER_PASSWORD_ERROR:
     case UPDATE_USER_ERROR:
+    case LOGOUT_USER_ERROR:
       return state.merge(fromJS({
         hasError: true,
         isLoading: false,
       }));
 
     case SET_USER_PASSWORD_PENDING:
+    case LOGOUT_USER_PENDING:
     case UPDATE_USER_PENDING:
       return state.merge({
         isLoading: true
@@ -75,7 +79,7 @@ function sessionReducer(state = INITIAL_STATE,
         user: action.payload
       })
 
-    case LOGOUT_USER:
+    case LOGOUT_USER_SUCCESS:
       return state.merge(INITIAL_STATE);
 
     default:

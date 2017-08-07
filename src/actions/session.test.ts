@@ -183,13 +183,25 @@ describe('Update user Async Actions', () => {
 })
 
 
-describe('Logout action', () => {
-  it('logout success', () => {
+describe('Logout Async Action', () => {
+  it('logout success', (done) => {
+    const response = {}
+    nock.get('*', response)
+
     const expectedActions = [
-      { type: Types.LOGOUT_USER },
+      { type: Types.LOGOUT_USER_PENDING },
+      {
+        type: Types.LOGOUT_USER_SUCCESS,
+        payload: response,
+        meta: undefined
+      },
     ]
     const store = mockStore({})
-    store.dispatch(logoutUser())
-    expect(store.getActions()).toEqual(expectedActions)
+    return store.dispatch(logoutUser())
+      .then(res => {
+        expect(store.getActions()).toEqual(expectedActions, res)
+        nock.restore()
+        done()
+      })
   })
 })

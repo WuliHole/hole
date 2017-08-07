@@ -1,4 +1,4 @@
-import { post } from '../server/';
+import { get, post } from '../server/';
 
 const LOGIN_ERR_MSG = `
   The username or password you have entered is invalid.
@@ -14,4 +14,8 @@ export function login(user) {
 
 export function signup(email: string) {
   return post('/auth/signup', { email })
+}
+
+export function logout() {
+  return get('/auth/signout')
 }

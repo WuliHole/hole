@@ -7,7 +7,9 @@ import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER,
+  LOGOUT_USER_PENDING,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
   UPDATE_USER_PENDING
@@ -56,11 +58,26 @@ describe('Session Reducer', () => {
 
 
   describe('on LOGOUT_USER', () => {
-    it('should save the username', () => {
-      state = fireAction(sessionReducer, state, LOGOUT_USER);
+
+    it('should be loading', () => {
+      state = fireAction(sessionReducer, state, LOGOUT_USER_PENDING);
+
+      expect(state.get('isLoading')).toBe(true);
+    });
+
+    it('should clear session', () => {
+      state = fireAction(sessionReducer, state, LOGOUT_USER_SUCCESS);
 
       expect(state.get('isLoading')).toBe(false);
       expect(state.get('hasError')).toBe(false);
+      expect(state.get('token')).toBeNull();
+      expect(state.get('user')).toBe(undefined);
+    });
+
+    it('should has error', () => {
+      state = fireAction(sessionReducer, state, LOGOUT_USER_ERROR);
+      expect(state.get('isLoading')).toBe(false);
+      expect(state.get('hasError')).toBe(true);
       expect(state.get('token')).toBeNull();
       expect(state.get('user')).toBe(undefined);
     });

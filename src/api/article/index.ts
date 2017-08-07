@@ -24,9 +24,7 @@ export function getPostById(postId: string | number) {
   })
 }
 
-export function updatePost(
-  postId: string | number,
-  content: RawDraftContentState) {
+export function updatePost(postId: string | number, content: RawDraftContentState) {
   return new Promise((resolve, reject) => {
     return put(`/post/${postId}`, { content })
       .then((json: any) => resolve(json))

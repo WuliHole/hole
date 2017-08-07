@@ -1,5 +1,5 @@
 import assert from '../utils/assert'
-import { login, signup } from '../api/auth/';
+import { login, signup, logout } from '../api/auth/';
 import {
   setPassword as setUserPassword,
   update as updateUserInfo
@@ -9,7 +9,9 @@ import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER,
+  LOGOUT_USER_PENDING,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_ERROR,
   FORM_RESET,
   SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR,
@@ -118,7 +120,16 @@ export function update(formName: string) {
 }
 
 export function logoutUser() {
-  return {
-    type: LOGOUT_USER,
-  };
+  return (dispatch) => {
+    return dispatch({
+      types: [
+        LOGOUT_USER_PENDING,
+        LOGOUT_USER_SUCCESS,
+        LOGOUT_USER_ERROR
+      ],
+      payload: {
+        promise: logout()
+      }
+    })
+  }
 }

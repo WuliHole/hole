@@ -11,29 +11,27 @@ describe('Alert Component', () => {
     expect(alert).not.toBeNull();
     expect(alert.text()).toEqual('Loading...');
     expect(alert.hasClass('p2')).toBe(true);
-    expect(alert.hasClass('bg-blue white')).toBe(true);
+    expect(alert.hasClass('alert-info white')).toBe(true);
     expect(alert.hasClass('hide')).toBe(true);
     expect(alert.hasClass('block')).toBe(false);
   });
 
-  it('should create an alert with the correct class for the isVisible value',
-   () => {
+  it('should create an alert with the correct class for the isVisible value', () => {
     const alert = shallow(<Alert isVisible>Loading...</Alert>);
 
     expect(alert.hasClass('hide')).toBe(false);
     expect(alert.hasClass('block')).toBe(true);
   });
 
-  it('should create an alert with the correct class for the given status value',
-   () => {
-    const alert = shallow(<Alert status={'error'}>Error</Alert>);
+  it('should create an alert with the correct class for the given status value', () => {
+    const alert = shallow(<Alert status={ 'error' }>Error</Alert>);
 
-    expect(alert.hasClass('bg-red white')).toBe(true);
+    expect(alert.hasClass('alert-error white')).toBe(true);
   });
 
   it('should create an alert with the given id value', () => {
-    const alert = shallow(<Alert id={'This id'}>Loading...</Alert>);
-    
+    const alert = shallow(<Alert id={ 'This id' }>Loading...</Alert>);
+
     expect(alert.prop('id')).toEqual('This id');
   });
 });

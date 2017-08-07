@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as classNames from 'classnames';
+import * as React from 'react'
+import * as classNames from 'classnames'
+import './alert.less'
 
 interface IAlertProps extends React.Props<any> {
   isVisible?: boolean;
@@ -9,10 +10,10 @@ interface IAlertProps extends React.Props<any> {
 };
 
 const statusClasses = {
-  info: 'bg-blue white',
+  info: 'alert-info white',
   warning: 'bg-yellow black',
-  success: 'bg-green black',
-  error: 'bg-red white',
+  success: 'alert-success white',
+  error: 'alert-error white',
 };
 
 export default function Alert({

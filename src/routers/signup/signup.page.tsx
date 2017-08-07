@@ -1,4 +1,5 @@
 import React = require('react')
+import { PropTypes } from 'react'
 import SignUpForm from '../../components/login/reg-form'
 const connect = require('react-redux').connect
 import { signUpUser } from '../../actions/session'
@@ -29,18 +30,26 @@ function mapDispatchToProps(dispatch) {
 }
 
 class SignUpPage extends React.Component<SignUpPageProps, SignUpPageState> {
+  static contextTypes = {
+    displayMessage: PropTypes.func,
+    displayError: PropTypes.func
+  }
   constructor(props) {
     super(props)
   }
+
   handleSubmit = () => {
     this.props.signup()
       .then((res) => {
         if (!isRejectedAction(res)) {
-          // const user: User = this.props.session.get('user').toJS()
-          // this.props.history.push(`/profile/${user.id}`)
+          (this.context.displayMessage as DisplayMessage)('激活邮件已经发送')
+          this.props.history.push('/')
+        } else {
+          (this.context.displayError as DisplayError)(res.payload.errMsg)
         }
       })
   }
+
   render() {
     return <div className="SignUpPage" >
       <WallPaper src={ defualtWallPaper }>
