@@ -60,7 +60,7 @@ module.exports = {
     disableHostCheck: true,
     proxy: Object.assign({}, proxy(), {
       '*': 'http://localhost:3000',
-      '*.hot-update.json': { ignorePath: true }
+      '*.hot-update.json': { ignorePath: true },
     }),
   },
 
