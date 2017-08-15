@@ -70,7 +70,7 @@ function sessionReducer(state = INITIAL_STATE,
     case SET_USER_PASSWORD_SUCCESS:
       return state.merge({
         isLoading: false,
-        ...action.payload
+        user: action.payload
       })
 
     case UPDATE_USER_SUCCESS:

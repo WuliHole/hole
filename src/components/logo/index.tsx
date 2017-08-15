@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './logo.less'
-const logo = require('../../assets/excited.svg')
+const logo = require('../../assets/frog.svg')
 const styles = {
   width: 128,
   fontSize: '32px',

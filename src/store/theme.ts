@@ -49,11 +49,11 @@ export const muiTheme = getMuiTheme({
     selectedTextColor: primary1Color,
   },
   raisedButton: {
-    primaryTextColor: '#fff',
+    primaryTextColor: '#ffffff',
+    textColor: '#ffffff',
     primaryColor: primary1Color,
     secondaryColor: secondaryColor,
-    secondaryTextColor: '#fff'
-
+    secondaryTextColor: '#ffffff'
   },
   icon: {
     color: gray
