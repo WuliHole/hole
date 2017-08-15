@@ -7,12 +7,13 @@ import Profile from './profile'
 import Post from './post'
 import Login from './login'
 import Signup from './signup'
-import store from '../store/configure-store'
-import isLogin from '../store/isLogin'
-import toJS from '../utils/immutable-to-js'
 import Home from './home'
 import Logout from './loggedOut'
 import DashBoard from './dashboard'
+import isLogin from '../store/isLogin'
+import store from '../store/configure-store'
+import toJS from '../utils/immutable-to-js'
+
 /* istanbul ignore next */
 export const rootRoute = {
   childRoutes: [{

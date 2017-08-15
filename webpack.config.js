@@ -58,7 +58,10 @@ module.exports = {
   devServer: {
     historyApiFallback: { index: '/' },
     disableHostCheck: true,
-    proxy: Object.assign({}, proxy(), { '*': 'http://localhost:3000' }),
+    proxy: Object.assign({}, proxy(), {
+      '*': 'http://localhost:3000',
+      '*.hot-update.json': { ignorePath: true }
+    }),
   },
 
   module: {

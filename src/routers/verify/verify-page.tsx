@@ -15,150 +15,152 @@ import { RaisedButton } from 'material-ui'
 const connect = require('react-redux').connect
 
 interface IVerifyPageProps extends React.Props<any> {
-  session: any;
-  setPassword: () => any
-  updateProfile: () => any
-  history: HistoryBase
-  location
+    session: any;
+    setPassword: () => any
+    updateProfile: () => any
+    history: HistoryBase
+    location
 }
 
 function mapStateToProps(state) {
-  return {
-    article: state.article,
-    router: state.router,
-    session: state.session,
-  };
+    return {
+        article: state.article,
+        router: state.router,
+        session: state.session,
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    setPassword: () => dispatch(setPassword()),
-    updateProfile: () => dispatch(update('personalization'))
-  }
+    return {
+        setPassword: () => dispatch(setPassword()),
+        updateProfile: () => dispatch(update('personalization'))
+    }
 }
 
 
-enum VERIFY_STAGE {
-  abort,
-  setPassword,
-  personalization,
-  done
+enum VERIFY_STEP {
+    ABORD,
+    SET_PASSWORD,
+    UPDATE_USER_INFO,
+    DONE
 }
 
 interface VerifyPageState {
-  stage: number
+    step: number
 }
 
 class VerifyPage extends React.Component<IVerifyPageProps, VerifyPageState> {
-  state: VerifyPageState = { stage: VERIFY_STAGE.setPassword }
+    state: VerifyPageState = { step: VERIFY_STEP.SET_PASSWORD }
 
-  setStage = (stage: number) => this.setState({ stage })
+    step = (step: number) => this.setState({ step })
 
-  componentWillMount() {
-    const errMsg = this.getErrorMessage()
-    if (errMsg) {
-      this.setStage(VERIFY_STAGE.abort)
+    componentWillMount() {
+        const errMsg = this.getErrorMessage()
+        if (errMsg) {
+            this.step(VERIFY_STEP.ABORD)
+        }
     }
-  }
 
-  setPassword = () => {
-    this.props
-      .setPassword()
-      .then(() => this.setStage(VERIFY_STAGE.personalization))
-  }
-
-  updateProfile = () => {
-    this.props
-      .updateProfile()
-      .then(() => this.setStage(VERIFY_STAGE.done))
-  }
-
-  getErrorMessage(): string {
-    const element = document.querySelector('meta[name="error-msg"]')
-    if (element) {
-      return element.getAttribute('content')
+    setPassword = () => {
+        this.props
+            .setPassword()
+            .then(() => this.step(VERIFY_STEP.UPDATE_USER_INFO))
     }
-  }
 
-  render() {
+    updateProfile = () => {
+        this.props
+            .updateProfile()
+            .then(() => this.step(VERIFY_STEP.DONE))
+    }
 
-    return <Board backgroundColor="#449bf7" style={ { position: 'fixed' } }>
-      <Board width="85%" center height="80%" style={ { marginTop: '5rem' } }>
-        <Board width="450px" height="100%" center
-          style={ { position: 'relative' } }
-        >
-          { this.renderContent() }
+    getErrorMessage(): string {
+        const element = document.querySelector('meta[name="error-msg"]')
+        if (element) {
+            return element.getAttribute('content')
+        }
+    }
+
+    goback = () => {
+        this.props.history.push('/')
+    }
+
+    render() {
+
+        return <Board backgroundColor="#fff" style={{ position: 'fixed' }}>
+            <Board width="85%" center height="80%" style={{ marginTop: '5rem' }}>
+                <Board width="450px" height="100%" center
+                    style={{ position: 'relative' }}
+                >
+                    {this.renderContent()}
+                </Board>
+            </Board>
         </Board>
-      </Board>
-    </Board>
-  }
+    }
 
-  renderContent() {
-    const { session } = this.props
-    const isPending = session && session.get('isLoading')
-    return <div style={ {
-      position: 'absolute',
-      top: '50%',
-      width: '100%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)'
-    } }>
-      <Transition>
-        {
-          this.state.stage === VERIFY_STAGE.abort
-          && <div className="verify-error">
-            <h2>{ this.getErrorMessage() }</h2>
-            <RaisedButton
-              primary
-              buttonStyle={ { color: '#fff' } }
-              onClick={ () => this.props.history.push('/') }>
-              返回
+    renderContent() {
+        const { session } = this.props
+        const isPending = session && session.get('isLoading')
+        return <div style={{
+            position: 'absolute',
+            top: '50%',
+            width: '100%',
+            left: '50%',
+            transform: 'translate(-50%,-50%)'
+        }}>
+            <Transition>
+                {
+                    this.state.step === VERIFY_STEP.ABORD
+                    && <div className="verify-error center">
+                        <h2>{this.getErrorMessage()}</h2>
+                        <RaisedButton
+                            primary
+                            buttonStyle={{ color: '#fff' }}
+                            onClick={this.goback}>
+                            返回
             </RaisedButton>
-          </div>
-        }
+                    </div>
+                }
 
-        {
-          this.state.stage === VERIFY_STAGE.setPassword
-          &&
-          <ResetPassWord
-            onSubmit={ isPending ? () => { } : this.setPassword }
-            isPending={ isPending }
-          />
-        }
+                {
+                    this.state.step === VERIFY_STEP.SET_PASSWORD
+                    &&
+                    <ResetPassWord
+                        onSubmit={isPending ? () => { } : this.setPassword}
+                        isPending={isPending}
+                    />
+                }
 
-        {
-          this.state.stage === VERIFY_STAGE.personalization
-          && <Personalization
-            onSubmit={ isPending ? () => { } : this.updateProfile }
-            isPending={ isPending }
-          />
-        }
+                {
+                    this.state.step === VERIFY_STEP.UPDATE_USER_INFO
+                    && <Personalization
+                        onSubmit={isPending ? () => { } : this.updateProfile}
+                        isPending={isPending}
+                    />
+                }
 
-        {
-          this.state.stage === VERIFY_STAGE.done
-          &&
-          <div>
-            <Alert status="success" isVisible>
-              <h1 className="center">
-                注册完成
-                  </h1>
-            </Alert>
-            <Button >
-              <Link to="/">回到首页</Link>
-            </Button>
-          </div>
-        }
-      </Transition>
-    </div>
-  }
+                {
+                    this.state.step === VERIFY_STEP.DONE
+                    &&
+                    <div className="center">
+                        <h1 className="center">
+                            激活成功
+            </h1>
+                        <RaisedButton primary onClick={this.goback} buttonStyle={{ color: '#fff' }}>
+                            返回
+            </RaisedButton>
+                    </div>
+                }
+            </Transition>
+        </div>
+    }
 }
 
 
 
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(VerifyPage)
 
 

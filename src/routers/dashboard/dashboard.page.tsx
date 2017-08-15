@@ -14,7 +14,11 @@ import './dashboard.less'
 import Container from '../../components/container';
 
 function mapStateToProps(state) {
-  return state
+  return {
+    profile: state.profile,
+    posts: state.posts,
+    session: state.session
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -30,6 +34,7 @@ interface ViewProps {
   posts
   session
   profile
+  location: Location
   dispatch
   onCreate: () => Promise<any>
 }
@@ -40,6 +45,19 @@ interface ViewState {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DashBoardView extends React.PureComponent<ViewProps, ViewState> {
+  static sideBarMenu = [
+    { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post' },
+    { text: '设置', icon: <Settings />, path: '/dashboard/setting' }
+  ]
+
+  componentWillMount() {
+    const activeItem = DashBoardView.sideBarMenu.find(i => this.props.location.pathname === i.path)
+    if (activeItem) {
+      const selectedItem = activeItem.text
+      this.setState({ selectedItem })
+    }
+  }
+
   state = {
     selectedItem: null
   }
@@ -52,28 +70,19 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
         }
         this.props.history.push('/createNew')
       })
-      .catch(() => alert('....'))
+      .catch(() => alert('未知的错误'))
   }
 
   render() {
     const { history, viewContent } = this.props
-    const l = [
-      { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post' },
-      { text: '设置', icon: <Settings />, path: '/dashboard/setting' }
-    ]
+
     const sideBar = (
       <div style={ { height: '100vh', position: 'fixed', ...style.paper } } className="sidebar">
         <Paper style={ style.paper }>
           <div className="flex items-center m3">
-            <RaisedButton
-              buttonStyle={ style.raisedBtn.button }
-              onClick={ this.createPost }
-              style={ style.raisedBtn.container }
-              secondary >
-              新建文章
-              </RaisedButton >
+            { this.renderCreatePostButton() }
           </div>
-          { l.map((i, index) => {
+          { DashBoardView.sideBarMenu.map((i, index) => {
             const { text, icon, path } = i
             return < MenuItem
               key={ text }
@@ -110,6 +119,16 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
     </Transition>
   }
 
+  renderCreatePostButton = (text = '新建文章') => {
+    return <RaisedButton
+      buttonStyle={ style.raisedBtn.button }
+      onClick={ this.createPost }
+      style={ style.raisedBtn.container }
+      secondary >
+      { text }
+    </RaisedButton >
+  }
+
   renderContent() {
     const {
        viewContent,
@@ -119,6 +138,7 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
       posts,
       dispatch
       } = this.props
+    const renderCreatePostButton = this.renderCreatePostButton
     if (viewContent) {
       const props = {
         renderAppBar: false,
@@ -126,7 +146,8 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
         posts: posts.get('meta'),
         profile: profile.get('meta'),
         history,
-        dispatch
+        dispatch,
+        renderCreatePostButton
       }
       const newViewContent = React.cloneElement(viewContent, props)
       return newViewContent
