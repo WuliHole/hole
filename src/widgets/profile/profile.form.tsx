@@ -134,7 +134,7 @@ export default class ProfileForm
               <TextField
                 name="nickName"
                 id="qa-nickName"
-                defaultValue={ profile.nickName }
+                value={ profile.nickName }
                 underlineShow={ !!nickName.touched }
                 {...reduxFormPropsFilter(nickName) }
                 errorText={
@@ -150,7 +150,7 @@ export default class ProfileForm
             <div className="label-bio h1">简介</div>
             <TextField
               name="bio"
-              defaultValue={ profile.bio }
+              value={ profile.bio }
               fullWidth
               multiLine
               underlineShow={ !!bio.touched }
