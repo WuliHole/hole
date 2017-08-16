@@ -106,7 +106,7 @@ export default class ProfileWidget
                   underlineShow={ false }
                   name="nickName"
                   id="qa-nickName"
-                  defaultValue={ profile.nickName }
+                  value={ profile.nickName }
                 />
               </FormGroup>
             </div>
@@ -118,7 +118,7 @@ export default class ProfileWidget
                 textareaStyle={ disableStyle }
                 name="bio"
                 underlineShow={ false }
-                defaultValue={ profile.bio }
+                value={ profile.bio }
                 fullWidth
                 multiLine
                 rowsMax={ 4 }
