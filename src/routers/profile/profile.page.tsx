@@ -76,14 +76,9 @@ function mapDispatchToProps(dispatch) {
 class Profile extends React.Component<ProfileProps, void> {
 
   get userId() {
-    let uid
     if (this.props.params.uid) {
-      uid = this.props.params.uid
+      return this.props.params.uid
     }
-    if (this.props.session.getIn(['user', 'id'])) {
-      uid = this.props.session.getIn(['user', 'id']).toString()
-    }
-    return uid
   }
 
   get profile(): Map<keyof User, any> {
@@ -104,11 +99,23 @@ class Profile extends React.Component<ProfileProps, void> {
 
   // load profile if didn't  find the profile of target user .
   componentDidMount() {
+    this.loadData()
+  }
+
+  // switch from one user to another
+  componentDidUpdate(prevProps: ProfileProps) {
+    if (this.props.params.uid !== prevProps.params.uid) {
+      this.loadData()
+    }
+  }
+
+  loadData() {
     if (!this.profile) {
       this.props.getProfile(this.userId)
     }
 
-    if (!this.posts || this.posts.length < 10) {
+    // @Fix:In some case,posts always emepty
+    if (this.posts.length === 0) {
       this.props.getUserPosts(this.userId)
     }
   }
