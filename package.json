@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^0.0.32",
-    "@types/draft-js": "^0.10.0",
+    "@types/draft-js": "^0.10.10",
     "@types/fetch-mock": "^5.8.2",
     "@types/immutable": "^3.8.7",
     "@types/jasmine": "^2.5.47",

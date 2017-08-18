@@ -6,9 +6,9 @@
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-0.0.32.tgz#449abcd9a826807811ef101e58df9f83cfc61713"
 
-"@types/draft-js@^0.10.0":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.1.tgz#4db13b29f79371cc766937114afea884dc267910"
+"@types/draft-js@^0.10.10":
+  version "0.10.10"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.10.10.tgz#154a0db59a02a4bd4ced33720a36cef2853cb12b"
   dependencies:
     "@types/react" "*"
     immutable "^3.8.1"

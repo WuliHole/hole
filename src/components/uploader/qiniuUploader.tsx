@@ -33,5 +33,7 @@ export default
 
 export const CDN_HOST = 'http://lowsweet.qiniudn.com/'
 export function filePublicPathGen(fileKey: string) {
-  return `${CDN_HOST}${fileKey}`
+  if (fileKey) {
+    return `${CDN_HOST}${fileKey}`
+  }
 }
