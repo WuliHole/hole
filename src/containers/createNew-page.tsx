@@ -3,7 +3,6 @@ import * as React from 'react'
 import { History } from 'react-router'
 import { Map, List, is } from 'immutable'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import { ContentState, EditorState } from 'draft-js'
 import AppBar from 'material-ui/AppBar'
 import IconButton from 'material-ui/IconButton'
@@ -19,15 +18,38 @@ import Transition from '../components/transition'
 import Editor from '../components/editor/'
 import GoBack from '../widgets/goback'
 import { ArticleItem } from '../components/article'
-import './createNew.less'
 import { update } from '../actions/posts'
 import debounce from '../utils/debounce'
+import './createNew.less'
+
 import { defaultAvatar, default as Avatar } from '../components/avatar/index'
+import { createSideToolBarPlugin } from '../components/editor/plugins/side-tool-bar/index'
+import { createImagePlugin } from '../components/editor/plugins/image/index'
+import createAlignmentPlugin from 'draft-js-alignment-plugin'
+import createFocusPlugin from 'draft-js-focus-plugin'
+import { composeDecorators } from 'draft-js-plugins-editor';
+const focusPlugin = createFocusPlugin()
+const alignmentPlugin = createAlignmentPlugin()
 const inlineToolbarPlugin = createInlineToolbarPlugin()
+const sideToolbarPlugin = createSideToolBarPlugin()
+
+const decorator = composeDecorators(
+  alignmentPlugin.decorator,
+  focusPlugin.decorator,
+)
+
+const imagePlugin = createImagePlugin({ decorator })
+const { AlignmentTool } = alignmentPlugin
 const { InlineToolbar } = inlineToolbarPlugin
-const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin
-const plugins = [inlineToolbarPlugin, sideToolbarPlugin]
+
+const plugins = [
+  focusPlugin,
+  alignmentPlugin,
+  imagePlugin,
+  inlineToolbarPlugin,
+  sideToolbarPlugin,
+]
 
 interface ICreateNewProps {
   history
@@ -73,7 +95,7 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
     return this.props.session.get('user').toJS()
   }
 
-  diff() {
+  differentState() {
     return this.currentContent && !is(this.prevContent, this.currentContent)
   }
 
@@ -88,7 +110,7 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
   onChange = (state: EditorState): void => {
     this.prevContent = this.currentContent
     this.currentContent = state.getCurrentContent()
-    if (this.diff()) {
+    if (this.differentState()) {
       this.autoSave()
     }
   }
@@ -122,8 +144,10 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
             />
             <CardText>
               <Editor plugins={ plugins } onChange={ this.onChange } >
-                <Transition><InlineToolbar></InlineToolbar>
-                  <SideToolbar></SideToolbar>
+                <Transition>
+                  <AlignmentTool />
+                  <InlineToolbar />
+                  <SideToolbar />
                 </Transition>
               </Editor>
             </CardText>

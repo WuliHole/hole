@@ -2071,57 +2071,80 @@ dot-prop@^3.0.0:
   dependencies:
     is-obj "^1.0.0"
 
-draft-js-buttons@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-buttons/-/draft-js-buttons-2.0.0-beta9.tgz#1e46fc3de2a6b75a45bb13b5f7e924a1b7bd29f3"
-  dependencies:
-    draft-js ">=0.9.1"
-    react ">=15.3.1"
-    union-class-names "^1.0.0"
-
-draft-js-inline-toolbar-plugin@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-inline-toolbar-plugin/-/draft-js-inline-toolbar-plugin-2.0.0-beta9.tgz#15cdbacd98b29be5c9cc07313116b419b00d09a8"
+draft-js-alignment-plugin@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-alignment-plugin/-/draft-js-alignment-plugin-2.0.0-rc4.tgz#3d16f2314b084e95f299e23a66bee2203324b3e3"
   dependencies:
     decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
-    draft-js-buttons "^2.0.0-beta9"
+    draft-js-buttons "^2.0.0-rc4"
     find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-plugins-editor@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.0.0-beta9.tgz#9793b46c4765c205366055e1c7c566d955561a72"
+draft-js-buttons@2.0.0-rc4, draft-js-buttons@^2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-buttons/-/draft-js-buttons-2.0.0-rc4.tgz#a2feabe2b3e40cadcd903cf465657f49fbf7a7ec"
+  dependencies:
+    union-class-names "^1.0.0"
+
+draft-js-focus-plugin@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-focus-plugin/-/draft-js-focus-plugin-2.0.0-rc4.tgz#28b438e08900436550e61a37ea76f260f8d0fa8e"
   dependencies:
     decorate-component-with-props "^1.0.2"
-    draft-js ">=0.9.1"
     find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.3.1"
-    react-dom ">=15.3.1"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-side-toolbar-plugin@^2.0.0-beta9:
-  version "2.0.0-beta9"
-  resolved "https://registry.yarnpkg.com/draft-js-side-toolbar-plugin/-/draft-js-side-toolbar-plugin-2.0.0-beta9.tgz#a94f2c8c30ed049e03bddbc7accf05a83d7a214f"
+draft-js-image-plugin@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-image-plugin/-/draft-js-image-plugin-2.0.0-rc4.tgz#1c4478b37fc1e997da79017bdbabea5013faf185"
   dependencies:
     decorate-component-with-props "^1.0.2"
-    draft-js ">=0.8.1"
-    draft-js-buttons "^2.0.0-beta9"
     find-with-regex "^1.0.2"
-    immutable ">=3.8.1"
-    react ">=15.2.1"
-    react-dom ">=15.2.1"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js@>=0.8.1, draft-js@>=0.9.1, draft-js@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.9.1.tgz#940a51a0ad1fede0411676b6404f4050495f54f9"
+draft-js-inline-toolbar-plugin@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-inline-toolbar-plugin/-/draft-js-inline-toolbar-plugin-2.0.0-rc4.tgz#09537b19290f8eb0b44c21571b9524ad0f130c0d"
   dependencies:
-    fbjs "^0.8.3"
+    decorate-component-with-props "^1.0.2"
+    draft-js-buttons "^2.0.0-rc4"
+    find-with-regex "^1.0.2"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
+    union-class-names "^1.0.0"
+
+draft-js-plugins-editor@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-plugins-editor/-/draft-js-plugins-editor-2.0.0-rc4.tgz#07ea2fceb182d7839a762823d2518aba36216da8"
+  dependencies:
+    decorate-component-with-props "^1.0.2"
+    find-with-regex "^1.0.2"
+    immutable "^3.7.4"
+    prop-types "^15.5.8"
+    union-class-names "^1.0.0"
+
+draft-js-side-toolbar-plugin@2.0.0-rc4:
+  version "2.0.0-rc4"
+  resolved "https://registry.yarnpkg.com/draft-js-side-toolbar-plugin/-/draft-js-side-toolbar-plugin-2.0.0-rc4.tgz#e66d80e0e01437fa25dc488520c3ea933d5fbe1d"
+  dependencies:
+    decorate-component-with-props "^1.0.2"
+    draft-js-buttons "^2.0.0-rc4"
+    find-with-regex "^1.0.2"
+    immutable "~3.7.4"
+    prop-types "^15.5.8"
+    union-class-names "^1.0.0"
+
+draft-js@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.1.tgz#6f1219d8095729691429ca6fd7a58d2a8be5cb67"
+  dependencies:
+    fbjs "^0.8.7"
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
@@ -2670,7 +2693,7 @@ fb-watchman@^1.8.0:
   dependencies:
     bser "1.0.2"
 
-fbjs@^0.8.1, fbjs@^0.8.3, fbjs@^0.8.4, fbjs@^0.8.6, fbjs@^0.8.9:
+fbjs@^0.8.1, fbjs@^0.8.4, fbjs@^0.8.6, fbjs@^0.8.7, fbjs@^0.8.9:
   version "0.8.12"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
@@ -3466,7 +3489,7 @@ image-size@~0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.1.tgz#28eea8548a4b1443480ddddc1e083ae54652439f"
 
-immutable@*, immutable@>=3.8.1, immutable@^3.8.1:
+immutable@*, immutable@^3.7.4, immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
@@ -6245,7 +6268,7 @@ react-bootstrap@^0.30.8:
     uncontrollable "^4.0.1"
     warning "^3.0.0"
 
-react-dom@>=15.2.1, react-dom@>=15.3.1, react-dom@^15.3.0:
+react-dom@^15.3.0:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.5.4.tgz#ba0c28786fd52ed7e4f2135fe0288d462aef93da"
   dependencies:
@@ -6322,7 +6345,7 @@ react-test-renderer@^15.5.4:
     fbjs "^0.8.9"
     object-assign "^4.1.0"
 
-react@>=15.2.1, react@>=15.3.1, react@^15.3.0:
+react@^15.3.0:
   version "15.5.4"
   resolved "https://registry.yarnpkg.com/react/-/react-15.5.4.tgz#fa83eb01506ab237cdc1c8c3b1cea8de012bf047"
   dependencies:

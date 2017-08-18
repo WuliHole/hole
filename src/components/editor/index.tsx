@@ -13,6 +13,9 @@ import {
 import { Serlizer } from './utils/serializer'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
+import 'draft-js-image-plugin/lib/plugin.css'
+import 'draft-js-alignment-plugin/lib/plugin.css'
+
 import './draft.less'
 import './style.less'
 
