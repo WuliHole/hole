@@ -52,7 +52,7 @@ export default class SettingView extends React.PureComponent<SettingViewProps, S
   }
   render() {
     return <div className="SettingView" >
-      <ProfileForm profile={ this.profileInfo } onSave={ this.onSave } />
+      <ProfileForm profile={ this.profileInfo } onSave={ this.onSave } visitorUid={ this.profileInfo.get('id') } />
     </div>
   }
 }
