@@ -25,7 +25,7 @@ export default
 
   render() {
     const { className = '' } = this.props
-    return <div className={ classNames('Uploader', className) } onClick={ this.chooseFile }>
+    return <div className={ classnames('Uploader', className) } onClick={ this.chooseFile }>
       { this.props.children }
     </div>
   }
