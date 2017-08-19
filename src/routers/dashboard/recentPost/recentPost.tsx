@@ -5,7 +5,7 @@ import { List, ListItem } from 'material-ui'
 import { getUserPosts } from '../../../actions/posts'
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
 const Placeholder = require('../../../assets/empty.svg')
-
+import { unique } from '../../../utils/arrayUtils'
 import { HistoryBase } from 'react-router/lib/routerHistory'
 import './recent.less'
 interface RecentPostProps {
@@ -70,7 +70,8 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
   }
 
   renderPosts() {
-    return this.recentPost.map(p => {
+    const posts = unique(this.recentPost, p => p.id)
+    return posts.map(p => {
       const date = Moment(new Date(p.createdAt))
         .locale('zh-cn')
         .format('L')
