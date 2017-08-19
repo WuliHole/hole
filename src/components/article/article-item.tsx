@@ -3,22 +3,36 @@ import { Link } from 'react-router'
 import classnames = require('classnames')
 import { linkifyTitle } from './utils'
 import Icon from '../icon'
-import HoleEditor from '../editor'
 import assert from '../../utils/assert'
-import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
-import createSideToolbarPlugin from 'draft-js-side-toolbar-plugin'
 import { EditorState } from 'draft-js'
 import Moment = require('moment')
 import Avatar from '../avatar'
 import { animated } from '../transition/utils'
 import './item.less'
 
+import HoleEditor from '../editor'
 import { Serlizer } from '../editor/utils/serializer'
-const inlineToolbarPlugin = createInlineToolbarPlugin();
-const { InlineToolbar } = inlineToolbarPlugin;
-const sideToolbarPlugin = createSideToolbarPlugin()
-const { SideToolbar } = sideToolbarPlugin;
-const plugins = [inlineToolbarPlugin, sideToolbarPlugin];
+import { createImagePlugin } from '../editor/plugins/image/index'
+import createAlignmentPlugin from 'draft-js-alignment-plugin'
+import createFocusPlugin from 'draft-js-focus-plugin'
+import { composeDecorators } from 'draft-js-plugins-editor'
+
+const focusPlugin = createFocusPlugin()
+const alignmentPlugin = createAlignmentPlugin()
+
+const decorator = composeDecorators(
+  alignmentPlugin.decorator,
+  focusPlugin.decorator,
+)
+
+const imagePlugin = createImagePlugin({ decorator })
+// const { AlignmentTool } = alignmentPlugin
+
+const plugins = [
+  focusPlugin,
+  alignmentPlugin,
+  imagePlugin,
+]
 
 interface ItemProps {
   articleInfo: Post<any>
@@ -70,6 +84,7 @@ const item = ({
       </Link>
       <div className="article-list-item-paragraph">
         <HoleEditor
+          readOnly
           editorState={
             EditorState.createWithContent(
               Serlizer.deserialize(
@@ -78,8 +93,6 @@ const item = ({
             )
           }
           plugins={ plugins }>
-          <InlineToolbar />
-          <SideToolbar />
         </HoleEditor>
       </div>
       <span className="mr1"></span>

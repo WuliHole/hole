@@ -1,6 +1,6 @@
 export function getContentState(
   stringContent: string
-): any {
+) {
   const contentState = {
     entityMap: {},
     blocks: [
@@ -19,5 +19,7 @@ export function getContentState(
       }
     ]
   }
-  return contentState as any
+  return contentState
 }
+
+
