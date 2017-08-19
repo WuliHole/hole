@@ -19,9 +19,7 @@ interface RecentPostProps {
 export default class RecentPost extends React.Component<RecentPostProps, void> {
 
   componentDidMount() {
-    if (!this.groupedPostsByAuthorId.get(this.userId)) {
-      this.props.dispatch(getUserPosts(this.userId))
-    }
+    this.props.dispatch(getUserPosts(this.userId))
   }
 
   get userId() {
