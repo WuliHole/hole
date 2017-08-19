@@ -21,7 +21,7 @@ export class ImageReader extends React.PureComponent<ButtonProps, void> {
       reader.onload = (e: any) => {
         const base64code = e.target.result
         const state = this.props.getEditorState()
-        const newState = addImageBlock(state, base64code, {})
+        const newState = addImageBlock(state, base64code, { valid: false })
         const entityKey = newState.getCurrentContent().getLastCreatedEntityKey()
         this.record.push({ task, entityKey })
         this.props.setEditorState(newState)
@@ -33,22 +33,17 @@ export class ImageReader extends React.PureComponent<ButtonProps, void> {
     })
   }
 
-  // if failed, mark the block as invalid
   onTaskFail = (task: UploaderTask) => {
     console.warn(task)
-    const targetRecord = this.record.find(r => r.task === task)
-    if (targetRecord) {
-      const data = { src: '', valid: false }
-      this.updateBlockDataFindingByRecord(targetRecord, data)
-    }
+
   }
 
-  // if success , replcae base 64 image with public path of cdn
+  // if success , replcae base 64 image with public path of cdn and mark block as valid
   onTaskSuccess = (task: UploaderTask) => {
     console.debug(task)
     const targetRecord = this.record.find(r => r.task === task)
     if (targetRecord) {
-      const data = { src: filePublicPathGen(task.result.hash) }
+      const data = { src: filePublicPathGen(task.result.hash), valid: true }
       this.updateBlockDataFindingByRecord(targetRecord, data)
     }
   }

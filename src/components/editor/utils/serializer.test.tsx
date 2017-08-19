@@ -6,13 +6,13 @@ import { getContentState } from './testUtils'
 describe('Editor Serilizer', () => {
 
   it('serialize ContentState should get RawContentState', () => {
-    const rawState = getContentState('hello wolrd')
+    const rawState: any = getContentState('hello wolrd')
     const editor = mount(
       <Editor editorState={
         EditorState.createWithContent(convertFromRaw(rawState))
       }
         onChange={ () => { } }
-        >
+      >
       </Editor>
     )
     const contentState = editor.prop('editorState').getCurrentContent()
@@ -22,7 +22,7 @@ describe('Editor Serilizer', () => {
 
   it('<Editor/> should get right textContent', () => {
     const text = '你好啊 今天开心吗，BUG又少了吗'
-    const s = getContentState(text)
+    const s: any = getContentState(text)
     const c = Serlizer.deserialize(s)
     const editor = mount(
       <Editor
