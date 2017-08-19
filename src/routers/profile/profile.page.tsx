@@ -128,11 +128,6 @@ class Profile extends React.Component<ProfileProps, void> {
 
   render() {
     const { renderAppBar = true } = this.props
-    const profileForm = <ProfileForm
-      profile={ this.profile }
-      onSave={ this.onSave }
-    />
-
     return (
       <Transition >
         <div style={ { marginTop: 50 } }>
@@ -147,6 +142,8 @@ class Profile extends React.Component<ProfileProps, void> {
     const loader = <CircularProgress
       style={ { marginLeft: '45%', marginTop: '5rem' } }
     />
+    const session = this.props.session.toJS()
+    const visitorUid = session.user && session.user.id
     return <Container size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px' } }>
       {/*profile container*/ }
       <Container size={ 4 } center className="profile">
@@ -155,6 +152,7 @@ class Profile extends React.Component<ProfileProps, void> {
             ? <ProfileForm
               profile={ this.profile }
               onSave={ this.onSave }
+              visitorUid={ visitorUid }
             />
             : loader
         }

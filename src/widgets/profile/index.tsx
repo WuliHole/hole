@@ -20,6 +20,7 @@ import './profileWidget.less'
 interface IProfileWidgetProps {
   profile: Map<keyof User, any>
   onSave: (formName: string) => any
+  visitorUid: string
 }
 
 interface IProfileWidgetState {
@@ -63,6 +64,7 @@ export default class ProfileWidget
     )
 
     const profile = this.props.profile.toJS()
+    const isSameUser = parseInt(profile.id, 10) === parseInt(this.props.visitorUid, 10)
     const disableStyle = this.state.readOnly
       ? {
         cursor: 'default',
@@ -78,7 +80,7 @@ export default class ProfileWidget
           subtitleStyle={
             { fontSize: '0.9rem', width: '90%', margin: '1rem 0' }
           }
-          avatar={ editButton }
+          avatar={ isSameUser ? editButton : null }
         >
           <Divider />
         </CardHeader >
