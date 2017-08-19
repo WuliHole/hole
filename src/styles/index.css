@@ -1,6 +1,5 @@
 /* document http://basscss.com/*/
 @import 'basscss-basic';
-@import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
 
 /* Add-on Modules */
 @import 'basscss-addons/modules/btn';

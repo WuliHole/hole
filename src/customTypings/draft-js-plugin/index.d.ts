@@ -9,4 +9,5 @@ declare module 'draft-js-plugins-editor' {
   export default class Editor extends React.Component<PluginEditorProps, any> {
 
   }
+  export function composeDecorators(...args): Function
 }

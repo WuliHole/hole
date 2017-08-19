@@ -1,9 +1,10 @@
 import React = require('react')
 import { default as initQiniuUploader } from './initQiniuBuilder'
-
+import * as classnames from 'classnames'
 
 interface IUploaderProps extends UpdateOptions {
   onClick?(e: Event, QiniuUploader)
+  className?: string
 }
 
 export default
@@ -23,7 +24,8 @@ export default
   }
 
   render() {
-    return <div className="Uploader" onClick={ this.chooseFile }>
+    const { className = '' } = this.props
+    return <div className={ classnames('Uploader', className) } onClick={ this.chooseFile }>
       { this.props.children }
     </div>
   }
@@ -31,5 +33,7 @@ export default
 
 export const CDN_HOST = 'http://lowsweet.qiniudn.com/'
 export function filePublicPathGen(fileKey: string) {
-  return `${CDN_HOST}${fileKey}`
+  if (fileKey) {
+    return `${CDN_HOST}${fileKey}`
+  }
 }

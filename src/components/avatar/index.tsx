@@ -1,7 +1,7 @@
 import React = require('react')
 import Container from '../container'
 import './style.less'
-const defaultAvatar = require('../../assets/excited.svg')
+export const defaultAvatar = require('../../assets/excited.svg')
 interface Props {
   src: string
   size?: number
