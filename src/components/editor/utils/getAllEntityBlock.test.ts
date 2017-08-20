@@ -5,7 +5,7 @@ import { getContentState } from './testUtils'
 
 describe('Test getAllEntityBlock function', () => {
 
-  it('it should all block that has eneity', () => {
+  it('it should return all block that has eneity', () => {
     /* tslint:disable */
     let rawContent: any = {
       entityMap: {
