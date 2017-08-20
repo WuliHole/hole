@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import * as React from 'react'
 import { History } from 'react-router'
 import { Map, List, is } from 'immutable'
@@ -18,7 +19,7 @@ import Editor from '../components/editor/'
 import { Serlizer } from '../components/editor/utils/serializer'
 import GoBack from '../widgets/goback'
 import { ArticleItem } from '../components/article'
-import { update } from '../actions/posts'
+import { update, getById, edit } from '../actions/posts'
 import debounce from '../utils/debounce'
 import './createNew.less'
 
@@ -31,6 +32,7 @@ import { createImagePlugin } from '../components/editor/plugins/image/index'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
+import { isRejectedAction } from '../actions/utils'
 const focusPlugin = createFocusPlugin()
 const alignmentPlugin = createAlignmentPlugin()
 const inlineToolbarPlugin = createInlineToolbarPlugin()
@@ -60,6 +62,9 @@ interface ICreateNewProps {
   session: Map<any, any>
   updatePost: (id: number | string, content: ContentState) => Promise<any>
   posts
+  getPostById: (pid: number | string) => Promise<any>
+  params: { pid: string }
+  editPost: typeof edit
 }
 
 interface ICreateNewState {
@@ -67,12 +72,17 @@ interface ICreateNewState {
 }
 
 function mapStateToProps(state) {
-  return state
+  return {
+    session: state.session,
+    posts: state.posts
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updatePost: (id, content) => dispatch(update(id, content))
+    updatePost: (id, content) => dispatch(update(id, content)),
+    getPostById: bindActionCreators(getById, dispatch),
+    editPost: bindActionCreators(edit, dispatch)
   }
 }
 
@@ -80,8 +90,26 @@ function mapDispatchToProps(dispatch) {
 class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
   private autoSavePlugin
 
+  static contextTypes = {
+    displayError: React.PropTypes.func
+  }
+
   state = {
     saving: false
+  }
+  get currentPost() {
+    const currentEdit: number = this.props.posts.get('editing')
+    return (this.props.posts.get('meta') as List<Map<keyof Post<any>, any>>)
+      .find(v => v.get('id') === currentEdit)
+  }
+
+  get editorState() {
+    if (!this.isAuthor()) {
+      return
+    }
+    const content = this.currentPost && this.currentPost.toJS().content
+    const editorState = content && EditorState.createWithContent(Serlizer.deserialize(content))
+    return editorState
   }
 
   componentWillUnmount() {
@@ -92,14 +120,36 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
     this.autoSavePlugin = createAutoSavePlugin({ saveAction: this.save, debounceTime: 300 })
   }
 
-  get currentPost() {
-    const currentEdit: number = this.props.posts.get('editing')
-    if (!currentEdit) {
-      throw (`Unexcept Value:${currentEdit}`)
+  componentDidMount() {
+    if (!this.currentPost) {
+      if (this.props.params.pid) {
+        this.loadCurrentPost()
+      } else {
+        this.context.displayError('加载失败.没有找到当前要编辑的文章')
+      }
     }
+  }
 
-    return (this.props.posts.get('meta') as List<Map<keyof Post<any>, any>>)
-      .find(v => v.get('id') === currentEdit)
+  loadCurrentPost() {
+    this.props.getPostById(this.props.params.pid)
+      .then(res => {
+        if (isRejectedAction(res)) {
+          this.context.displayError(res.payload.errMsg)
+        } else {
+          this.props.editPost(res.payload.id)
+          if (!this.isAuthor()) {
+            this.context.displayError('你没有编辑权限')
+          }
+        }
+      })
+  }
+
+  isAuthor(): boolean {
+    const user = this.props.session.get('user')
+    const uid = user && user.get('id')
+    const post = this.currentPost && this.currentPost.toJS()
+    const authorId = post && post.author.id
+    return uid === authorId
   }
 
   getUserInfo() {
@@ -108,10 +158,15 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
 
 
   save = (state: EditorState) => {
+    if (!this.currentPost) {
+      return
+    }
     this.setState({ saving: true })
     this.props.updatePost(this.currentPost.get('id'), state.getCurrentContent())
       .then(() => this.setState({ saving: false }))
   }
+
+
 
   render() {
     const style = { marginTop: '.3rem' }
@@ -122,9 +177,8 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
         style={ style } primary onClick={ this.autoSavePlugin.save } />
 
     const { avatar, nickName, bio } = this.getUserInfo()
-    const content = this.currentPost && this.currentPost.get('content')
-    const editorState = content && EditorState.createWithContent(Serlizer.deserialize(content))
-    return <Transition>
+
+    return <div>
       <AppBar
         style={ { position: 'fixed' } }
         title="新建文章"
@@ -142,21 +196,21 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
               avatar={ <Avatar src={ avatar } size={ 48 } /> }
             />
             <CardText>
-              <Editor
-                plugins={ plugins.concat([this.autoSavePlugin]) }
-                editorState={ editorState }
-              >
-                <Transition>
+              { this.editorState &&
+                <Editor
+                  plugins={ plugins.concat([this.autoSavePlugin]) }
+                  editorState={ this.editorState }
+                >
                   <AlignmentTool />
                   <InlineToolbar />
                   <SideToolbar />
-                </Transition>
-              </Editor>
+                </Editor>
+              }
             </CardText>
           </Card>
         </Container>
       </div>
-    </Transition>
+    </div>
   }
 }
 

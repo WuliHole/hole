@@ -30,7 +30,7 @@ export const createAutoSavePlugin: EditorPluginBuilder<PluginConfig, Method> = (
   saveAction = debounce(saveAction, debounceTime)
 
   function differentState() {
-    return currentState && !is(prevState, currentState)
+    return currentState && !is(prevState.getCurrentContent(), currentState.getCurrentContent())
   }
 
   function save() {

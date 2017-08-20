@@ -8,7 +8,7 @@ import { Paper, Menu, RaisedButton, MenuItem } from 'material-ui'
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
 import Settings from 'material-ui/svg-icons/action/settings'
 import { bindActionCreators } from 'redux'
-import { getUserPosts, create } from '../../actions/posts'
+import { getUserPosts, create, edit } from '../../actions/posts'
 import { isRejectedAction } from '../../actions/utils'
 import './dashboard.less'
 import Container from '../../components/container';
@@ -24,6 +24,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onCreate: bindActionCreators(create, dispatch),
+    edit: bindActionCreators(edit, dispatch),
     dispatch
   }
 }
@@ -36,6 +37,7 @@ interface ViewProps {
   profile
   location: Location
   dispatch
+  edit: typeof edit
   onCreate: () => Promise<any>
 }
 
@@ -68,9 +70,13 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
         if (isRejectedAction(res)) {
           return alert(res.payload)
         }
-        this.props.history.push('/createNew')
+        this.props.history.push(`/post/${res.payload.id}/edit`)
       })
       .catch(() => alert('未知的错误'))
+  }
+
+  edit = (p: Post<any>) => {
+    this.props.edit(p.id)
   }
 
   render() {
@@ -147,6 +153,7 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
         profile: profile.get('meta'),
         history,
         dispatch,
+        edit: this.edit,
         renderCreatePostButton
       }
       const newViewContent = React.cloneElement(viewContent, props)

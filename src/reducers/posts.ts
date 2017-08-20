@@ -13,7 +13,8 @@ import {
 
   UPDATE_POST_ERROR,
   UPDATE_POST_PENDING,
-  UPDATE_POST_SUCCESS
+  UPDATE_POST_SUCCESS,
+  EDIT_POST
 } from '../constants/posts.action.types';
 
 import { fromJS, List, Map } from 'immutable';
@@ -68,6 +69,11 @@ function postsReducer(state = INITIAL_STATE,
         isLoading: false,
         editing: action.payload.id,
         total: state.get('total') + 1
+      }))
+
+    case EDIT_POST:
+      return state.merge(fromJS({
+        editing: action.payload.id
       }))
 
     case UPDATE_POST_SUCCESS:

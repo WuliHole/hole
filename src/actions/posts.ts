@@ -13,7 +13,8 @@ import {
 
   CREATE_POST_PENDING,
   CREATE_POST_ERROR,
-  CREATE_POST_SUCCESS
+  CREATE_POST_SUCCESS,
+  EDIT_POST
 } from '../constants/posts.action.types';
 import { getPosts } from '../api/user'
 import { getPostById, updatePost, createNew } from '../api/article'
@@ -94,4 +95,11 @@ export function update(postId: POST_ID, content: ContentState) {
       promise: updatePost(postId, Serlizer.serialize(content)).then(res => res)
     }
   }))
+}
+
+export function edit(postId: POST_ID) {
+  return {
+    type: EDIT_POST,
+    payload: { id: postId }
+  }
 }

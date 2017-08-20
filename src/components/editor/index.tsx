@@ -50,7 +50,6 @@ export default class HoleEditor
       if (this.props.onChange) {
         this.props.onChange(editorState)
       }
-
     }
   };
 

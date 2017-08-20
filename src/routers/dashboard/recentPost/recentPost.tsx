@@ -2,18 +2,26 @@ import React = require('react')
 import { Map } from 'immutable'
 import Moment = require('moment')
 import { List, ListItem } from 'material-ui'
-import { getUserPosts } from '../../../actions/posts'
+import { getUserPosts, edit } from '../../../actions/posts'
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
+import DeleteForever from 'material-ui/svg-icons/action/delete-forever'
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 const Placeholder = require('../../../assets/empty.svg')
 import { unique } from '../../../utils/arrayUtils'
 import { HistoryBase } from 'react-router/lib/routerHistory'
 import './recent.less'
+
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 interface RecentPostProps {
   posts: Map<number, Post<any>>
   session
   dispatch
   history: HistoryBase
   renderCreatePostButton: (text?: string) => JSX.Element
+  edit: (p: Post<any>) => void
 }
 
 export default class RecentPost extends React.Component<RecentPostProps, void> {
@@ -43,8 +51,13 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
       : []
   }
 
-  seek(p: Post<any>) {
+  visit(p: Post<any>) {
     this.props.history.push(`/post/${p.title}/${p.id}`)
+  }
+
+  edit(p: Post<any>) {
+    this.props.edit(p)
+    this.props.history.push(`/post/${p.id}/edit`)
   }
 
   render() {
@@ -71,18 +84,26 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
 
   renderPosts() {
     const posts = unique(this.recentPost, p => p.id)
+
     return posts.map(p => {
       const date = Moment(new Date(p.createdAt))
         .locale('zh-cn')
         .format('L')
       return <ListItem
         className="recent-item"
-        onClick={ () => this.seek(p) }
         key={ p.createdAt }
         primaryText={ p.title }
         secondaryText={ date }
-        rightIcon={ <RemoveRedEye /> }
-      />
+      >
+        <IconMenu
+          style={ { position: 'absolute', right: 0 } }
+          iconButtonElement={ <IconButton><MoreVertIcon /></IconButton> }
+        >
+          <MenuItem primaryText="编辑" onClick={ () => this.edit(p) } leftIcon={ <ModeEdit /> } />
+          <MenuItem primaryText="预览" onClick={ () => this.visit(p) } leftIcon={ <RemoveRedEye /> } />
+          <MenuItem primaryText="删除" leftIcon={ <DeleteForever /> } />
+        </IconMenu>
+      </ListItem>
     })
   }
 }

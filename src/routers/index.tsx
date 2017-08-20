@@ -2,7 +2,7 @@ import App from '../containers/app'
 import Article from './article'
 import Reading from './reading'
 import Verify from './verify'
-import CreateNew from './createNew'
+import Editing from './editing'
 import Profile from './profile'
 import Post from './post'
 import Login from './login'
@@ -38,7 +38,7 @@ export const rootRoute = {
       Article,
       Reading,
       Verify,
-      CreateNew,
+      Editing,
       Profile,
       Post,
       DashBoard
