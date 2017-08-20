@@ -15,6 +15,7 @@ import {
 import Container from '../components/container'
 import Transition from '../components/transition'
 import Editor from '../components/editor/'
+import { Serlizer } from '../components/editor/utils/serializer'
 import GoBack from '../widgets/goback'
 import { ArticleItem } from '../components/article'
 import { update } from '../actions/posts'
@@ -23,11 +24,13 @@ import './createNew.less'
 
 import { defaultAvatar, default as Avatar } from '../components/avatar/index'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
+
+import { createAutoSavePlugin } from '../components/editor/plugins/autoSave/autosave.plugin'
 import { createSideToolBarPlugin } from '../components/editor/plugins/side-tool-bar/index'
 import { createImagePlugin } from '../components/editor/plugins/image/index'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
-import { composeDecorators } from 'draft-js-plugins-editor';
+import { composeDecorators } from 'draft-js-plugins-editor'
 const focusPlugin = createFocusPlugin()
 const alignmentPlugin = createAlignmentPlugin()
 const inlineToolbarPlugin = createInlineToolbarPlugin()
@@ -75,10 +78,18 @@ function mapDispatchToProps(dispatch) {
 
 
 class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
-  private currentContent: ContentState
-  private prevContent: ContentState
+  private autoSavePlugin
+
   state = {
     saving: false
+  }
+
+  componentWillUnmount() {
+    this.autoSavePlugin = null
+  }
+
+  componentWillMount() {
+    this.autoSavePlugin = createAutoSavePlugin({ saveAction: this.save, debounceTime: 300 })
   }
 
   get currentPost() {
@@ -95,36 +106,24 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
     return this.props.session.get('user').toJS()
   }
 
-  differentState() {
-    return this.currentContent && !is(this.prevContent, this.currentContent)
-  }
 
-  save = () => {
+  save = (state: EditorState) => {
     this.setState({ saving: true })
-    this.props.updatePost(this.currentPost.get('id'), this.currentContent)
+    this.props.updatePost(this.currentPost.get('id'), state.getCurrentContent())
       .then(() => this.setState({ saving: false }))
-  }
-
-  autoSave = debounce(this.save, 400)
-
-  onChange = (state: EditorState): void => {
-    this.prevContent = this.currentContent
-    this.currentContent = state.getCurrentContent()
-    if (this.differentState()) {
-      this.autoSave()
-    }
   }
 
   render() {
     const style = { marginTop: '.3rem' }
     const Save = this.state.saving
       ? <RaisedButton label="正在保存"
-        style={ style } secondary onClick={ this.save } />
+        style={ style } secondary onClick={ this.autoSavePlugin.save } />
       : <RaisedButton label="保存"
-        style={ style } primary onClick={ this.save } />
+        style={ style } primary onClick={ this.autoSavePlugin.save } />
 
     const { avatar, nickName, bio } = this.getUserInfo()
-
+    const content = this.currentPost && this.currentPost.get('content')
+    const editorState = content && EditorState.createWithContent(Serlizer.deserialize(content))
     return <Transition>
       <AppBar
         style={ { position: 'fixed' } }
@@ -143,7 +142,10 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
               avatar={ <Avatar src={ avatar } size={ 48 } /> }
             />
             <CardText>
-              <Editor plugins={ plugins } onChange={ this.onChange } >
+              <Editor
+                plugins={ plugins.concat([this.autoSavePlugin]) }
+                editorState={ editorState }
+              >
                 <Transition>
                   <AlignmentTool />
                   <InlineToolbar />
