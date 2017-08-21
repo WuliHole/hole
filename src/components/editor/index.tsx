@@ -10,6 +10,7 @@ import {
   convertToRaw
 
 } from 'draft-js'
+import { DraftHandleValue } from './interface.editor'
 import { Serlizer } from './utils/serializer'
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
@@ -72,9 +73,14 @@ export default class HoleEditor
     return null
   }
 
-  private handleBeforeInput = (e) => {
-    e.preventDefault()
-    return true
+  // fix For issue:https://github.com/WuliHole/hole/issues/18
+  handleReturn = (e): DraftHandleValue => {
+    const blockKey = this.state.editorState.getSelection().getAnchorKey()
+    const block = this.state.editorState.getCurrentContent().getBlockForKey(blockKey)
+    if (block && block.getType() === 'atomic') {
+      return 'handled'
+    }
+    return 'not-handled'
   }
 
   render() {
@@ -86,10 +92,10 @@ export default class HoleEditor
           editorState={ this.state.editorState }
           onChange={ this.onChange }
           plugins={ this.props.plugins || [] }
+          handleReturn={ this.handleReturn }
           decorators={ this.props.decorators || [] }
           ref={ (element) => { this.editor = element; } }
           blockStyleFn={ this.blockStyleFn }
-          handleReturn={ this.handleBeforeInput }
           placeholder={ placeholder }
           readOnly={ this.props.readOnly }
         />
