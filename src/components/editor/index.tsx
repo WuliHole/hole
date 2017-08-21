@@ -32,7 +32,7 @@ interface EditorProps {
 export default class HoleEditor
   extends React.Component<EditorProps, any> {
   public editor;
-  public static placeholder = '写点儿什么'
+  public static placeholder = ' '
 
   serializer = Serlizer.serialize
 

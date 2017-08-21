@@ -1,8 +1,10 @@
-const connect = require('react-redux').connect;
-import * as React from 'react';
-import Container from '../components/container';
-import Icon from '../components/icon';
-import { getById } from '../actions/posts';
+const connect = require('react-redux').connect
+import { bindActionCreators } from 'redux'
+import * as React from 'react'
+import { PropTypes } from 'react'
+import Container from '../components/container'
+import Icon from '../components/icon'
+import { getById, edit } from '../actions/posts'
 import { ArticleList, ArticleItem } from '../components/article'
 import { List, Map } from 'immutable'
 import Alert from '../components/alert'
@@ -18,6 +20,8 @@ import { postComment, getComments, IGetComment } from '../actions/comment'
 import { findPostById } from '../redux-selector/posts'
 import { getCommentByPostId } from '../redux-selector/comments'
 import CircularProgress from 'material-ui/CircularProgress'
+import CommonAppBar from '../widgets/commonAppBar'
+import { RaisedButton } from 'material-ui'
 
 interface IReadingPageProps extends React.Props<any> {
   article
@@ -32,6 +36,8 @@ interface IReadingPageProps extends React.Props<any> {
     id: string
   }
   postComment
+  history
+  edit: typeof edit
   loginButton: () => (props: LoginButtonProps) => JSX.Element
 }
 
@@ -43,7 +49,6 @@ function mapStateToProps(state, props: IReadingPageProps) {
     user: state.session.get('user'),
     post: findPostById(state, props),
     comments: getCommentByPostId(state, props),
-
     posts: state.posts
   }
 }
@@ -54,6 +59,7 @@ function mapDispatchToProps(dispatch) {
     postComment: (params) => dispatch(postComment(params)),
     getComments: (postId) => dispatch(getComments(postId)),
     loginButton: () => ReadingPage.loginButton(dispatch),
+    edit: bindActionCreators(edit, dispatch)
   }
 }
 
@@ -68,7 +74,7 @@ type CommentTable = { [keys: string]: List<IComment> }
 class ReadingPage extends React.Component<IReadingPageProps, void> {
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   componentDidMount() {
@@ -88,6 +94,21 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
   get comments() {
     return this.props.comments
   }
+
+  isAuthor() {
+    if (!this.props.user || !this.post) {
+      return false
+    }
+    return this.props.user.get('id') === this.post.author.id
+  }
+
+  edit = () => {
+    if (this.isAuthor()) {
+      this.props.edit(this.post.id)
+      this.props.history.push(`/post/${this.post.id}/edit`)
+    }
+  }
+
 
   render() {
     const post = this.post
@@ -124,12 +145,16 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
       )
     }
     return <div >
-      <div className="bg-white">
+      <div className="bg-white pt4">
+        <CommonAppBar history={ this.props.history } />
         <Container size={ post ? 3 : 1 }
           center
           style={ { minHeight: '320px' } }>
           <ArticleItem
             articleInfo={ post }
+            rightIcon={
+              ReadingPage.makeEditButton(this)
+            }
           />
         </Container>
       </div>
@@ -153,8 +178,22 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
     </div>
   }
 
+  static makeEditButton(context) {
+    return context.isAuthor()
+      ? <RaisedButton
+        primary
+        label="编辑"
+        onClick={ context.edit }
+      />
+      : null
+  }
+
   static loginButton(dispatch) {
     return makeLoginButton(dispatch)
+  }
+
+  static contextProps = {
+    displayError: PropTypes.func
   }
 }
 

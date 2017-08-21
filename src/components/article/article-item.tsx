@@ -39,13 +39,15 @@ interface ItemProps {
   className?: string
   children?
   maxLength?: number
+  rightIcon?: JSX.Element
 }
 
 const item = ({
   articleInfo,
   className,
   maxLength,
-  children = null
+  children = null,
+  rightIcon = null
 }: ItemProps) => {
   assert(!!articleInfo.title)
   assert(!!articleInfo.content)
@@ -65,7 +67,7 @@ const item = ({
 
     <div className={ `article-list-item-wrap ${className || ' '}` }>
 
-      <div >
+      <div className="relative" >
         <div className="inline-block">
           <Avatar src={ author.avatar } size={ 53 } />
         </div>
@@ -77,18 +79,21 @@ const item = ({
           <div>{ author.nickName }</div>
           <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
         </div>
+        <div className="inline-block right-icon">
+          { rightIcon }
+        </div>
       </div>
 
-      <Link className={ cls } to={ href }>
+      {/* <Link className={ cls } to={ href }>
         { title }
-      </Link>
+      </Link> */}
       <div className="article-list-item-paragraph">
         <HoleEditor
           readOnly
           editorState={
             EditorState.createWithContent(
               Serlizer.deserialize(
-                maxLength ? truncateWords(content, maxLength) : content
+                maxLength ? truncate(content, maxLength) : content
               )
             )
           }
@@ -96,7 +101,7 @@ const item = ({
         </HoleEditor>
       </div>
       <span className="mr1"></span>
-      <Icon name="like" />
+      {/* <Icon name="like" /> */ }
       { children }
     </div >
   )
@@ -105,7 +110,7 @@ const AnimatedItem = animated<ItemProps>({ transitionName: 'fadeIn' })(item)
 export default AnimatedItem
 
 
-function truncateWords(
+export function truncate(
   content: any,
   maxLength: number
 ): any {
