@@ -25,17 +25,18 @@ export default class SettingView extends React.PureComponent<SettingViewProps, S
   }
 
   get userId() {
-    return this.props.session.getIn(['user', 'id']).toString()
+    const uid = this.props.session.getIn(['user', 'id'])
+    if (uid) {
+      return uid.toString()
+    }
   }
 
   get profileInfo() {
-    return this.props.session.getIn(['user'], this.userId)
+    return this.props.session.getIn(['user'])
   }
 
   onSave = (formName: string) => {
-    let myUserId = this.props.session.getIn(['user,id'])
-    const stateSync = this.profileInfo.get('id') === myUserId
-    return this.updateProfile(formName, stateSync)
+    return this.updateProfile(formName, true)
   }
 
   updateProfile = (formName, sync = false) => {
@@ -52,7 +53,11 @@ export default class SettingView extends React.PureComponent<SettingViewProps, S
   }
   render() {
     return <div className="SettingView" >
-      <ProfileForm profile={ this.profileInfo } onSave={ this.onSave } visitorUid={ this.profileInfo.get('id') } />
+      {
+        this.profileInfo
+        &&
+        <ProfileForm profile={ this.profileInfo } onSave={ this.onSave } visitorUid={ this.userId } />
+      }
     </div>
   }
 }
