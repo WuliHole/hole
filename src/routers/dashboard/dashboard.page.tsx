@@ -7,8 +7,9 @@ import { secondaryColor } from '../../store/theme'
 import { Paper, Menu, RaisedButton, MenuItem } from 'material-ui'
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
 import Settings from 'material-ui/svg-icons/action/settings'
+import Draft from 'material-ui/svg-icons/content/archive'
 import { bindActionCreators } from 'redux'
-import { getUserPosts, create, edit } from '../../actions/posts'
+import { getDraft, create, edit } from '../../actions/posts'
 import { isRejectedAction } from '../../actions/utils'
 import './dashboard.less'
 import Container from '../../components/container';
@@ -48,18 +49,19 @@ interface ViewState {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DashBoardView extends React.PureComponent<ViewProps, ViewState> {
   static sideBarMenu = [
-    { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post' },
+    { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post?public=true' },
+    { text: '草稿', icon: <Draft />, path: '/dashboard/recent-post?public=false' },
     { text: '设置', icon: <Settings />, path: '/dashboard/setting' }
   ]
 
   componentWillMount() {
-    const activeItem = DashBoardView.sideBarMenu.find(i => this.props.location.pathname === i.path)
+    const path = this.props.location.pathname + this.props.location.search
+    const activeItem = DashBoardView.sideBarMenu.find(i => path === i.path)
     if (activeItem) {
       const selectedItem = activeItem.text
       this.setState({ selectedItem })
     }
   }
-
   state = {
     selectedItem: null
   }

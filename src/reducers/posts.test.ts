@@ -7,17 +7,17 @@ import {
   UPDATE_POST_SUCCESS,
   CREATE_POST_SUCCESS,
   GET_POST_BY_ID_SUCCESS,
-  GET_USER_POSTS_SUCCESS,
+  GET_PUBLISHED_POST_FOR_USER_SUCCESS,
 
   UPDATE_POST_ERROR,
   CREATE_POST_ERROR,
   GET_POST_BY_ID_ERROR,
-  GET_USER_POSTS_ERROR,
+  GET_PUBLISHED_POST_FOR_USER_ERROR,
 
   CREATE_POST_PENDING,
   UPDATE_POST_PENDING,
   GET_POST_BY_ID_PENDING,
-  GET_USER_POSTS_PENDING
+  GET_PUBLISHED_POST_FOR_USER_PENDING
 } from '../../src/constants/posts.action.types';
 import { debug } from '../utils/debug'
 let state = postsReducer()
@@ -29,7 +29,7 @@ describe('Post Reducer', () => {
       let localState = postsReducer()
       const s1 = fireAction(postsReducer, localState, CREATE_POST_PENDING)
       const s2 = fireAction(postsReducer, localState, GET_POST_BY_ID_PENDING)
-      const s3 = fireAction(postsReducer, localState, GET_USER_POSTS_PENDING)
+      const s3 = fireAction(postsReducer, localState, GET_PUBLISHED_POST_FOR_USER_PENDING)
       const s4 = fireAction(postsReducer, localState, UPDATE_POST_PENDING)
       expect(s1.get('isLoading')).toBe(true)
       expect(s2.get('isLoading')).toBe(true)
@@ -43,7 +43,7 @@ describe('Post Reducer', () => {
       let localState = postsReducer()
       const s1 = fireAction(postsReducer, localState, CREATE_POST_ERROR)
       const s2 = fireAction(postsReducer, localState, GET_POST_BY_ID_ERROR)
-      const s3 = fireAction(postsReducer, localState, GET_USER_POSTS_ERROR)
+      const s3 = fireAction(postsReducer, localState, GET_PUBLISHED_POST_FOR_USER_ERROR)
       const s4 = fireAction(postsReducer, localState, UPDATE_POST_ERROR)
       expect(s1.get('hasError')).toBe(true)
       expect(s2.get('hasError')).toBe(true)
@@ -110,7 +110,7 @@ describe('Post Reducer', () => {
         ]
       }
       const newState = fireAction(
-        postsReducer, localState, GET_USER_POSTS_SUCCESS, newPost
+        postsReducer, localState, GET_PUBLISHED_POST_FOR_USER_SUCCESS, newPost
       )
       expect(newState.get('meta').size).toBe(localState.get('meta').size + 6)
       expect(localState.get('total')).toBe(0)

@@ -2,13 +2,14 @@ import React = require('react')
 import { Map } from 'immutable'
 import Moment = require('moment')
 import { List, ListItem } from 'material-ui'
-import { getUserPosts, edit } from '../../../actions/posts'
+import { getPublished, getDraft, edit } from '../../../actions/posts'
 import RemoveRedEye from 'material-ui/svg-icons/image/remove-red-eye'
 import DeleteForever from 'material-ui/svg-icons/action/delete-forever'
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit'
 const Placeholder = require('../../../assets/empty.svg')
 import { unique } from '../../../utils/arrayUtils'
-import { HistoryBase } from 'react-router/lib/routerHistory'
+import { HistoryBase, } from 'react-router/lib/routerHistory'
+import { LocationDescriptor } from 'react-router'
 import './recent.less'
 
 import IconMenu from 'material-ui/IconMenu';
@@ -22,12 +23,23 @@ interface RecentPostProps {
   history: HistoryBase
   renderCreatePostButton: (text?: string) => JSX.Element
   edit: (p: Post<any>) => void
+  location: LocationDescriptor
 }
 
 export default class RecentPost extends React.Component<RecentPostProps, void> {
 
   componentDidMount() {
-    this.props.dispatch(getUserPosts(this.userId))
+    this.loadPost(this.props.location.query.public || 'true')
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.query.public !== nextProps.location.query.public) {
+      this.loadPost(nextProps.location.query.public)
+    }
+  }
+
+  loadPost(published: 'true' | 'false') {
+    this.props.dispatch(published === 'true' ? getPublished(this.userId) : getDraft(this.userId))
   }
 
   get userId() {
@@ -42,9 +54,11 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
   get recentPost(): Post<any>[] {
     const id = parseInt(this.userId, 10)
     const posts = this.groupedPostsByAuthorId.get(this.userId)
+    const published = this.props.location.query.public === 'true' ? true : false
     return posts
       ? posts
         .toSet()
+        .filter((p: any) => p.get('published') === published)
         .sortBy((p: any) => new Date(p.get('createdAt')))
         .reverse()
         .toJS()

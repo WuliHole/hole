@@ -1,7 +1,11 @@
 import {
-  GET_USER_POSTS_PENDING,
-  GET_USER_POSTS_SUCCESS,
-  GET_USER_POSTS_ERROR,
+  GET_PUBLISHED_POST_FOR_USER_PENDING,
+  GET_PUBLISHED_POST_FOR_USER_SUCCESS,
+  GET_PUBLISHED_POST_FOR_USER_ERROR,
+
+  GET_DRAFT_FOR_USER_PENDING,
+  GET_DRAFT_FOR_USER_SUCCESS,
+  GET_DRAFT_FOR_USER_ERROR,
 
   GET_POST_BY_ID_ERROR,
   GET_POST_BY_ID_PENDING,
@@ -16,25 +20,25 @@ import {
   CREATE_POST_SUCCESS,
   EDIT_POST
 } from '../constants/posts.action.types';
-import { getPosts } from '../api/user'
+import { getPublishedPostsForUser, getDraftForUser } from '../api/user'
 import { getPostById, updatePost, createNew } from '../api/article'
 import { EditorState, ContentState } from 'draft-js'
 import { Serlizer } from '../components/editor/utils/serializer'
 
 type POST_ID = string | number
-export function getUserPosts(uid: string | number) {
+export function getPublished(uid: string | number) {
   if (!uid) {
     return
   }
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        GET_USER_POSTS_PENDING,
-        GET_USER_POSTS_SUCCESS,
-        GET_USER_POSTS_ERROR
+        GET_PUBLISHED_POST_FOR_USER_PENDING,
+        GET_PUBLISHED_POST_FOR_USER_SUCCESS,
+        GET_PUBLISHED_POST_FOR_USER_ERROR
       ],
       payload: {
-        promise: getPosts(uid)
+        promise: getPublishedPostsForUser(uid)
           .then((res) => {
             return res;
           }),
@@ -43,6 +47,26 @@ export function getUserPosts(uid: string | number) {
   }
 }
 
+export function getDraft(uid: string | number) {
+  if (!uid) {
+    return
+  }
+  return (dispatch, getState) => {
+    return dispatch({
+      types: [
+        GET_DRAFT_FOR_USER_PENDING,
+        GET_DRAFT_FOR_USER_SUCCESS,
+        GET_DRAFT_FOR_USER_ERROR
+      ],
+      payload: {
+        promise: getDraftForUser(uid)
+          .then((res) => {
+            return res;
+          }),
+      },
+    })
+  }
+}
 
 export function getById(postId: POST_ID) {
   return (dispatch, getState) => {

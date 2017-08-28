@@ -2,7 +2,7 @@ import nock = require('fetch-mock')
 import configureMockStore from 'redux-mock-store'
 import {
   getById,
-  getUserPosts,
+  getPublished,
   update,
   create
 } from './posts'
@@ -22,9 +22,9 @@ describe('GetUserPosts Async Actions', () => {
     nock.get('*', response)
 
     const expectedActions = [
-      { type: Types.GET_USER_POSTS_PENDING },
+      { type: Types.GET_PUBLISHED_POST_FOR_USER_PENDING },
       {
-        type: Types.GET_USER_POSTS_SUCCESS,
+        type: Types.GET_PUBLISHED_POST_FOR_USER_SUCCESS,
         payload: response,
         meta: undefined
       }
@@ -33,7 +33,7 @@ describe('GetUserPosts Async Actions', () => {
     const store = mockStore({
     })
 
-    return store.dispatch(getUserPosts(25))
+    return store.dispatch(getPublished(25))
       .then((res) => {
         expect(store.getActions()).toEqual(expectedActions, res)
         nock.restore();

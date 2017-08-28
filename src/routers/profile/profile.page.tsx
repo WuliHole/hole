@@ -13,7 +13,7 @@ import Goback from '../../widgets/goback'
 import ProfileForm from '../../widgets/profile'
 import RaisedButton from 'material-ui/RaisedButton'
 import { getProfile } from '../../actions/profile'
-import { getUserPosts, create } from '../../actions/posts'
+import { getDraft, create } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
 import { update } from '../../actions/session'
 import { isRejectedAction } from '../../actions/utils'
@@ -58,7 +58,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return {
     getProfile: bindActionCreators(getProfile, dispatch),
-    getUserPosts: bindActionCreators(getUserPosts, dispatch),
+    getUserPosts: bindActionCreators(getDraft, dispatch),
     updateProfile: (formName, sync = false) => {
       return dispatch(update(formName)).then(state => {
         if (!isRejectedAction(state)) {

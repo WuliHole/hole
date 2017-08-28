@@ -1,7 +1,11 @@
 import {
-  GET_USER_POSTS_ERROR,
-  GET_USER_POSTS_PENDING,
-  GET_USER_POSTS_SUCCESS,
+  GET_PUBLISHED_POST_FOR_USER_ERROR,
+  GET_PUBLISHED_POST_FOR_USER_PENDING,
+  GET_PUBLISHED_POST_FOR_USER_SUCCESS,
+
+  GET_DRAFT_FOR_USER_ERROR,
+  GET_DRAFT_FOR_USER_PENDING,
+  GET_DRAFT_FOR_USER_SUCCESS,
 
   GET_POST_BY_ID_ERROR,
   GET_POST_BY_ID_PENDING,
@@ -38,7 +42,8 @@ function postsReducer(state = INITIAL_STATE,
   switch (action.type) {
 
     case GET_POST_BY_ID_PENDING:
-    case GET_USER_POSTS_PENDING:
+    case GET_PUBLISHED_POST_FOR_USER_PENDING:
+    case GET_DRAFT_FOR_USER_PENDING:
     case UPDATE_POST_PENDING:
     case CREATE_POST_PENDING:
       return state.merge(fromJS({
@@ -46,7 +51,8 @@ function postsReducer(state = INITIAL_STATE,
         isLoading: true,
       }));
 
-    case GET_USER_POSTS_SUCCESS:
+    case GET_DRAFT_FOR_USER_SUCCESS:
+    case GET_PUBLISHED_POST_FOR_USER_SUCCESS:
       return state.merge(fromJS({
         meta: meta.merge(mapPosts(action.payload.meta) as POST),
         hasError: false,
@@ -84,7 +90,8 @@ function postsReducer(state = INITIAL_STATE,
       }))
 
     case GET_POST_BY_ID_ERROR:
-    case GET_USER_POSTS_ERROR:
+    case GET_PUBLISHED_POST_FOR_USER_ERROR:
+    case GET_DRAFT_FOR_USER_ERROR:
     case CREATE_POST_ERROR:
     case UPDATE_POST_ERROR:
       return state.merge(fromJS({
