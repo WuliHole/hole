@@ -11,15 +11,17 @@ import CircularProgress from 'material-ui/CircularProgress'
 import KeyboardBackspace
   from 'material-ui/svg-icons/hardware/keyboard-backspace'
 import {
-  Card, CardActions, CardHeader, CardMedia, CardTitle, CardText
-} from 'material-ui/Card'
+  Card, CardActions, CardHeader, CardMedia, CardTitle, CardText,
+  Dialog,
+  FlatButton
+} from 'material-ui'
 import Container from '../components/container'
 import Transition from '../components/transition'
 import Editor from '../components/editor/'
 import { Serlizer } from '../components/editor/utils/serializer'
 import GoBack from '../widgets/goback'
 import { ArticleItem } from '../components/article'
-import { update, getById, edit } from '../actions/posts'
+import { update, getById, edit, publish } from '../actions/posts'
 import debounce from '../utils/debounce'
 import './createNew.less'
 
@@ -65,10 +67,12 @@ interface ICreateNewProps {
   getPostById: (pid: number | string) => Promise<any>
   params: { pid: string }
   editPost: typeof edit
+  publish: (pid: number | string) => Promise<any>
 }
 
 interface ICreateNewState {
   saving?: boolean
+  openPublishWindow?: boolean
 }
 
 function mapStateToProps(state) {
@@ -82,12 +86,13 @@ function mapDispatchToProps(dispatch) {
   return {
     updatePost: (id, content) => dispatch(update(id, content)),
     getPostById: bindActionCreators(getById, dispatch),
-    editPost: bindActionCreators(edit, dispatch)
+    editPost: bindActionCreators(edit, dispatch),
+    publish: bindActionCreators(publish, dispatch)
   }
 }
 
 
-class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
+class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
   private autoSavePlugin
 
   static contextTypes = {
@@ -95,8 +100,10 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
   }
 
   state = {
-    saving: false
+    saving: false,
+    openPublishWindow: false
   }
+
   get currentPost() {
     const currentEdit: number = this.props.posts.get('editing')
     return (this.props.posts.get('meta') as List<Map<keyof Post<any>, any>>)
@@ -184,7 +191,12 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
         title="新建文章"
         titleStyle={ { textAlign: 'center' } }
         iconElementLeft={ <GoBack history={ this.props.history } /> }
-        iconElementRight={ Save }
+        iconElementRight={
+          <div >
+            { this.renderPublishButton() }
+            { Save }
+          </div>
+        }
       >
       </AppBar>
       <div className="create-new-container p4">
@@ -211,6 +223,67 @@ class CreateNew extends React.PureComponent<ICreateNewProps, ICreateNewState> {
         </Container>
       </div>
     </div>
+  }
+
+  renderPublishButton() {
+    if (!this.currentPost) {
+      return null
+    }
+    const published = this.currentPost.get('published')
+    const style = {
+      marginRight: '.3rem'
+    }
+    const actions = [
+      <FlatButton
+        label="取消"
+        primary={ true }
+        onClick={ this.closePublishWindow }
+      />,
+      <FlatButton
+        label="发布"
+        primary={ true }
+        onClick={ this.publishPost }
+      />,
+    ]
+    return (
+      <div className="inline-block">
+        <RaisedButton label={ published ? '已发布' : '发布' } style={ style }
+          disabled={ published }
+          primary
+          onClick={ this.openPublishWindow }
+        />
+        <Dialog
+          title="发布此文章"
+          actions={ actions }
+          modal={ false }
+          open={ this.state.openPublishWindow }
+          onRequestClose={ this.closePublishWindow }
+        >
+
+        </Dialog>
+      </div>
+    )
+  }
+
+  publishPost = () => {
+
+    this.props
+      .publish(this.currentPost.get('id'))
+      .then((res) => {
+        if (isRejectedAction(res)) {
+          this.context.displayError(res.payload.errMsg)
+        } else {
+          this.closePublishWindow()
+        }
+      })
+  }
+
+  closePublishWindow = () => {
+    this.setState({ openPublishWindow: false })
+  }
+
+  openPublishWindow = () => {
+    this.setState({ openPublishWindow: true })
   }
 }
 

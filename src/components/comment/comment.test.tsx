@@ -22,6 +22,7 @@ describe('Comment Component', () => {
     updatedAt: '2017-04-13T12:41:17.996Z',
     createdAt: '2017-04-13T12:41:17.996Z',
     content: getContentState('hello world'),
+    published: true
   }
 
   it('should rightly render user name', () => {
