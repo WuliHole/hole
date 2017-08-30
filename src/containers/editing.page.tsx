@@ -13,7 +13,8 @@ import KeyboardBackspace
 import {
   Card, CardActions, CardHeader, CardMedia, CardTitle, CardText,
   Dialog,
-  FlatButton
+  FlatButton,
+  TextField
 } from 'material-ui'
 import Container from '../components/container'
 import Transition from '../components/transition'
@@ -67,7 +68,7 @@ interface ICreateNewProps {
   getPostById: (pid: number | string) => Promise<any>
   params: { pid: string }
   editPost: typeof edit
-  publish: (pid: number | string) => Promise<any>
+  publish: (pid: number | string, tags: string) => Promise<any>
 }
 
 interface ICreateNewState {
@@ -94,6 +95,7 @@ function mapDispatchToProps(dispatch) {
 
 class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
   private autoSavePlugin
+  private tags: string
 
   static contextTypes = {
     displayError: React.PropTypes.func
@@ -259,16 +261,24 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
           open={ this.state.openPublishWindow }
           onRequestClose={ this.closePublishWindow }
         >
-
+          <TextField
+            style={ { width: '100%' } }
+            hintText="添加一些标签(比如编程,生活)"
+            onChange={ this.updateTags }
+          />
         </Dialog>
       </div>
     )
   }
 
+  updateTags = (e) => {
+    this.tags = e.target.value
+  }
+
   publishPost = () => {
 
     this.props
-      .publish(this.currentPost.get('id'))
+      .publish(this.currentPost.get('id'), this.tags)
       .then((res) => {
         if (isRejectedAction(res)) {
           this.context.displayError(res.payload.errMsg)

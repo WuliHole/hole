@@ -126,7 +126,7 @@ export function update(postId: POST_ID, content: ContentState) {
   }))
 }
 
-export function publish(postId: POST_ID) {
+export function publish(postId: POST_ID, tags?: string) {
   return dispatch => dispatch(({
     types: [
       PUBLISH_POST_PENDING,
@@ -134,7 +134,7 @@ export function publish(postId: POST_ID) {
       PUBLISH_POST_ERROR
     ],
     payload: {
-      promise: publishPost(postId),
+      promise: publishPost(postId, tags),
     }
   }))
 }

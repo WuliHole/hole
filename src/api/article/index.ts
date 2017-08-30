@@ -33,6 +33,6 @@ export function updatePost(postId: PostId, content: RawDraftContentState) {
   })
 }
 
-export function publishPost(postId: PostId) {
-  return get(`/post/${postId}/publish`)
+export function publishPost(postId: PostId, tags = '') {
+  return post(`/post/${postId}/publish`, { tags })
 }

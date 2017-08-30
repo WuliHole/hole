@@ -44,7 +44,7 @@ const INITIAL_STATE = fromJS({
 
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
-  const meta = state.get('meta') as Map<string, POST>
+  const meta = state.get('meta') as Map<number, POST>
 
   switch (action.type) {
 
@@ -62,7 +62,7 @@ function postsReducer(state = INITIAL_STATE,
     case GET_DRAFT_FOR_USER_SUCCESS:
     case GET_PUBLISHED_POST_FOR_USER_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.merge(mapPosts(action.payload.meta) as POST),
+        meta: meta.merge(mapPosts(action.payload.meta)),
         hasError: false,
         isLoading: false,
         total: state.get('total') + action.payload.meta.length
@@ -103,7 +103,7 @@ function postsReducer(state = INITIAL_STATE,
       const post = meta.find(p => p.get('id') === id)
       const newPost = post.merge(Map({ id, published }))
       return state.merge(fromJS({
-        meta: meta.set(id.toString(), newPost as POST),
+        meta: meta.set(id, newPost as POST),
         isLoading: false,
         hasError: false
       }))
