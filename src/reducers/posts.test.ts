@@ -73,7 +73,7 @@ describe('Post Reducer', () => {
       const newState = fireAction(
         postsReducer, state, UPDATE_POST_SUCCESS, newPost
       )
-      const newPosts = newState.get('meta').get(post2.id)
+      const newPosts = newState.get('meta').get(post2.id.toString())
       expect(newPosts.get('title')).toBe('newTitle', newState.toJS())
       expect(newPosts.get('createdAt')).toBe('2017-3-2', newState.toJS())
     })
@@ -89,7 +89,7 @@ describe('Post Reducer', () => {
       const newState = fireAction(
         postsReducer, localState, GET_POST_BY_ID_SUCCESS, newPost
       )
-      const newPosts = newState.get('meta').get(post2.id)
+      const newPosts = newState.get('meta').get(post2.id.toString())
       expect(newState.get('meta').size).toBe(localState.get('meta').size + 1)
       expect(newPosts.get('title')).toEqual('newTitle', newState.toJS())
       expect(newPosts.get('createdAt')).toEqual('2017-3-222', newState.toJS())
