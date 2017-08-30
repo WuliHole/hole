@@ -44,7 +44,7 @@ const INITIAL_STATE = fromJS({
 
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
-  const meta = state.get('meta') as Map<number, POST>
+  const meta = state.get('meta') as Map<string, POST>
 
   switch (action.type) {
 
@@ -62,7 +62,7 @@ function postsReducer(state = INITIAL_STATE,
     case GET_DRAFT_FOR_USER_SUCCESS:
     case GET_PUBLISHED_POST_FOR_USER_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.merge(mapPosts(action.payload.meta)),
+        meta: meta.merge(mapPosts(action.payload.meta) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + action.payload.meta.length
@@ -70,7 +70,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -78,7 +78,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -92,7 +92,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
         isLoading: false,
         hasError: false
       }))
@@ -103,7 +103,7 @@ function postsReducer(state = INITIAL_STATE,
       const post = meta.find(p => p.get('id') === id)
       const newPost = post.merge(Map({ id, published }))
       return state.merge(fromJS({
-        meta: meta.set(id, newPost as POST),
+        meta: meta.set(id.toString(), newPost as any),
         isLoading: false,
         hasError: false
       }))
