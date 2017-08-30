@@ -3,6 +3,7 @@ import {
   GET_PUBLISHED_POST_FOR_USER_PENDING,
   GET_PUBLISHED_POST_FOR_USER_SUCCESS,
 
+
   GET_DRAFT_FOR_USER_ERROR,
   GET_DRAFT_FOR_USER_PENDING,
   GET_DRAFT_FOR_USER_SUCCESS,
@@ -18,6 +19,12 @@ import {
   UPDATE_POST_ERROR,
   UPDATE_POST_PENDING,
   UPDATE_POST_SUCCESS,
+
+
+  PUBLISH_POST_ERROR,
+  PUBLISH_POST_PENDING,
+  PUBLISH_POST_SUCCESS,
+
   EDIT_POST
 } from '../constants/posts.action.types';
 
@@ -46,6 +53,7 @@ function postsReducer(state = INITIAL_STATE,
     case GET_DRAFT_FOR_USER_PENDING:
     case UPDATE_POST_PENDING:
     case CREATE_POST_PENDING:
+    case PUBLISH_POST_PENDING:
       return state.merge(fromJS({
         hasError: false,
         isLoading: true,
@@ -62,7 +70,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -70,7 +78,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -84,7 +92,18 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id, Map(action.payload) as POST),
+        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
+        isLoading: false,
+        hasError: false
+      }))
+
+    case PUBLISH_POST_SUCCESS:
+      const id: number = action.payload.id
+      const published = action.payload.published
+      const post = meta.find(p => p.get('id') === id)
+      const newPost = post.merge(Map({ id, published }))
+      return state.merge(fromJS({
+        meta: meta.set(id.toString(), newPost as any),
         isLoading: false,
         hasError: false
       }))
@@ -94,6 +113,7 @@ function postsReducer(state = INITIAL_STATE,
     case GET_DRAFT_FOR_USER_ERROR:
     case CREATE_POST_ERROR:
     case UPDATE_POST_ERROR:
+    case PUBLISH_POST_PENDING:
       return state.merge(fromJS({
         errMsg: action.payload.message,
         hasError: true,

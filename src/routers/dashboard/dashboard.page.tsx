@@ -49,7 +49,7 @@ interface ViewState {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DashBoardView extends React.PureComponent<ViewProps, ViewState> {
   static sideBarMenu = [
-    { text: '浏览', icon: <RemoveRedEye />, path: '/dashboard/recent-post?public=true' },
+    { text: '已发布', icon: <RemoveRedEye />, path: '/dashboard/recent-post?public=true' },
     { text: '草稿', icon: <Draft />, path: '/dashboard/recent-post?public=false' },
     { text: '设置', icon: <Settings />, path: '/dashboard/setting' }
   ]

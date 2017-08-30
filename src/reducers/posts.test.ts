@@ -149,6 +149,7 @@ function mockResponse(id?: number): Post<any> {
       verified: true,
       createdAt: '',
       bio: ''
-    }
+    },
+    published: true
   }
 }

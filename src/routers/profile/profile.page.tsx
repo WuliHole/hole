@@ -91,6 +91,7 @@ class Profile extends React.Component<ProfileProps, void> {
     return posts
       ? posts
         .toSet()
+        .filter((p) => p.get('published') === true)
         .sortBy(p => new Date(p.get('createdAt')))
         .reverse()
         .toJS()

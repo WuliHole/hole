@@ -1,7 +1,12 @@
+import { } from './../constants/posts.action.types';
 import {
   GET_PUBLISHED_POST_FOR_USER_PENDING,
   GET_PUBLISHED_POST_FOR_USER_SUCCESS,
   GET_PUBLISHED_POST_FOR_USER_ERROR,
+
+  PUBLISH_POST_PENDING,
+  PUBLISH_POST_SUCCESS,
+  PUBLISH_POST_ERROR,
 
   GET_DRAFT_FOR_USER_PENDING,
   GET_DRAFT_FOR_USER_SUCCESS,
@@ -21,7 +26,7 @@ import {
   EDIT_POST
 } from '../constants/posts.action.types';
 import { getPublishedPostsForUser, getDraftForUser } from '../api/user'
-import { getPostById, updatePost, createNew } from '../api/article'
+import { getPostById, updatePost, createNew, publishPost } from '../api/article'
 import { EditorState, ContentState } from 'draft-js'
 import { Serlizer } from '../components/editor/utils/serializer'
 
@@ -117,6 +122,19 @@ export function update(postId: POST_ID, content: ContentState) {
     ],
     payload: {
       promise: updatePost(postId, Serlizer.serialize(content)).then(res => res)
+    }
+  }))
+}
+
+export function publish(postId: POST_ID, tags?: string) {
+  return dispatch => dispatch(({
+    types: [
+      PUBLISH_POST_PENDING,
+      PUBLISH_POST_SUCCESS,
+      PUBLISH_POST_ERROR
+    ],
+    payload: {
+      promise: publishPost(postId, tags),
     }
   }))
 }

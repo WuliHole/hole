@@ -26,7 +26,7 @@ export const rootRoute = {
           replace(`/welcome`)
         } else {
           const user = jsStore.session.user
-          replace(`/dashboard/recent-post`)
+          replace(`/dashboard/recent-post?public=true`)
         }
       }
     },
