@@ -1,17 +1,16 @@
-import * as React from 'react';
+import * as React from 'react'
 import { PropTypes, } from 'react'
-const connect = require('react-redux').connect;
+const connect = require('react-redux').connect
 import { bindActionCreators } from 'redux'
 import { Link, History } from 'react-router'
-import { loginUser, logoutUser, signUpUser } from '../actions/session';
-import { openModal, closeModal } from '../actions/modal';
-import { create } from '../actions/posts';
-import Content from '../components/content';
-import LoginModal from '../components/login/login-modal';
+import { loginUser, logoutUser, signUpUser } from '../actions/session'
+import { openModal, closeModal } from '../actions/modal'
+import { create } from '../actions/posts'
+import Content from '../components/content'
+import LoginModal from '../components/login/login-modal'
 
 import { isRejectedAction } from '../actions/utils'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import * as injectTapEven from 'react-tap-event-plugin'
 import { muiTheme } from '../store/theme'
 import Toast from '../components/toast'
@@ -20,12 +19,12 @@ import { List } from 'immutable'
 injectTapEven()
 
 interface IAppProps extends React.Props<any> {
-  session: any;
-  login: () => Promise<any>;
-  signup: () => Promise<any>;
-  modal: any;
-  openLoginModal: () => void;
-  closeLoginModal: () => void;
+  session: any
+  login: () => Promise<any>
+  signup: () => Promise<any>
+  modal: any
+  openLoginModal: () => void
+  closeLoginModal: () => void
   createPost: () => Promise<any>
   location: Location
   history: History
@@ -34,7 +33,7 @@ interface IAppProps extends React.Props<any> {
   displayMessage: typeof message
   displayError: typeof error
   shiftToast: typeof removeFirst
-};
+}
 
 
 interface AppState {
@@ -47,7 +46,7 @@ function mapStateToProps(state) {
     modal: state.modal,
     posts: state.posts,
     toast: state.toast
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -61,7 +60,7 @@ function mapDispatchToProps(dispatch) {
     displayMessage: bindActionCreators(message, dispatch),
     displayError: bindActionCreators(error, dispatch),
     shiftToast: bindActionCreators(removeFirst, dispatch)
-  };
+  }
 }
 
 
@@ -120,7 +119,7 @@ class App extends React.Component<IAppProps, AppState> {
       modal,
       closeLoginModal,
       toast
-    } = this.props;
+    } = this.props
     const messages = toast.get('messages')
     const errors = toast.get('errors')
 
@@ -143,12 +142,12 @@ class App extends React.Component<IAppProps, AppState> {
           </Content>
         </div >
       </MuiThemeProvider>
-    );
-  };
-};
+    )
+  }
+}
 
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App)

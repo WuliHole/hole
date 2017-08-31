@@ -147,7 +147,7 @@ class ReadingPage extends React.Component<IReadingPageProps, void> {
     return <div >
       <div className="bg-white pt4">
         <CommonAppBar history={ this.props.history } />
-        <Container size={ post ? 3 : 1 }
+        <Container size={ post ? 4 : 1 }
           center
           style={ { minHeight: '320px' } }>
           <ArticleItem

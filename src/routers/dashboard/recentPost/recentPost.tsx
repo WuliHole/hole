@@ -11,7 +11,7 @@ import { unique } from '../../../utils/arrayUtils'
 import { HistoryBase, } from 'react-router/lib/routerHistory'
 import { LocationDescriptor } from 'react-router'
 import './recent.less'
-
+import resolveTitleFromContent from 'utils/resolveTitleFromContent'
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -66,7 +66,8 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
   }
 
   visit(p: Post<any>) {
-    this.props.history.push(`/post/${p.title}/${p.id}`)
+    const title = resolveTitleFromContent(p.content)
+    this.props.history.push(`/post/${title}/${p.id}`)
   }
 
   edit(p: Post<any>) {
@@ -96,21 +97,31 @@ export default class RecentPost extends React.Component<RecentPostProps, void> {
     </div>
   }
 
+  visitPostIfClickedItemContainer = (e, p: Post<any>) => {
+    if (e.target.tagName === 'DIV') {
+      // clicked item container
+      this.visit(p)
+    }
+  }
+
   renderPosts() {
     const posts = unique(this.recentPost, p => p.id)
 
     return posts.map(p => {
-      const date = Moment(new Date(p.createdAt))
+      const date = Moment(new Date(p.updatedAt))
         .locale('zh-cn')
         .format('L')
       return <ListItem
         className="recent-item"
         key={ p.createdAt }
-        primaryText={ p.title }
-        secondaryText={ date }
+
+        primaryText={ resolveTitleFromContent(p.content) }
+        onClick={ (e) => this.visitPostIfClickedItemContainer(e, p) }
+        secondaryText={ `最后更新 ${date}` }
       >
         <IconMenu
           style={ { position: 'absolute', right: 0 } }
+          className="recent-item-icon-menu"
           iconButtonElement={ <IconButton><MoreVertIcon /></IconButton> }
         >
           <MenuItem primaryText="编辑" onClick={ () => this.edit(p) } leftIcon={ <ModeEdit /> } />

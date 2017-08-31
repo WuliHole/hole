@@ -9,7 +9,7 @@ export function fetchArticleList() {
   return post('/article/list', {})
 }
 
-export function createNew({ title = 'New post', content = {} }) {
+export function createNew({ title = '', content = {} }) {
   return new Promise((resolve, reject) => {
     return post('/post', { title, content })
       .then((json: any) => resolve(json))

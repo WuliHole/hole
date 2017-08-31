@@ -59,7 +59,7 @@ const plugins = [
   sideToolbarPlugin,
 ]
 
-interface ICreateNewProps {
+interface IEditViewProps {
   history
   location
   session: Map<any, any>
@@ -71,7 +71,7 @@ interface ICreateNewProps {
   publish: (pid: number | string, tags: string) => Promise<any>
 }
 
-interface ICreateNewState {
+interface IEditViewState {
   saving?: boolean
   openPublishWindow?: boolean
 }
@@ -93,7 +93,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
+class EditView extends React.Component<IEditViewProps, IEditViewState> {
   private autoSavePlugin
   private tags: string
 
@@ -297,4 +297,4 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNew)
+export default connect(mapStateToProps, mapDispatchToProps)(EditView)

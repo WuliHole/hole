@@ -49,7 +49,6 @@ const item = ({
   children = null,
   rightIcon = null
 }: ItemProps) => {
-  assert(!!articleInfo.title)
   assert(!!articleInfo.content)
 
   const cls = classnames(

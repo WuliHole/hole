@@ -16,7 +16,16 @@
     "removeComments": false,
     "sourceMap": false,
     "inlineSourceMap": true,
-    "noEmitHelpers": true
+    "noEmitHelpers": true,
+    "baseUrl": ".",
+    "paths": {
+      "utils/*": [
+        "src/utils/*"
+      ],
+      "app/*": [
+        "src/*"
+      ]
+    }
   },
   "awesomeTypescriptLoaderOptions": {
     "useBabel": true,

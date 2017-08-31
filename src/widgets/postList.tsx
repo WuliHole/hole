@@ -41,9 +41,9 @@ export default class PostList extends React.Component<ListProps, void> {
         return <div key={ p.id } className="mt2 mb2">
           <Link to={ `/post/${p.title}/${p.id}` }>
             <CardHeader
-              title={ `${p.author.nickName}发布于${created}` }
+              title={ `${p.author.nickName}` }
               titleStyle={ styles.title }
-              subtitle={ `最后一次更新:${updated}` }
+              subtitle={ `最后一次更新: ${updated}` }
               style={ { padding: '16px 0' } }
               subtitleColor={ '#02b875' }
               subtitleStyle={ styles.subTitle }

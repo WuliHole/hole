@@ -40,6 +40,8 @@ module.exports = {
   resolve: {
     alias: {
       'react': path.join(__dirname, 'node_modules', 'react'),
+      'utils': path.join(__dirname, 'src', 'utils'),
+      'app': path.join(__dirname, 'src'),
     },
 
     extensions: [
