@@ -27,6 +27,7 @@ interface EditorProps {
   placeholder?: string
   onChange?: (s: EditorState) => any
   readOnly?: boolean
+  autoFocus?: boolean
 }
 
 export default class HoleEditor
@@ -41,6 +42,12 @@ export default class HoleEditor
       ? this.props.editorState
       : EditorState.createEmpty(),
   };
+
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this.focus()
+    }
+  }
 
   onChange = (editorState) => {
     if (this.editor) {
@@ -59,7 +66,7 @@ export default class HoleEditor
     this.editor.focus();
   };
 
-  isFocus() {
+  hasFocus() {
     return this.state.editorState
       .getSelection()
       .getHasFocus()
@@ -84,7 +91,6 @@ export default class HoleEditor
   }
 
   render() {
-    const isFocus = this.isFocus()
     const placeholder = this.props.placeholder || HoleEditor.placeholder
     return (
       <div >
@@ -98,6 +104,7 @@ export default class HoleEditor
           blockStyleFn={ this.blockStyleFn }
           placeholder={ placeholder }
           readOnly={ this.props.readOnly }
+
         />
         { this.editor && this.props.children }
       </div>

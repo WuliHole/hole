@@ -176,7 +176,6 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
   }
 
 
-
   render() {
     const style = { marginTop: '.3rem' }
     const Save = this.state.saving
@@ -214,6 +213,7 @@ class CreateNew extends React.Component<ICreateNewProps, ICreateNewState> {
                 <Editor
                   plugins={ plugins.concat([this.autoSavePlugin]) }
                   editorState={ this.editorState }
+                  autoFocus
                 >
                   <AlignmentTool />
                   <InlineToolbar />
