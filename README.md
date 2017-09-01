@@ -8,42 +8,31 @@ WuliHole
 
 ### Dev
 ```bash
-$ npm run dev
+$ yarn dev:client
 ```
 
 This runs a development mode server with live reload etc.
 
 Open `http://localhost:8080` in your browser.
 
-### Production
-
-```bash
-npm install
-npm start
-```
-
-This runs a production-ready express server that serves up a bundled and
-minified version of the client.
-
-Open `http://localhost:8080` in your browser.
-
-> Note: Demo username/password can be found [here](/server/users.json)
+### Prodduction
+> coming soon
 
 ### Tests
 
 #### Single Run
 ```bash
-$ npm run test
+$ yarn test
 ```
 
 #### Watch Files
 ```bash
-$ npm run test:watch
+$ yarn test:watch
 ```
 
 #### Coverage
 ```bash
-$ npm run cover
+$ yarn cover
 ```
 
 #### Connecting to remote APIs
