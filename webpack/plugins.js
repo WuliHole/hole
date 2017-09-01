@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ManiFest = require('webpack-manifest-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
 
@@ -72,6 +73,11 @@ const prodPlugins = [
   }),
 
   new webpack.optimize.DedupePlugin(),
+
+  new ManiFest({
+    fileName: 'hole-manifest.json',
+    basePath: './',
+  }),
 
   new webpack.optimize.UglifyJsPlugin({
     compress: {

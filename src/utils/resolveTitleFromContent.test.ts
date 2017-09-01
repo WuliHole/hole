@@ -1,7 +1,7 @@
 import resolveTitleFromContent from './resolveTitleFromContent'
 import { RawDraftContentState } from 'draft-js';
 describe('Test function resolveTitleFromContent ', () => {
-  it('should get title rightly', () => {
+  it('should  rightly get title ', () => {
     const content: RawDraftContentState = {
       'entityMap': {},
       'blocks': [
