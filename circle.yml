@@ -25,8 +25,6 @@ test:
   post:
     - cp -R coverage $CIRCLE_ARTIFACTS
     - npm run build
-    - npm start:
-        background: true
     #uncomment when running on browser stack using http://localhost
     # DON'T FORGET TO REPLACE THE BROWSERSTACK KEY
     # download and unzip browserstack local client
