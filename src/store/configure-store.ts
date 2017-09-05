@@ -81,5 +81,9 @@ function _getStorageConfig() {
 }
 
 const store = configureStore({})
+export const getToken = () => {
+  const s = store.getState()
+  return s.session.getIn(['token'])
+}
 export default store;
 

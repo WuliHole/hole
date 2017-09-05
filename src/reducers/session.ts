@@ -44,7 +44,7 @@ function sessionReducer(state = INITIAL_STATE,
 
     case LOGIN_USER_SUCCESS:
       return state.merge(fromJS({
-        token: getCookie('uid'),
+        token: action.payload.token,
         user: action.payload,
         hasError: false,
         isLoading: false,
