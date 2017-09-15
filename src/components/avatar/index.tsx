@@ -1,7 +1,9 @@
 import React = require('react')
 import Container from '../container'
+import { filePublicPathGen } from '../uploader/qiniuUploader'
+import { Avatar } from 'material-ui'
 import './style.less'
-export const defaultAvatar = require('../../assets/excited.svg')
+export const defaultAvatar = filePublicPathGen('excited.png', 64)
 interface Props {
   src: string
   size?: number
@@ -10,13 +12,12 @@ interface Props {
 }
 
 export default ({ src = defaultAvatar, size = 64, style = {}, onClick }: Props) => {
-  return <img style={ {
-    width: `${size}px`,
-    height: `${size}px`,
-    ...style
-  } }
-    onClick={ onClick }
-    src={ src || defaultAvatar }
-    className="avatar circle " alt="avatar"
-  />
+  return <div className="inline-block avatar circle" onClick={ onClick }
+  >
+    <Avatar src={ src || defaultAvatar }
+      size={ size }
+      style={ style }
+      backgroundColor={ '#fff' }
+    />
+  </div>
 }

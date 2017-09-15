@@ -2,7 +2,7 @@ import React = require('react')
 
 import ProfileForm from '../../../widgets/profile'
 import { HistoryBase } from 'react-router'
-import { update } from '../../../actions/session'
+import { updateUserInfo } from '../../../actions/session'
 import { isRejectedAction } from '../../../actions/utils'
 import { GET_PROFILE_SUCCESS } from '../../../constants/profile'
 
@@ -41,7 +41,7 @@ export default class SettingView extends React.PureComponent<SettingViewProps, S
 
   updateProfile = (formName, sync = false) => {
     const { dispatch } = this.props
-    return dispatch(update(formName)).then(state => {
+    return dispatch(updateUserInfo(formName)).then(state => {
       if (!isRejectedAction(state)) {
         dispatch({
           type: GET_PROFILE_SUCCESS,

@@ -15,7 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { getProfile } from '../../actions/profile'
 import { getPublished, create } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
-import { update } from '../../actions/session'
+import { updateUserInfo } from '../../actions/session'
 import { isRejectedAction } from '../../actions/utils'
 import { GET_PROFILE_SUCCESS } from '../../constants/profile'
 import { unique } from '../../utils/arrayUtils'
@@ -60,7 +60,7 @@ function mapDispatchToProps(dispatch) {
     getProfile: bindActionCreators(getProfile, dispatch),
     getUserPosts: bindActionCreators(getPublished, dispatch),
     updateProfile: (formName, sync = false) => {
-      return dispatch(update(formName)).then(state => {
+      return dispatch(updateUserInfo(formName)).then(state => {
         if (!isRejectedAction(state)) {
           dispatch({
             type: GET_PROFILE_SUCCESS,
@@ -73,7 +73,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-class Profile extends React.Component<ProfileProps, void> {
+class Profile extends React.Component<ProfileProps, {}> {
 
   get userId() {
     if (this.props.params.uid) {

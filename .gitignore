@@ -53,3 +53,10 @@ e2e/robot/test_results
        #http://stackoverflow.com/questions/21109672/git-ignoring-icon-files-because-of-icon-rule
 !icon
 
+#qiniu
+qiniu.json
+up.sh
+
+#db
+dump.rdb
+

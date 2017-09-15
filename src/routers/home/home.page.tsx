@@ -13,7 +13,7 @@ interface HomePageProps {
 }
 
 export default
-  class HomePage extends React.Component<HomePageProps, void> {
+  class HomePage extends React.Component<HomePageProps, {}> {
 
   signin = () => {
     this.props.history.push('/login')

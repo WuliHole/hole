@@ -23,7 +23,7 @@ interface ILoginFormProps {
 };
 
 
-class LoginForm extends React.Component<ILoginFormProps, void> {
+class LoginForm extends React.Component<ILoginFormProps, {}> {
   render() {
     const {
       handleSubmit,

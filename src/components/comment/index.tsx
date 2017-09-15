@@ -51,6 +51,7 @@ const ButtonPlugin = createButtonPlugin({
     if (_postComment) {
       _postComment({
         postId: (_article.id),
+        postOwnerId: _article.authorId,
         content,
         authorId: _authorId
       }).then(() => {

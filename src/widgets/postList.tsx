@@ -8,7 +8,7 @@ import { CardHeader, Divider } from 'material-ui'
 import Editor from '../components/editor'
 import { truncate } from '../components/article/article-item'
 import { createImagePlugin } from '../components/editor/plugins/image/index'
-
+import resolveTitleFromContent from 'utils/resolveTitleFromContent'
 interface ListProps {
   posts: Post<any>[]
 }
@@ -19,7 +19,7 @@ const plugins = [
   imagePlugin
 ]
 
-export default class PostList extends React.Component<ListProps, void> {
+export default class PostList extends React.Component<ListProps, {}> {
   render() {
     const { posts } = this.props
     return <section>
@@ -39,7 +39,7 @@ export default class PostList extends React.Component<ListProps, void> {
           .format('L')
 
         return <div key={ p.id } className="mt2 mb2">
-          <Link to={ `/post/${p.title}/${p.id}` }>
+          <Link to={ `/post/@${resolveTitleFromContent(p.content)}/${p.id}` }>
             <CardHeader
               title={ `${p.author.nickName}` }
               titleStyle={ styles.title }

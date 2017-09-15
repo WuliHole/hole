@@ -10,7 +10,7 @@ interface IArticleListProps extends React.Props<any> {
 }
 
 export default
-  class ArticleList extends React.Component<IArticleListProps, void> {
+  class ArticleList extends React.Component<IArticleListProps, {}> {
 
   constructor(props) {
     super(props)

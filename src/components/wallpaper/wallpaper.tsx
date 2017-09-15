@@ -13,7 +13,7 @@ export const defualWallpaperStyle: React.CSSProperties = {
   backgroundPosition: 'center'
 }
 
-export class WallPaper extends React.Component<WallPaperProps, void> {
+export class WallPaper extends React.Component<WallPaperProps, {}> {
   static defualtWallPaper = defualtWallPaper
   static defualStyle = defualWallpaperStyle
 

@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-class ArticlePage extends React.Component<IAritclePageProps, void> {
+class ArticlePage extends React.Component<IAritclePageProps, {}> {
   constructor(props) {
     super(props);
   }

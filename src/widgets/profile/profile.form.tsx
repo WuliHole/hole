@@ -69,7 +69,7 @@ function reduxFormPropsFilter(props) {
 }
 
 
-@reduxForm({
+@reduxForm<any, any>({
   form: ProfileForm.formName,
   fields: [
     'nickName',

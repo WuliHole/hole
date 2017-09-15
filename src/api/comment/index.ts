@@ -20,6 +20,7 @@ export interface CreateCommentParams {
   postId: number
   authorId: number
   content: any
+  postOwnerId: number
 }
 
 export function create(params: CreateCommentParams) {

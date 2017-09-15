@@ -26,7 +26,7 @@ interface RecentPostProps {
   location: LocationDescriptor
 }
 
-export default class RecentPost extends React.Component<RecentPostProps, void> {
+export default class RecentPost extends React.Component<RecentPostProps, {}> {
 
   componentDidMount() {
     this.loadPost(this.props.location.query.public || 'true')

@@ -10,7 +10,7 @@ import { EditorState } from 'draft-js'
 const addImageBlock: AddImageBlock = addImage
 type UploadeRecord = { task: UploaderTask, entityKey: string }
 
-export class ImageReader extends React.PureComponent<ButtonProps, void> {
+export class ImageReader extends React.PureComponent<ButtonProps, {}> {
   record: UploadeRecord[] = []
   // create base 64 image before success
   onStart = (tasks: UploaderTask[]) => {

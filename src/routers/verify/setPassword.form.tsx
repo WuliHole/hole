@@ -23,7 +23,7 @@ interface ISetPwdFormProps {
 };
 
 
-class FormPasswordValidation extends React.Component<ISetPwdFormProps, void> {
+class FormPasswordValidation extends React.Component<ISetPwdFormProps, {}> {
   public props: ISetPwdFormProps
 
   render() {

@@ -23,7 +23,7 @@ interface ISignUpFormProps {
 };
 
 
-class SignUpForm extends React.Component<ISignUpFormProps, void> {
+class SignUpForm extends React.Component<ISignUpFormProps, {}> {
   render() {
     const {
       handleSubmit,

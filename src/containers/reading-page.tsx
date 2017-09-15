@@ -71,7 +71,7 @@ function mapDispatchToProps(dispatch) {
 type CommentTable = { [keys: string]: List<IComment> }
 
 
-class ReadingPage extends React.Component<IReadingPageProps, void> {
+class ReadingPage extends React.Component<IReadingPageProps, {}> {
 
   constructor(props) {
     super(props)

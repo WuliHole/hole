@@ -8,7 +8,7 @@ interface IUploaderProps extends UpdateOptions {
 }
 
 export default
-  class Uploader extends React.PureComponent<IUploaderProps, void> {
+  class Uploader extends React.PureComponent<IUploaderProps, {}> {
   uploader: QiniuUploader
   constructor(props) {
     super(props)
@@ -32,8 +32,12 @@ export default
 }
 
 export const CDN_HOST = 'http://lowsweet.qiniudn.com/'
-export function filePublicPathGen(fileKey: string) {
+export function filePublicPathGen(fileKey: string, size?: number) {
   if (fileKey) {
-    return `${CDN_HOST}${fileKey}`
+    let ret = `${CDN_HOST}${fileKey}`
+    if (size) {
+      ret = ret + `?imageView2/1/w/${size}/h/${size}`
+    }
+    return ret
   }
 }

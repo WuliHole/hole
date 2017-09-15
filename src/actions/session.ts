@@ -2,7 +2,7 @@ import assert from '../utils/assert'
 import { login, signup, logout } from '../api/auth/';
 import {
   setPassword as setUserPassword,
-  update as updateUserInfo
+  update
 } from '../api/user'
 
 import {
@@ -91,7 +91,7 @@ export function setPassword() {
   }
 }
 
-export function update(formName: string) {
+export function updateUserInfo(formName: string) {
   return (dispatch, getState) => {
     const form = getState().form[formName]
     const data = {}
@@ -112,7 +112,7 @@ export function update(formName: string) {
         UPDATE_USER_ERROR,
       ],
       payload: {
-        promise: updateUserInfo(data)
+        promise: update(data)
       },
     });
   }

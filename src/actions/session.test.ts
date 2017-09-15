@@ -4,7 +4,7 @@ import {
   signUpUser,
   loginUser,
   setPassword,
-  update,
+  updateUserInfo,
   logoutUser
 } from './session'
 import { fromJS } from 'immutable'
@@ -172,7 +172,7 @@ describe('Update user Async Actions', () => {
       }
     })
 
-    return store.dispatch(update('update'))
+    return store.dispatch(updateUserInfo('update'))
       .then((res) => {
         expect(store.getActions()).toEqual(expectedActions, res)
         nock.restore();

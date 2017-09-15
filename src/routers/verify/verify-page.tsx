@@ -5,7 +5,7 @@ import Alert from '../../components/alert'
 import Container from '../../components/container'
 // import { updateArticleList } from '../actions/article';
 import Board from '../../components/board'
-import { setPassword, update } from '../../actions/session'
+import { setPassword, updateUserInfo } from '../../actions/session'
 import { LOGIN_USER_SUCCESS } from 'app/constants/index'
 import ResetPassWord from './setPassword.form'
 import Personalization from './personalizaion.form'
@@ -36,7 +36,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setPassword: () => dispatch(setPassword()),
-    updateProfile: () => dispatch(update('personalization')),
+    updateProfile: () => dispatch(updateUserInfo('personalization')),
     dispatch
   }
 }
