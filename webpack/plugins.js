@@ -6,11 +6,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManiFest = require('webpack-manifest-plugin');
 const QiniuPlugin = require('qn-webpack');
-let config = {}
-
-if (process.env.NODE_ENV === 'production') {
-  config = require('../qiniu.json')
-}
 
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
@@ -79,13 +74,6 @@ const prodPlugins = [
     ),
   }),
 
-  new QiniuPlugin({
-    accessKey: config.accessKey,
-    secretKey: config.secretKey,
-    bucket: config.bucket,
-    path: config.path,
-    zone: config.zone,
-  }),
 
   new webpack.optimize.DedupePlugin(),
 
@@ -100,6 +88,22 @@ const prodPlugins = [
   }),
 
 ];
+
+if (process.env.NODE_ENV === 'production') {
+  const fs = require('fs')
+  const existCDNConfig = fs.existsSync('../qiniu.json')
+  if (existCDNConfig) {
+    const config = require('../qiniu.json')
+    prodPlugins.push(new QiniuPlugin({
+      accessKey: config.accessKey,
+      secretKey: config.secretKey,
+      bucket: config.bucket,
+      path: config.path,
+      zone: config.zone,
+    })
+    )
+  }
+}
 
 module.exports = basePlugins
   .concat(process.env.NODE_ENV === 'production' ? prodPlugins : [])

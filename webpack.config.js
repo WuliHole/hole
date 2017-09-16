@@ -9,7 +9,6 @@ const localIp = require('ip').address()
 // const applicationEntries = process.env.NODE_ENV === 'development'
 //   ? ['webpack-hot-middleware/client?reload=true']
 //   : [];
-console.log('PUBLIC_PATH:=>>>>>>>>>>>', process.env.WP_PUBLIC_PATH)
 module.exports = {
   entry: {
     index: './src/index.tsx',
@@ -23,7 +22,7 @@ module.exports = {
       : '[name].js',
 
     publicPath: process.env.NODE_ENV === 'production'
-      ? process.env.WP_PUBLIC_PATH
+      ? process.env.WP_PUBLIC_PATH || './'
       : `http://${localIp}:8080/`,
 
     sourceMapFilename: process.env.NODE_ENV === 'production'
