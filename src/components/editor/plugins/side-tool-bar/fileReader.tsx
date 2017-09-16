@@ -11,6 +11,8 @@ const addImageBlock: AddImageBlock = addImage
 type UploadeRecord = { task: UploaderTask, entityKey: string }
 
 export class ImageReader extends React.PureComponent<ButtonProps, {}> {
+  static onTaskSuccess: (state: EditorState) => any
+
   record: UploadeRecord[] = []
   // create base 64 image before success
   onStart = (tasks: UploaderTask[]) => {
@@ -39,12 +41,15 @@ export class ImageReader extends React.PureComponent<ButtonProps, {}> {
   }
 
   // if success , replcae base 64 image with public path of cdn and mark block as valid
-  onTaskSuccess = (task: UploaderTask) => {
+  _onTaskSuccess = (task: UploaderTask) => {
     console.debug(task)
     const targetRecord = this.record.find(r => r.task === task)
     if (targetRecord) {
       const data = { src: filePublicPathGen(task.result.hash), valid: true }
-      this.updateBlockDataFindingByRecord(targetRecord, data)
+      const state = this.updateBlockDataFindingByRecord(targetRecord, data)
+      if (ImageReader.onTaskSuccess) {
+        ImageReader.onTaskSuccess(state)
+      }
     }
   }
 
@@ -53,6 +58,7 @@ export class ImageReader extends React.PureComponent<ButtonProps, {}> {
     const newContent = contentState.mergeEntityData(record.entityKey, data)
     const newEditorState = EditorState.createWithContent(newContent)
     this.props.setEditorState(newEditorState)
+    return newEditorState
   }
 
   preventBubbling = (e: React.MouseEvent<any>) => {
@@ -64,7 +70,7 @@ export class ImageReader extends React.PureComponent<ButtonProps, {}> {
       <Uploader
         listener={ {
           onStart: this.onStart,
-          onTaskSuccess: this.onTaskSuccess
+          onTaskSuccess: this._onTaskSuccess
         } }
       >
         <ImageIcon className={ this.props.theme.button } style={ SideToolBarButtonStyle } type="button" />

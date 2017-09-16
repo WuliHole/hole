@@ -1,4 +1,4 @@
-import { EditorPluginBuilder } from '../interface.plugin'
+import { EditorPluginBuilder, InAddtionAccepts } from '../interface.plugin'
 import { EditorState } from 'draft-js'
 import { is } from 'immutable'
 import debounce from '../../../../utils/debounce'
@@ -17,7 +17,11 @@ interface PluginConfig {
 
 interface Method {
   save: () => void
+  isDifferentState: () => boolean
 }
+
+export type AutoSavePlugin = InAddtionAccepts & Method
+
 export const createAutoSavePlugin: EditorPluginBuilder<PluginConfig, Method> = ({ debounceTime = 500, saveAction }) => {
 
 
@@ -29,12 +33,12 @@ export const createAutoSavePlugin: EditorPluginBuilder<PluginConfig, Method> = (
   let currentState: EditorState
   saveAction = debounce(saveAction, debounceTime)
 
-  function differentState() {
+  function isDifferentState() {
     return currentState && !is(prevState.getCurrentContent(), currentState.getCurrentContent())
   }
 
   function save() {
-    if (differentState()) {
+    if (isDifferentState()) {
       saveAction(currentState)
     }
   }
@@ -56,6 +60,7 @@ export const createAutoSavePlugin: EditorPluginBuilder<PluginConfig, Method> = (
       return editorState
     },
     save,
+    isDifferentState
   }
 }
 

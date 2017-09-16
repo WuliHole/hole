@@ -32,7 +32,7 @@ type Decorator = {
   component: React.ComponentClass<any>,
 }
 
-interface InAddtionAccepts {
+export interface InAddtionAccepts {
   initialize?: (props: PluginFunctions) => void
   onChange?: (editorState: EditorState) => EditorState
   willUnMount?: (props: PluginFunctions) => void

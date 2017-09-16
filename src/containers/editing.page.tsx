@@ -16,6 +16,7 @@ import {
   FlatButton,
   TextField
 } from 'material-ui'
+import Moment = require('moment')
 import Container from '../components/container'
 import Transition from '../components/transition'
 import Editor from '../components/editor/'
@@ -29,13 +30,15 @@ import './createNew.less'
 import { defaultAvatar, default as Avatar } from '../components/avatar/index'
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin'
 
-import { createAutoSavePlugin } from '../components/editor/plugins/autoSave/autosave.plugin'
+import { createAutoSavePlugin, AutoSavePlugin } from '../components/editor/plugins/autoSave/autosave.plugin'
+import { ImageReader } from '../components/editor/plugins/side-tool-bar/fileReader'
 import { createSideToolBarPlugin } from '../components/editor/plugins/side-tool-bar/index'
 import { createImagePlugin } from '../components/editor/plugins/image/index'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
 import { isRejectedAction } from '../actions/utils'
+Moment.locale('zh-cn')
 const focusPlugin = createFocusPlugin()
 const alignmentPlugin = createAlignmentPlugin()
 const inlineToolbarPlugin = createInlineToolbarPlugin()
@@ -94,7 +97,7 @@ function mapDispatchToProps(dispatch) {
 
 
 class EditView extends React.Component<IEditViewProps, IEditViewState> {
-  private autoSavePlugin
+  private autoSavePlugin: AutoSavePlugin
   private tags: string
 
   static contextTypes = {
@@ -127,6 +130,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
 
   componentWillMount() {
     this.autoSavePlugin = createAutoSavePlugin({ saveAction: this.save, debounceTime: 300 })
+    ImageReader.onTaskSuccess = this.save
   }
 
   componentDidMount() {
@@ -186,11 +190,14 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
 
     const { avatar, nickName, bio } = this.getUserInfo()
 
+    const lastSave = this.currentPost && this.currentPost.get('updatedAt')
+    const date = new Date(lastSave)
+
     return <div>
       <AppBar
         style={ { position: 'fixed' } }
-        title="新建文章"
-        titleStyle={ { textAlign: 'center' } }
+        title={ lastSave && `已自动保存到云端 ${Moment(date).fromNow()}` }
+        titleStyle={ { textAlign: 'center', color: '#949494', fontSize: '13px' } }
         iconElementLeft={ <GoBack history={ this.props.history } /> }
         iconElementRight={
           <div >
