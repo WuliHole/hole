@@ -9,14 +9,14 @@ const mockStore = configureMockStore(middlewares)
 describe('Notification   Actions', () => {
 
   it(' initialLoadNotifications  has been done', (done) => {
-    const response = { data: [1, 2, 3] }
+    const response = { results: [1, 2, 3], next: '', unread: 5 }
     nock.get('*', response)
 
     const expectedActions = [
       { type: Types.INITIAL_LOAD_NOTIFICATIONS_PENDING },
       {
         type: Types.INITIAL_LOAD_NOTIFICATIONS_SUCCESS,
-        payload: response,
+        payload: { data: response.results, next: response.next, unread: response.unread },
         meta: undefined
       }
     ]

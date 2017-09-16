@@ -14,10 +14,12 @@ interface Props {
 export default ({ src = defaultAvatar, size = 64, style = {}, onClick }: Props) => {
   return <div className="inline-block avatar circle" onClick={ onClick }
   >
-    <Avatar src={ src || defaultAvatar }
-      size={ size }
-      style={ style }
-      backgroundColor={ '#fff' }
-    />
+    { __TEST__
+      ? <img src={ src } alt="" />
+      : <Avatar src={ src || defaultAvatar }
+        size={ size }
+        style={ style }
+        backgroundColor={ '#fff' }
+      /> }
   </div>
 }
