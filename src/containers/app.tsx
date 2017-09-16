@@ -3,9 +3,6 @@ import { PropTypes, } from 'react'
 const connect = require('react-redux').connect
 import { bindActionCreators } from 'redux'
 import { Link, History } from 'react-router'
-import { loginUser, logoutUser, signUpUser } from '../actions/session'
-import { openModal, closeModal } from '../actions/modal'
-import { create } from '../actions/posts'
 import Content from '../components/content'
 import LoginModal from '../components/login/login-modal'
 
@@ -14,7 +11,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import * as injectTapEven from 'react-tap-event-plugin'
 import { muiTheme } from '../store/theme'
 import Toast from '../components/toast'
+import { openModal, closeModal } from '../actions/modal'
+import { create } from '../actions/posts'
+import { loginUser, logoutUser, signUpUser } from '../actions/session'
 import { message, error, removeFirst } from '../actions/toast'
+import { initialLoadNotifications } from 'app/actions/notification'
 import { List } from 'immutable'
 injectTapEven()
 
@@ -33,6 +34,7 @@ interface IAppProps extends React.Props<any> {
   displayMessage: typeof message
   displayError: typeof error
   shiftToast: typeof removeFirst
+  loadNotifications: typeof initialLoadNotifications
 }
 
 
@@ -59,7 +61,8 @@ function mapDispatchToProps(dispatch) {
     createPost: () => dispatch(create()),
     displayMessage: bindActionCreators(message, dispatch),
     displayError: bindActionCreators(error, dispatch),
-    shiftToast: bindActionCreators(removeFirst, dispatch)
+    shiftToast: bindActionCreators(removeFirst, dispatch),
+    loadNotifications: bindActionCreators(initialLoadNotifications, dispatch)
   }
 }
 
@@ -77,6 +80,14 @@ class App extends React.Component<IAppProps, AppState> {
     return {
       displayError,
       displayMessage,
+    }
+  }
+
+  componentWillMount() {
+    const uid = this.props.session.getIn(['user', 'id'])
+    const token = this.props.session.get('feedToken')
+    if (uid && token) {
+      this.props.loadNotifications(uid, token)
     }
   }
 

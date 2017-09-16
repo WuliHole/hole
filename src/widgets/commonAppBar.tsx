@@ -1,4 +1,5 @@
 import React = require('react')
+import { bindActionCreators } from 'redux'
 import { PropTypes } from 'react'
 import * as classnames from 'classnames'
 import AppBar from 'material-ui/AppBar'
@@ -14,12 +15,17 @@ import { openModal } from '../actions/modal'
 import isLogin from '../store/isLogin'
 import './commonAppBar.less'
 import { isRejectedAction } from '../actions/utils'
+import Notification from 'app/components/notification/index'
+import { clearnUnreadNotification } from '../actions/'
+
 interface CommonAppBarProps {
   logout?: any
   user?: User
   history: HistoryBase
   openLoginModal?: any
   fixed?: boolean
+  notification?
+  clearnUnreadNotification?: typeof clearnUnreadNotification
 }
 
 interface CommonAppBarState {
@@ -31,13 +37,15 @@ interface CommonAppBarState {
 function mapStateToProps(store) {
   return {
     user: store.session.toJS().user,
+    notification: store.notification
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     logout: () => dispatch(logoutUser()),
-    openLoginModal: () => dispatch(openModal())
+    openLoginModal: () => dispatch(openModal()),
+    clearnUnreadNotification: bindActionCreators(clearnUnreadNotification, dispatch)
   }
 }
 
@@ -87,7 +95,14 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
         onClick={ this.showPopMenu }
         src={ this.props.user.avatar }
       />
+
       return <div className="app-bar-right-item" ref={ this.ref }>
+        <Notification
+          unread={ this.props.notification.unread }
+          notifications={ this.props.notification.data }
+          clearUnread={ this.props.clearnUnreadNotification }
+          isLoading={ this.props.notification.fetching }
+        />
         { avatar }
         { this.state.showPopMenu &&
           <Popover
@@ -121,7 +136,8 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
         background: 'rgba(0,0,0,0)',
         fontSize: '14px',
         color: '#449bf7',
-        fontWeight: 300
+        fontWeight: 300,
+        padding: 15
       } }
       onClick={ this.props.openLoginModal }>
       登录/注册

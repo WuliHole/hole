@@ -18,6 +18,7 @@ export function getCommetList(
 
 export interface CreateCommentParams {
   postId: number
+  postTitle: string
   authorId: number
   content: any
   postOwnerId: number

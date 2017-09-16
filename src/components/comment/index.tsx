@@ -11,6 +11,7 @@ import { Serlizer } from '../editor/utils/serializer'
 import { CommentAuthor, CommentAvatar } from './header'
 import CommentTable from './commentTable'
 import { Map } from 'immutable'
+import resolveTitle from 'utils/resolveTitleFromContent'
 interface ICommentFormProps {
   user: User
   article: Post<any>
@@ -52,6 +53,7 @@ const ButtonPlugin = createButtonPlugin({
       _postComment({
         postId: (_article.id),
         postOwnerId: _article.authorId,
+        postTitle: resolveTitle(_article.content),
         content,
         authorId: _authorId
       }).then(() => {

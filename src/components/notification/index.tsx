@@ -3,7 +3,9 @@ import { RaisedButton, IconButton, Popover, Badge, List, ListItem, CircularProgr
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import { darkBlack } from 'material-ui/styles/colors'
 import resolveTitleFromContent from 'utils/resolveTitleFromContent'
+import { primary1Color } from 'app/store/theme'
 import Moment = require('moment')
+import { Link } from 'react-router'
 interface Props {
   unread: number
   notifications: NotificationEntity[]
@@ -83,17 +85,15 @@ export default class NotificationBox extends React.Component<Props, State> {
 
     return <div>
       { this.props.notifications.map((r, index) => {
-        const date = Moment(new Date(r.created_at))
-          .locale('zh-cn')
-          .format('L')
-        return <List key={ r.id }>
-          <Subheader>{ date }</Subheader>
+
+        return <List key={ r.id } >
           {
             r.activities.map(activity => {
               const description = this.getDescription(activity)
-              return <div key={ activity.id }>
+              return <div key={ activity.id } style={ r.is_read ? {} : { background: '#e7f3ff' } }>
                 <ListItem
-                  primaryText={ description }
+                  secondaryText={ description }
+                  hoverColor={ '#e7f3ff' }
                 />
               </div>
             })
@@ -109,7 +109,22 @@ export default class NotificationBox extends React.Component<Props, State> {
   getDescription(activity: Activity) {
     switch (activity.verb) {
       case 'comment':
-        return `${activity.actorNickname}${verbMap.comment}${activity.postTitle}`
+        return <p>
+          <Link
+            to={ `/profile/${activity.actor}` }
+            className="text-decoration-none mr1"
+            style={ { color: primary1Color } }
+          >
+            { activity.actorNickname }
+          </Link>
+          { verbMap.comment }
+          <Link to={ `/post/@${activity.postTitle}/${activity.target}` }
+            className="text-decoration-none ml1"
+            style={ { color: primary1Color } }
+          >
+            { activity.postTitle }
+          </Link>
+        </p>
       default:
         throw new TypeError('Uknow activity type')
     }
