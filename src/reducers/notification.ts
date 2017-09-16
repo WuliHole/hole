@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 }
 
 function feedReducer(state = INITIAL_STATE, action = { type: '', payload: null }) {
+  const data = action.payload && action.payload.data
   switch (action.type) {
 
     case Types.INITIAL_LOAD_NOTIFICATIONS_ERROR:
@@ -22,13 +23,17 @@ function feedReducer(state = INITIAL_STATE, action = { type: '', payload: null }
     case Types.INITIAL_LOAD_NOTIFICATIONS_SUCCESS:
       return {
         ...state,
-        data: action.payload.data,
+        data: data || state.data,
         fetching: false,
         unread: action.payload.unread
       }
 
     case Types.LOAD_NEXT_NOTIFICATIONS_SUCCESS:
-      return { ...state, data: state.data.concat(action.payload.data), fetching: false }
+      return {
+        ...state,
+        data: data ? state.data.concat(action.payload.data) : state.data,
+        fetching: false
+      }
 
     case Types.CLEAR_UNREAD_NOTIFICATION:
       return {

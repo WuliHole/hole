@@ -6,8 +6,8 @@ import {
   white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
-export const primary1Color = '#2592F6'
-export const secondaryColor = '#37C936'
+export const primary1Color = '#000'
+export const secondaryColor = '#000'
 export const accent1Color = secondaryColor
 export const gray = '#88959E'
 export const buttonBgColor = '#E7F3FF'
@@ -33,7 +33,7 @@ export const muiTheme = getMuiTheme({
     disabledColor: fade(primary1Color, 0.3),
     pickerHeaderColor: primary1Color,
     clockCircleColor: fade(primary1Color, 0.07),
-    shadowColor: fullBlack,
+    shadowColor: 'rgba(0,0,0,0)',
   },
   card: {
     titleColor: fullBlack
@@ -42,7 +42,7 @@ export const muiTheme = getMuiTheme({
     color: '#fff',
     height: 48,
     textColor: '#ffffff',
-    padding: 75
+    padding: 75,
   },
   menuItem: {
     hoverColor: buttonBgColor,

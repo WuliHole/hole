@@ -135,7 +135,7 @@ export default class ProfileForm
                 name="nickName"
                 id="qa-nickName"
                 defaultValue={ profile.nickName }
-                underlineShow={ !!nickName.touched }
+                underlineShow={ false }
                 {...reduxFormPropsFilter(nickName) }
                 errorText={
                   !!(nickName.touched && nickName.error)
@@ -153,7 +153,7 @@ export default class ProfileForm
               defaultValue={ profile.bio }
               fullWidth
               multiLine
-              underlineShow={ !!bio.touched }
+              underlineShow={ false }
               rowsMax={ 4 }
               {...reduxFormPropsFilter(bio) }
               errorText={
@@ -165,7 +165,7 @@ export default class ProfileForm
           <FormGroup >
             <Button type="submit"
               style={ {
-                width: '88px', backgroundColor: '#449bf7', fontWeight: 100,
+                width: '88px', backgroundColor: '#000', fontWeight: 100,
               } }
               className="block "
               id="qa-submit-button"

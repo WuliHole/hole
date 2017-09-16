@@ -24,53 +24,17 @@ interface IProfileWidgetProps {
 }
 
 interface IProfileWidgetState {
-  readOnly: boolean
+
 }
 
 export default class ProfileWidget
   extends React.Component<IProfileWidgetProps, IProfileWidgetState> {
-  state = {
-    readOnly: true
-  }
-
-  toggleState = () => {
-    this.setState({ readOnly: !this.state.readOnly })
-  }
-
-  onClick(e) {
-    this.toggleState()
-  }
-
   onSubmit = () => {
-    this.props.onSave('profile').then(this.toggleState)
+    this.props.onSave('profile')
   }
 
   render() {
-    const avatar = <Avatar
-      size={ 96 }
-      src={ this.props.profile.get('avatar') }
-      style={ { float: 'right' } }
-    />
-    const date = new Date(this.props.profile.get('createdAt'))
-    const createdAt = Moment(date, 'YYYYMMDD').locale('zh-cn').format('L')
-    const editButton = (
-      <RaisedButton
-        className="profile-submit-button"
-        primary
-        onClick={ this.toggleState }
-        buttonStyle={ { color: '#fff' } } >
-        { this.state.readOnly ? '编辑' : '取消' }
-      </RaisedButton>
-    )
-
     const profile = this.props.profile.toJS()
-    const isSameUser = parseInt(profile.id, 10) === parseInt(this.props.visitorUid, 10)
-    const disableStyle = this.state.readOnly
-      ? {
-        cursor: 'default',
-        color: 'rgba(0,0,0,0.87)'
-      }
-      : {}
     return (
       <div>
         <CardHeader
@@ -80,54 +44,15 @@ export default class ProfileWidget
           subtitleStyle={
             { fontSize: '0.9rem', width: '90%', margin: '1rem 0' }
           }
-          avatar={ isSameUser ? editButton : null }
         >
           <Divider />
         </CardHeader >
-        {
-          !this.state.readOnly
-          &&
-          <ProfileForm
-            profile={ profile }
-            isPending={ false }
-            hasError={ false }
-            onSubmit={ this.onSubmit }
-          />
-        }{
-          this.state.readOnly
-          &&
-          <div className="ProfileForm">
-            <div className="profile-form-avatar inline-block">
-              <Avatar src={ profile.avatar } />
-            </div>
-            <div className="profile-form-nickName inline-block">
-              <FormGroup className="profile-field-nickName" >
-                <TextField
-                  inputStyle={ disableStyle }
-                  disabled
-                  underlineShow={ false }
-                  name="nickName"
-                  id="qa-nickName"
-                  value={ profile.nickName }
-                />
-              </FormGroup>
-            </div>
-            <Divider className="profile-field-nickName-divider" />
-            <FormGroup>
-              <div className="label-bio h1">简介</div>
-              <TextField
-                disabled
-                textareaStyle={ disableStyle }
-                name="bio"
-                underlineShow={ false }
-                value={ profile.bio }
-                fullWidth
-                multiLine
-                rowsMax={ 4 }
-              />
-            </FormGroup>
-          </div>
-        }
+        <ProfileForm
+          profile={ profile }
+          isPending={ false }
+          hasError={ false }
+          onSubmit={ this.onSubmit }
+        />
       </div>
     )
   }

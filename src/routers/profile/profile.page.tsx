@@ -10,7 +10,6 @@ import CommonAppBar from '../../widgets/commonAppBar'
 import { Serlizer } from '../../components/editor/utils/serializer'
 import CircularProgress from 'material-ui/CircularProgress'
 import Goback from '../../widgets/goback'
-import ProfileForm from '../../widgets/profile'
 import RaisedButton from 'material-ui/RaisedButton'
 import { getProfile } from '../../actions/profile'
 import { getPublished, create } from '../../actions/posts'
@@ -21,6 +20,8 @@ import { GET_PROFILE_SUCCESS } from '../../constants/profile'
 import { unique } from '../../utils/arrayUtils'
 import isLogin from '../../store/isLogin'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
+import Avatar from 'app/components/avatar'
+
 import './profile.less'
 import PostList from '../../widgets/postList';
 const connect = require('react-redux').connect
@@ -103,6 +104,13 @@ class Profile extends React.Component<ProfileProps, {}> {
     this.loadData()
   }
 
+  componentWillMount() {
+    document.querySelector('body').classList.add('bg-white')
+  }
+
+  componentWillUnmount() {
+    document.querySelector('body').classList.remove('bg-white')
+  }
   // switch from one user to another
   componentDidUpdate(prevProps: ProfileProps) {
     if (this.props.params.uid !== prevProps.params.uid) {
@@ -145,30 +153,52 @@ class Profile extends React.Component<ProfileProps, {}> {
     />
     const session = this.props.session.toJS()
     const visitorUid = session.user && session.user.id
-    return <Container size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px' } }>
-      {/*profile container*/ }
-      <Container size={ 4 } center className="profile">
-        {
-          this.profile
-            ? <ProfileForm
-              profile={ this.profile }
-              onSave={ this.onSave }
-              visitorUid={ visitorUid }
-            />
-            : loader
-        }
-      </Container>
+    return <Transition>
+      <Container size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px', minHeight: '60vh' } }>
+        {/*profile container*/ }
+        <Container size={ 4 } center className="profile">
+          {
+            this.profile
+              ? <div className="center">
+                <div className="relative">
+                  <Avatar src={ this.profile.get('avatar') } size={ 128 } />
+                  { visitorUid === this.profile.get('id')
+                    &&
+                    <div className="edit-button">
+                      <RaisedButton label="编辑" primary onClick={ this.editProfile } />
+                    </div>
+                  }
+                </div>
+                <div>
+                  <h1 className="username serif">
+                    { this.profile.get('nickName') }
+                  </h1>
+                </div>
+                <div>
+                  <p className="bio">
+                    { this.profile.get('bio') }
+                  </p>
+                </div>
+              </div>
+              : loader
+          }
+        </Container>
 
-      {/*posts container*/ }
-      <Container size={ 4 } center className="profile-posts mt2">
+        {/*posts container*/ }
+        <Container size={ 4 } center className="profile-posts mt2">
 
-        {
-          !this.posts
-            ? loader
-            : <PostList posts={ this.posts } />
-        }
+          {
+            !this.posts
+              ? loader
+              : <PostList posts={ this.posts } />
+          }
+        </Container>
       </Container>
-    </Container>
+    </Transition>
+  }
+
+  editProfile = () => {
+    this.props.history.push('/dashboard/setting')
   }
 }
 

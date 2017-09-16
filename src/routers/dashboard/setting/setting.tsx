@@ -1,5 +1,5 @@
 import React = require('react')
-
+import { PropTypes } from 'react'
 import ProfileForm from '../../../widgets/profile'
 import { HistoryBase } from 'react-router'
 import { updateUserInfo } from '../../../actions/session'
@@ -22,6 +22,10 @@ interface SettingViewState {
 export default class SettingView extends React.PureComponent<SettingViewProps, SettingViewState> {
   constructor(props) {
     super(props)
+  }
+
+  static contextTypes = {
+    displayMessage: PropTypes.func
   }
 
   get userId() {
@@ -48,6 +52,8 @@ export default class SettingView extends React.PureComponent<SettingViewProps, S
           payload: state.payload,
           meta: state.meta
         })
+        this.context.displayMessage('已保存')
+        return state
       }
     })
   }

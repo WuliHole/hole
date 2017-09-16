@@ -137,8 +137,8 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
           } }
           buttonStyle={ {
             width: '100px',
-            borderRadius: '24px',
-            background: '#02b875',
+            borderRadius: '4px',
+            background: '#000',
             color: '#fff'
           } }
         />

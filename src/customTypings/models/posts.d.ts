@@ -29,6 +29,6 @@ interface Post<T> {
    * Date string
    */
   updatedAt: string
-
+  tags?: string
   published: boolean
 }
