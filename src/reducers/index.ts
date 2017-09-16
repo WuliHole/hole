@@ -7,15 +7,17 @@ import comment from './comment'
 import profile from './profile'
 import posts from './posts'
 import toast from './toast'
-const rootReducer = combineReducers({
+import notification from './notification'
+const rootReducer = combineReducers<any>({
   session,
   profile,
   posts,
   modal,
   comment,
   toast,
+  notification,
   routing: routerReducer,
   form: formReducer,
-});
+} as any);
 
 export default rootReducer;

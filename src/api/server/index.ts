@@ -5,7 +5,7 @@ export const BASE_URL = '/api';
 
 const csrfToken = getCookie('csrf-token')
 
-const BaseHeaders = {
+export const BaseHeaders = {
   'Accept': '*/*',
   'Content-Type': 'application/json',
   'x-csrf-token': csrfToken,
@@ -18,10 +18,10 @@ function shouldHaveBody(method: string) {
   return ['get', 'head'].indexOf(method) === -1
 }
 
-const http = (method: string) => (path, data = {}, json = true) => {
+const http = (method: string) => (path, data = {}, header = {}, json = true) => {
   return fetch(BASE_URL + path, {
     method: method,
-    headers: { ...BaseHeaders, ...getHeaderForJWT(getToken()) },
+    headers: { ...BaseHeaders, ...getHeaderForJWT(getToken()), ...header },
     credentials: 'same-origin',
     body: shouldHaveBody(method) && JSON.stringify(data)
   }).then(response => json ? response.json() : response)
