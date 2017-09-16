@@ -7,3 +7,14 @@ body,
 html {
   background: #f6f8fb;
 }
+
+.trangle::before {
+  border-color: transparent transparent rgba(23, 22, 22, 0.08) transparent;
+  border-style: dashed dashed solid;
+  border-width: 0 10px 10px 10px;
+  content: '';
+  position: absolute;
+  right: calc(10% - 10px);
+  top: -8px;
+  z-index: -1;
+}

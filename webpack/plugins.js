@@ -5,6 +5,9 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManiFest = require('webpack-manifest-plugin');
+const QiniuPlugin = require('qn-webpack');
+const config = require('../qiniu.json')
+
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
 
@@ -72,11 +75,18 @@ const prodPlugins = [
     ),
   }),
 
+  // new QiniuPlugin({
+  //     accessKey: config.accessKey,
+  //     secretKey: config.secretKey,
+  //     bucket: config.bucket,
+  //     path: config.path,
+  //     zone: config.zone,
+  // }),
+
   new webpack.optimize.DedupePlugin(),
 
   new ManiFest({
     fileName: 'hole-manifest.json',
-    basePath: './',
   }),
 
   new webpack.optimize.UglifyJsPlugin({
