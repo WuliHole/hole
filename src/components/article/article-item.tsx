@@ -67,9 +67,9 @@ const item = ({
     <div className={ `article-list-item-wrap ${className || ' '}` }>
 
       <div className="relative" >
-        <div className="inline-block">
+        <Link className="inline-block" to={ `/profile/${author.id}` }>
           <Avatar src={ author.avatar } size={ 53 } />
-        </div>
+        </Link>
         <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
           style={ {
             verticalAlign: 'text-bottom'

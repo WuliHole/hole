@@ -12,6 +12,7 @@ interface Props {
 }
 
 export default ({ src = defaultAvatar, size = 64, style = {}, onClick }: Props) => {
+
   return <div className="inline-block avatar circle" onClick={ onClick }
   >
     { __TEST__
