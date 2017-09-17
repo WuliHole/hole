@@ -25,45 +25,55 @@ export default
 
   render() {
     const style = {
-      textDecoration: 'none'
+      textDecoration: 'none',
+      color: '#000'
     }
 
     const buttonStyle = {
-      backgroundColor: 'rgba(0,0,0,0)'
+      width: '130px'
     }
 
 
-    const wallpaper = WallPaper.defualtWallPaper
-    const wallpaperStyle = WallPaper.defualStyle
     return <div className="homepage" >
-      <WallPaper className="content center" src={ '../../assets/pattern.png' } style={ wallpaperStyle }>
-        <Container size={ 4 } center style={ { backgroundColor: 'rgba(0,0,0,0)' } }>
-          <Transition transitionAppearTimeout={ 400 }>
-            <Container size={ 4 } center className="modal">
+      <h6 className="absolute version font-size-s">Alhpa</h6>
+      <WallPaper className="content center " >
+        <Container size={ 4 } center style={ { backgroundColor: 'rgba(0,0,0,0)', minHeight: '100vh' } } className="relative">
+          <div className="absolute wrapper">
+            <Transition transitionAppearTimeout={ 400 }>
+              <div >
+                <h1 className="serif title-second">
+                  <span className="inline-block rotate-text">!</span>
+                  讲个笑话
+                </h1>
+                <h1 className="serif title-primary">做中文世界最好的博客网站</h1>
+                <RaisedButton
+                  onClick={ this.signin }
+                  secondary
+                  children={ <Link style={ style } to={ 'login' }>登录</Link> }
+                  buttonStyle={ buttonStyle }
+                  style={ buttonStyle }
+                />
+              </div>
+              <div className="mt2">
+                <RaisedButton
+                  secondary
+                  onClick={ this.signup }
+                  children={ <Link style={ style } to={ 'signup' }>注册</Link> }
+                  buttonStyle={ buttonStyle }
+                  style={ buttonStyle }
+                />
+              </div>
+              {/* <Container size={ 4 } center className="modal">
               <div className="modal-title flex items-center">
                 <Logo textColor="#fff" />
               </div>
-              <div className="modal-content">
-                <div>
-                  <RaisedButton
-                    onClick={ this.signin }
-                    children={ <Link style={ style } to={ 'login' }>登录</Link> }
-                    buttonStyle={ buttonStyle }
-                    style={ buttonStyle }
-                  />
-                </div>
-                <div className="mt2">
-                  <RaisedButton
-                    onClick={ this.signup }
-                    children={ <Link style={ style } to={ 'signup' }>注册</Link> }
-                    buttonStyle={ buttonStyle }
-                    style={ buttonStyle }
-                  />
-                </div>
-              </div>
+              {/* <div className="modal-content"> */ }
 
-            </Container >
-          </Transition>
+              {/* </div> */ }
+
+              {/* </Container > */ }
+            </Transition>
+          </div>
         </Container>
       </WallPaper>
     </div >

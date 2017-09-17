@@ -2,7 +2,7 @@ import React = require('react')
 import './wallpaper.less'
 
 interface WallPaperProps {
-  src: string
+  src?: string
   style?: React.CSSProperties
   className?: string
 }
@@ -40,7 +40,7 @@ export class WallPaper extends React.Component<WallPaperProps, {}> {
       style = {},
       className = ''
     } = this.props
-    return <div className={ 'wallPaper ' + className } ref={ this.ref } style={ style }>
+    return <div className={ 'wallpaper ' + className } ref={ this.ref } style={ style }>
       { this.props.children }
     </div>
   }

@@ -8,6 +8,10 @@ html {
   background: rgba(245, 245, 245, 1);
 }
 
+.trangle {
+  color: black;
+}
+
 .trangle::before {
   border-color: transparent transparent rgba(23, 22, 22, 0.08) transparent;
   border-style: dashed dashed solid;
@@ -17,4 +21,8 @@ html {
   right: calc(10% - 10px);
   top: -8px;
   z-index: -1;
+}
+
+button[style*='font-family: Roboto, sans-serif'] {
+  font-weight: 900 !important;
 }

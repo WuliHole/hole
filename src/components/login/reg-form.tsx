@@ -55,7 +55,8 @@ class SignUpForm extends React.Component<ISignUpFormProps, {}> {
         <FormGroup testid="signup-submit">
           <Button type="submit"
             style={ {
-              width: '100%', backgroundColor: '#449bf7', fontWeight: 100
+              width: '100%',
+              fontWeight: 100
             } }
             className="block "
             id="qa-signup-button"

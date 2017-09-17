@@ -65,7 +65,7 @@ export default class NotificationBox extends React.Component<Props, State> {
         <Popover
           open={ this.state.open }
           anchorEl={ this.state.anchorEl }
-          style={ { width: 368 } }
+          style={ { width: 368, color: '#000' } }
           className="trangle"
           anchorOrigin={ { horizontal: 'middle', vertical: 'bottom' } }
           targetOrigin={ { horizontal: 'right', vertical: 'top' } }
@@ -80,7 +80,9 @@ export default class NotificationBox extends React.Component<Props, State> {
   renderItems() {
     const len = this.props.notifications.length
     if (len === 0) {
-      return null
+      return <List>
+        <ListItem primaryText="什么都没有" style={ { textAlign: 'center' } } />
+      </List>
     }
 
     return <div>
@@ -112,14 +114,14 @@ export default class NotificationBox extends React.Component<Props, State> {
         return <p>
           <Link
             to={ `/profile/${activity.actor}` }
-            className="text-decoration-none mr1"
+            className="text-decoration-none mr1 bold"
             style={ { color: primary1Color } }
           >
             { activity.actorNickname }
           </Link>
           { verbMap.comment }
           <Link to={ `/post/@${activity.postTitle}/${activity.target}` }
-            className="text-decoration-none ml1"
+            className="text-decoration-none ml1 bold"
             style={ { color: primary1Color } }
           >
             { activity.postTitle }

@@ -71,7 +71,9 @@ class LoginForm extends React.Component<ILoginFormProps, {}> {
         <FormGroup testid="login-submit">
           <Button type="submit"
             style={ {
-              width: '100%', backgroundColor: '#449bf7', fontWeight: 100
+              width: '100%',
+              fontWeight: 100,
+              borderRadius: '4'
             } }
             className="block "
             id="qa-login-button"

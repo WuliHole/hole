@@ -189,7 +189,6 @@ const style = {
 
     },
     button: {
-      color: '#fff',
     }
   }
 }

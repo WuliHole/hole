@@ -3,15 +3,26 @@ import CommonAppBar from '../../widgets/commonAppBar'
 import Board from '../../components/board'
 import Container from '../../components/container'
 import './logout.less'
+import { RaisedButton } from 'material-ui'
+import Transition from 'app/components/transition'
 const secureIcon = require('./secure.svg')
+
 export default ({ history }) => {
   return (
     <Board>
       <CommonAppBar history={ history } />
-      <div className="centered-content">
-        <img src={ secureIcon } alt="安全退出" style={ { height: 120, width: 120 } } />
-        <h6>成功退出,感谢使用HOLE。</h6>
-      </div>
-    </Board>
+      <Transition  >
+        <div className="centered-content relative">
+          <div className="logout-wrapper absolute">
+            <h1 >成功退出,感谢使用HOLE</h1>
+            <RaisedButton
+              primary
+              label="返回"
+              onClick={ () => history.push('/') }
+              style={ { width: '130px' } } />
+          </div>
+        </div>
+      </Transition  >
+    </Board >
   )
 }

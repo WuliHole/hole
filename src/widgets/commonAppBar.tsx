@@ -154,6 +154,7 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
     return <div className={ cls } style={ style }>
       <AppBar
         iconElementLeft={ <Link to="/" className="text-decoration-none"><Logo /></Link> }
+        style={ { boxShadow: '0' } }
         iconElementRight={
           rightElement
         }

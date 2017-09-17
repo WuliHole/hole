@@ -52,7 +52,7 @@ class SignUpPage extends React.Component<SignUpPageProps, SignUpPageState> {
 
   render() {
     return <div className="SignUpPage" >
-      <WallPaper src={ defualtWallPaper }>
+      <WallPaper className="bg-white">
         <Container size={ 4 } center
           style={ {
             backgroundColor: 'rgba(0,0,0,0)',

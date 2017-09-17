@@ -51,7 +51,7 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 
   render() {
     return <div className="LoginPage" >
-      <WallPaper src={ defualtWallPaper }>
+      <WallPaper className="bg-white">
         <Container size={ 4 } center
           style={ {
             backgroundColor: 'rgba(0,0,0,0)',

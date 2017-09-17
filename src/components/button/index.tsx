@@ -11,6 +11,7 @@ interface IButtonProps extends React.Props<any> {
   isvisible?: boolean
 };
 
+const defaultStyle: React.CSSProperties = { borderRadius: '4px' }
 export default function Button({
   onClick = null,
   type = 'button',
@@ -21,17 +22,17 @@ export default function Button({
   style = {},
   isvisible = true
 }: IButtonProps) {
-  const buttonClasses = classNames('btn', 'btn-primary', className);
+  const buttonClasses = classNames('btn', 'bg-black', 'white', className);
 
   return (
     <button
       data-testid={ testid }
       id={ id }
       type={ type }
-      style={ style }
+      style={ { ...defaultStyle, ...style } }
       className={ buttonClasses }
-      onClick={ onClick }>
+      onClick={ onClick } >
       { children }
-    </button>
+    </button >
   );
 }
