@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManiFest = require('webpack-manifest-plugin');
 const QiniuPlugin = require('qn-webpack');
+const path = require('path')
 
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
@@ -59,21 +60,13 @@ const prodPlugins = [
   }),
 
   new webpack.optimize.CommonsChunkPlugin({
-    async: 'common-in-lazy',
+    name: 'common-in-lazy',
     minChunks: ({ resource } = {}) => (
       resource &&
       resource.includes('node_modules') &&
       /draft-js/.test(resource)
     ),
   }),
-
-  new webpack.optimize.CommonsChunkPlugin({
-    async: 'used-twice',
-    minChunks: (module, count) => (
-      count >= 2
-    ),
-  }),
-
 
   new webpack.optimize.DedupePlugin(),
 
@@ -89,14 +82,24 @@ const prodPlugins = [
 
 ];
 
-if (process.env.NODE_ENV === 'production') {
+const cdn = process.env.CDN_PATH
+if (process.env.NODE_ENV === 'production' && cdn) {
+  if (!cdn.startsWith('http://') && !cdn.startsWith('https://')) {
+    throw 'CDN_PATH should startswith http(s)://'
+  }
+
   const fs = require('fs')
-  const existCDNConfig = fs.existsSync('../qiniu.json')
+  const existCDNConfig = fs.existsSync(path.join(__dirname, '../qiniu.json'))
+  /* eslint-disable */
+
+  console.log('existCDNConfig=>', existCDNConfig)
+  /* eslint-enable */
   if (existCDNConfig) {
     const config = require('../qiniu.json')
     prodPlugins.push(new QiniuPlugin({
       accessKey: config.accessKey,
       secretKey: config.secretKey,
+      exclude: /js\.map$/,
       bucket: config.bucket,
       path: config.path,
       zone: config.zone,

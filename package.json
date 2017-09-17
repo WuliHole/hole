@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack -p",
+    "postbuild": "rimraf ../hole-backend/public &&ncp dist ../hole-backend/public",
     "clean": "rimraf dist/",
     "dev:client": "cross-env NODE_ENV=development webpack-dev-server -d --inline --hot --host 0.0.0.0  --port 8080 --progress  --no-info",
     "dev": "npm run lint-ts && concurrently -r \"npm run dev:client\" \"npm run dev:server\"",
@@ -45,6 +46,7 @@
     "ip": "^1.1.5",
     "lockdown": "^0.0.8-dev",
     "material-ui": "^0.17.4",
+    "ncp": "^2.0.0",
     "qiniu4js": "^1.0.10",
     "qn-webpack": "^1.1.0",
     "webpack-bundle-analyzer": "^2.8.3",

@@ -9,6 +9,7 @@ const localIp = require('ip').address()
 // const applicationEntries = process.env.NODE_ENV === 'development'
 //   ? ['webpack-hot-middleware/client?reload=true']
 //   : [];
+const PORT = process.env.PORT
 module.exports = {
   entry: {
     index: './src/index.tsx',
@@ -18,18 +19,20 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
 
     filename: process.env.NODE_ENV === 'production'
-      ? '[name].[hash].js'
+      ? '[name][hash].js'
       : '[name].js',
 
     publicPath: process.env.NODE_ENV === 'production'
-      ? process.env.WP_PUBLIC_PATH || './'
+      ? process.env.CDN_PATH
+        ? process.env.CDN_PATH + '/[hash]/'
+        : `http://localhost:${PORT ? PORT : 3000}/`
       : `http://${localIp}:8080/`,
 
     sourceMapFilename: process.env.NODE_ENV === 'production'
-      ? '[name].[hash].js.map'
+      ? '[name][hash].js.map'
       : '[name].js.map',
 
-    chunkFilename: '[id].chunk.js',
+    chunkFilename: '[id][hash].js',
   },
 
   devtool: process.env.NODE_ENV === 'production' ?
