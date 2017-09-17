@@ -4,6 +4,8 @@
 
 WuliHole
 
+# Screenshot
+![screentshot](./Screenshot.jpeg)
 ## npm scripts
 
 ### Dev
