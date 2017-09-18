@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack -p",
-    "postbuild": "rimraf ../hole-backend/public &&ncp dist ../hole-backend/public",
+    "postbuild": "echo $CI||(rimraf ../hole-backend/public &&ncp dist ../hole-backend/public)",
     "clean": "rimraf dist/",
     "dev:client": "cross-env NODE_ENV=development webpack-dev-server -d --inline --hot --host 0.0.0.0  --port 8080 --progress  --no-info",
     "dev": "npm run lint-ts && concurrently -r \"npm run dev:client\" \"npm run dev:server\"",
@@ -31,6 +31,7 @@
     "@types/redux-form": "^6.6.2",
     "awesome-typescript-loader": "3.1.2",
     "compression": "^1.7.0",
+    "copy": "^0.3.1",
     "decorate-component-with-props": "^1.0.2",
     "draft-js": "^0.10.1",
     "draft-js-alignment-plugin": "2.0.0-rc4",

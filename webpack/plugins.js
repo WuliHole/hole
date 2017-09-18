@@ -85,7 +85,7 @@ const prodPlugins = [
 const cdn = process.env.CDN_PATH
 if (process.env.NODE_ENV === 'production' && cdn) {
   if (!cdn.startsWith('http://') && !cdn.startsWith('https://')) {
-    throw 'CDN_PATH should startswith http(s)://'
+    throw new TypeError('CDN_PATH should startswith http(s)://')
   }
 
   const fs = require('fs')
