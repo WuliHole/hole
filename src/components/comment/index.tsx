@@ -89,7 +89,7 @@ export default ({
     { user && <CommentAuthor user={ user } /> }
     <div className="comment-form mt3 ">
       <HoleEditor
-        readOnly={ false }
+        readonly={ false }
         plugins={ plugins }
         placeholder=".......写个评论"
       >

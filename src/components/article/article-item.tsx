@@ -88,7 +88,7 @@ const item = ({
       </Link> */}
       <div className="article-list-item-paragraph">
         <HoleEditor
-          readOnly
+          readonly
           editorState={
             EditorState.createWithContent(
               Serlizer.deserialize(

@@ -22,6 +22,7 @@ export default ({ comment, children = null }: CommentRowProps) => {
         editorState={
           EditorState.createWithContent((Serlizer.deserialize(comment.comment)))
         }
+        readonly
       />
     </div>
     { children }

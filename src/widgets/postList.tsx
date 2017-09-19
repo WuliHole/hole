@@ -51,7 +51,7 @@ export default class PostList extends React.Component<ListProps, {}> {
           <Editor
             plugins={ plugins }
             editorState={ editorState }
-            readOnly
+            readonly
           >
             <Link to={ `/post/@${resolveTitleFromContent(p.content)}/${p.id}` } className="text-decoration-none">
               阅读全文

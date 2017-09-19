@@ -26,7 +26,7 @@ interface EditorProps {
   editorState?: EditorState
   placeholder?: string
   onChange?: (s: EditorState) => any
-  readOnly?: boolean
+  readonly?: boolean
   autoFocus?: boolean
 }
 
@@ -103,7 +103,7 @@ export default class HoleEditor
           ref={ (element) => { this.editor = element; } }
           blockStyleFn={ this.blockStyleFn }
           placeholder={ placeholder }
-          readOnly={ this.props.readOnly }
+          readOnly={ this.props.readonly }
 
         />
         { this.editor && this.props.children }
