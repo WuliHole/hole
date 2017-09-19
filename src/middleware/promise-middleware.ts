@@ -1,4 +1,5 @@
 import isPromise from '../utils/is-promise';
+import p from 'app/components/progress/index'
 const objectAssign = require('object-assign');
 
 
@@ -20,13 +21,14 @@ export default function promiseMiddleware({ dispatch }) {
       data ? { payload: data } : {},
       meta ? { meta } : {}
     ));
-
+    p.inc()
     /**
      * If successful, dispatch the fulfilled action, otherwise dispatch
      * rejected action.
      */
     return promise.then(
       result => {
+        p.done()
         return dispatch({
           type: result.errMsg ? REJECTED : FULFILLED,
           payload: result,
@@ -34,6 +36,7 @@ export default function promiseMiddleware({ dispatch }) {
         });
       },
       error => {
+        p.done()
         return dispatch({
           type: REJECTED,
           payload: error,

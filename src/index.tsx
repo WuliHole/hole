@@ -4,7 +4,8 @@ import 'ts-helpers';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
+import progress from 'app/components/progress/index'
+window['pro'] = progress
 const { Provider } = require('react-redux');
 const { Router, browserHistory } = require('react-router');
 const { syncHistoryWithStore } = require('react-router-redux');

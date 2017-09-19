@@ -49,7 +49,7 @@ export default
                 <RaisedButton
                   onClick={ this.signin }
                   secondary
-                  children={ <Link style={ style } to={ 'login' }>登录</Link> }
+                  label="登录"
                   buttonStyle={ buttonStyle }
                   style={ buttonStyle }
                 />
@@ -58,7 +58,7 @@ export default
                 <RaisedButton
                   secondary
                   onClick={ this.signup }
-                  children={ <Link style={ style } to={ 'signup' }>注册</Link> }
+                  label="注册"
                   buttonStyle={ buttonStyle }
                   style={ buttonStyle }
                 />

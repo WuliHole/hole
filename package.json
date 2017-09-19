@@ -48,6 +48,7 @@
     "lockdown": "^0.0.8-dev",
     "material-ui": "^0.17.4",
     "ncp": "^2.0.0",
+    "nprogress": "^0.2.0",
     "qiniu4js": "^1.0.10",
     "qn-webpack": "^1.1.0",
     "webpack-bundle-analyzer": "^2.8.3",
