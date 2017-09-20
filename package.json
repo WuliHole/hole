@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "cross-env NODE_ENV=production webpack -p",
-    "postbuild": "echo $CI||(rimraf ../hole-backend/public &&ncp dist ../hole-backend/public)",
+    "postbuild": "if [[  -z $CI ]];  then (rimraf ../hole-backend/public &&ncp dist ../hole-backend/public) fi",
     "clean": "rimraf dist/",
     "dev:client": "cross-env NODE_ENV=development webpack-dev-server -d --inline --hot --host 0.0.0.0  --port 8080 --progress  --no-info",
     "dev": "npm run lint-ts && concurrently -r \"npm run dev:client\" \"npm run dev:server\"",
