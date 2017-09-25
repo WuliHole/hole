@@ -11,7 +11,7 @@ import { Serlizer } from '../../components/editor/utils/serializer'
 import CircularProgress from 'material-ui/CircularProgress'
 import Goback from '../../widgets/goback'
 import RaisedButton from 'material-ui/RaisedButton'
-import { getProfile } from '../../actions/profile'
+import { getProfile, follow, unfollow } from '../../actions/profile'
 import { getPublished, create } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
 import { updateUserInfo } from '../../actions/session'
@@ -41,6 +41,8 @@ interface ProfileProps extends React.Props<any> {
   getProfile: (uid: string | number | any) => Promise<any>
   getUserPosts: (uid: string | number | any) => Promise<any>
   updateProfile: (formName: string, sync?: boolean) => Promise<any>
+  follow: (uid: string | number | any) => Promise<any>
+  unfollow: (uid: string | number | any) => Promise<any>
   groupedPostsByAuthorId: GroupedPosts
   params
   renderAppBar?: boolean
@@ -60,6 +62,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getProfile: bindActionCreators(getProfile, dispatch),
     getUserPosts: bindActionCreators(getPublished, dispatch),
+    follow: bindActionCreators(follow, dispatch),
+    unfollow: bindActionCreators(unfollow, dispatch),
     updateProfile: (formName, sync = false) => {
       return dispatch(updateUserInfo(formName)).then(state => {
         if (!isRejectedAction(state)) {
@@ -135,6 +139,14 @@ class Profile extends React.Component<ProfileProps, {}> {
     return this.props.updateProfile(formName, stateSync)
   }
 
+  follow = () => {
+    this.props.follow(this.profile.get('id'))
+  }
+
+  unfollow = () => {
+    this.props.unfollow(this.profile.get('id'))
+  }
+
   render() {
     const { renderAppBar = true } = this.props
     return (
@@ -168,15 +180,27 @@ class Profile extends React.Component<ProfileProps, {}> {
                       <RaisedButton label="编辑" primary onClick={ this.editProfile } />
                     </div>
                   }
+                  { this.renderFollowButton() }
                 </div>
+
                 <div>
                   <h1 className="username serif">
                     { this.profile.get('nickName') }
                   </h1>
                 </div>
+
                 <div>
                   <p className="bio">
                     { this.profile.get('bio') }
+                  </p>
+                </div>
+
+                <div>
+                  <p className="follow-count">
+                    {
+                      this.profile.get('followersCount') > 0
+                      && `${this.profile.get('followersCount')} 人关注`
+                    }
                   </p>
                 </div>
               </div>
@@ -195,6 +219,20 @@ class Profile extends React.Component<ProfileProps, {}> {
         </Container>
       </Container>
     </Transition>
+  }
+
+  renderFollowButton() {
+    const visitorUid = this.props.session.getIn(['user', 'id'])
+    if (visitorUid === this.profile.get('id')) {
+      return null
+    }
+    return <div className="follow-button">
+      {
+        this.profile.get('followedUser')
+          ? < RaisedButton label="取消关注" primary onClick={ this.unfollow } />
+          : < RaisedButton label="关注" primary onClick={ this.follow } />
+      }
+    </div>
   }
 
   editProfile = () => {
