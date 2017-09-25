@@ -1,4 +1,4 @@
-import { post, put, get } from '../server'
+import { post, put, get, deleete } from '../server'
 import assert from '../../utils/assert'
 export function setPassword(password: string) {
   assert(password, 'illegal param password')
@@ -16,6 +16,15 @@ export function getProfile(uid) {
       .then((json: any) => resolve(json))
       .then(null, (err) => reject(err));
   });
+}
+
+
+export function follow(uid: Uid) {
+  return get(`/user/${uid}/follow`, {}, {}, false)
+}
+
+export function unfollow(uid: Uid) {
+  return deleete(`/user/${uid}/follow`, {}, {}, false)
 }
 
 export function getPublishedPostsForUser(uid) {
