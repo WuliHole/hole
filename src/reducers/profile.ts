@@ -9,7 +9,8 @@ import {
 
   UNFOLLOW_USER_ERROR,
   UNFOLLOW_USER_PENDING,
-  UNFOLLOW_USER_SUCCESS
+  UNFOLLOW_USER_SUCCESS,
+  CREATE_USER_INFO
 } from '../constants/profile';
 
 import { fromJS, Map } from 'immutable';
@@ -69,6 +70,11 @@ function profileReducer(state = INITIAL_STATE,
         hasError: false,
         isLoading: false,
       }))
+
+    case CREATE_USER_INFO:
+      return state.merge({
+        meta: meta.merge(fromJS(action.payload.users))
+      })
 
     default:
       return state;

@@ -8,10 +8,12 @@ import profile from './profile'
 import posts from './posts'
 import toast from './toast'
 import notification from './notification'
+import follow from './follow'
 const rootReducer = combineReducers<any>({
   session,
   profile,
   posts,
+  follow,
   modal,
   comment,
   toast,
