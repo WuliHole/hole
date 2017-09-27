@@ -8,10 +8,16 @@ import Container from '../../components/container'
 import { EditorState } from 'draft-js'
 import CommonAppBar from '../../widgets/commonAppBar'
 import { Serlizer } from '../../components/editor/utils/serializer'
-import CircularProgress from 'material-ui/CircularProgress'
+import {
+  CircularProgress,
+  RaisedButton,
+  Dialog,
+  FlatButton,
+  List as ListComponent, ListItem, Avatar as MAvatar
+} from 'material-ui'
 import Goback from '../../widgets/goback'
-import RaisedButton from 'material-ui/RaisedButton'
 import { getProfile, follow, unfollow } from '../../actions/profile'
+import { getFollowers, getFollowings, FollowActionParams } from 'app/actions/follow'
 import { getPublished, create } from '../../actions/posts'
 import { Map, List, OrderedMap } from 'immutable'
 import { updateUserInfo } from '../../actions/session'
@@ -20,6 +26,8 @@ import { GET_PROFILE_SUCCESS } from '../../constants/profile'
 import { unique } from '../../utils/arrayUtils'
 import isLogin from '../../store/isLogin'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
+import { selectFollowersForUser, selectFollowingsForUser, Followers, Followings } from 'app/redux-selector/follow'
+
 import Avatar from 'app/components/avatar'
 
 import './profile.less'
@@ -41,9 +49,14 @@ interface ProfileProps extends React.Props<any> {
   getProfile: (uid: string | number | any) => Promise<any>
   getUserPosts: (uid: string | number | any) => Promise<any>
   updateProfile: (formName: string, sync?: boolean) => Promise<any>
+  groupedPostsByAuthorId: GroupedPosts
+
   follow: (uid: string | number | any) => Promise<any>
   unfollow: (uid: string | number | any) => Promise<any>
-  groupedPostsByAuthorId: GroupedPosts
+  followers: Followers
+  followings: Followings
+  getFollowers: (opts: FollowActionParams) => Promise<any>
+  getFollowings: (opts: FollowActionParams) => Promise<any>
   params
   renderAppBar?: boolean
 }
@@ -54,6 +67,8 @@ function mapStateToProps(state, props) {
   return {
     profile: state.profile,
     groupedPostsByAuthorId: groupPostsByAuthorId(state),
+    followers: selectFollowersForUser(state, props),
+    followings: selectFollowingsForUser(state, props),
     session: state.session,
   }
 }
@@ -64,6 +79,8 @@ function mapDispatchToProps(dispatch) {
     getUserPosts: bindActionCreators(getPublished, dispatch),
     follow: bindActionCreators(follow, dispatch),
     unfollow: bindActionCreators(unfollow, dispatch),
+    getFollowers: bindActionCreators(getFollowers, dispatch),
+    getFollowings: bindActionCreators(getFollowings, dispatch),
     updateProfile: (formName, sync = false) => {
       return dispatch(updateUserInfo(formName)).then(state => {
         if (!isRejectedAction(state)) {
@@ -78,7 +95,25 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-class Profile extends React.Component<ProfileProps, {}> {
+
+type FollowWindowDataType = 'followers' | 'followings'
+
+interface ProfileState {
+  openModal?: boolean
+  dataType?: FollowWindowDataType
+}
+
+
+
+class Profile extends React.Component<ProfileProps, ProfileState> {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      openModal: false,
+      dataType: null
+    }
+  }
 
   get userId() {
     if (this.props.params.uid) {
@@ -133,6 +168,10 @@ class Profile extends React.Component<ProfileProps, {}> {
     }
   }
 
+  editProfile = () => {
+    this.props.history.push('/dashboard/setting')
+  }
+
   onSave = (formName: string) => {
     let myUserId = this.props.session.getIn(['user,id'])
     const stateSync = this.profile.get('id') === myUserId
@@ -146,6 +185,22 @@ class Profile extends React.Component<ProfileProps, {}> {
   unfollow = () => {
     this.props.unfollow(this.profile.get('id'))
   }
+
+  showFollowers = () => {
+    if (this.props.followers.size === 0) {
+      this.props.getFollowers({ uid: this.profile.get('id') })
+    }
+    this.setState({ openModal: true, dataType: 'followers' })
+  }
+
+  showFollowings = () => {
+    if (this.props.followings.size === 0) {
+      this.props.getFollowings({ uid: this.profile.get('id') })
+    }
+    this.setState({ openModal: true, dataType: 'followings' })
+  }
+
+  closeModal = () => this.setState({ openModal: false })
 
   render() {
     const { renderAppBar = true } = this.props
@@ -165,60 +220,130 @@ class Profile extends React.Component<ProfileProps, {}> {
     />
     const session = this.props.session.toJS()
     const visitorUid = session.user && session.user.id
-    return <Transition>
-      <Container size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px', minHeight: '60vh' } }>
-        {/*profile container*/ }
-        <Container size={ 4 } center className="profile">
-          {
-            this.profile
-              ? <div className="center">
-                <div className="relative">
-                  <Avatar src={ this.profile.get('avatar') } size={ 128 } />
-                  { visitorUid === this.profile.get('id')
-                    &&
-                    <div className="edit-button">
-                      <RaisedButton label="编辑" primary onClick={ this.editProfile } />
-                    </div>
-                  }
-                  { this.renderFollowButton() }
-                </div>
+    return <Container
+      size={ 5 } center backgroundTheme="background-color-gray" style={ { marginTop: '14px', minHeight: '60vh' } }
+    >
+      {/*profile container*/ }
+      <Container size={ 4 } center className="profile">
+        {
+          this.profile
+            ? <div className="center">
+              <div className="relative">
+                <Avatar src={ this.profile.get('avatar') } size={ 128 } />
+                { visitorUid === this.profile.get('id')
+                  &&
+                  <div className="edit-button">
+                    <RaisedButton label="编辑" primary onClick={ this.editProfile } />
+                  </div>
+                }
+                { this.renderFollowButton() }
+              </div>
 
-                <div>
-                  <h1 className="username serif">
-                    { this.profile.get('nickName') }
-                  </h1>
-                </div>
+              <div>
+                <h1 className="username serif">
+                  { this.profile.get('nickName') }
+                </h1>
+              </div>
 
-                <div>
-                  <p className="bio">
-                    { this.profile.get('bio') }
-                  </p>
-                </div>
-
+              <div>
+                <p className="bio">
+                  { this.profile.get('bio') }
+                </p>
+              </div>
+              {
+                this.profile.get('followersCount') > 0
+                &&
                 <div>
                   <p className="follow-count">
-                    {
-                      this.profile.get('followersCount') > 0
-                      && `${this.profile.get('followersCount')} 人关注`
-                    }
+                    <span onClick={ this.showFollowers }>
+                      { `${this.profile.get('followersCount')}人关注` }
+                    </span>
                   </p>
                 </div>
-              </div>
-              : loader
-          }
-        </Container>
+              }
+              {
+                this.profile.get('followingCount') > 0
+                &&
+                <div>
+                  <p className="follow-count">
+                    <span onClick={ this.showFollowings }>
 
-        {/*posts container*/ }
-        <Container size={ 4 } center className="profile-posts mt2">
+                      { `关注${this.profile.get('followingCount')}人` }
+                    </span>
+                  </p>
+                </div>
+              }
 
-          {
-            !this.posts
-              ? loader
-              : <PostList posts={ this.posts } />
-          }
-        </Container>
+            </div>
+            : loader
+        }
+        { this.renderModal() }
       </Container>
-    </Transition>
+
+      {/*posts container*/ }
+      <Container size={ 4 } center className="profile-posts mt2">
+
+        {
+          !this.posts
+            ? loader
+            : <PostList posts={ this.posts } />
+        }
+      </Container>
+    </Container>
+  }
+
+  renderModal() {
+    if (!this.state.dataType) {
+      return null
+    }
+    const data = this.props[this.state.dataType]
+
+    if (!data) {
+      return null
+    }
+
+    const actions = [
+      <FlatButton onClick={ this.closeModal } label="关闭" />
+    ]
+
+    const visitorUid = this.props.session.getIn(['user', 'id'])
+    return <Dialog open={ this.state.openModal } onRequestClose={ this.closeModal } actions={ actions }>
+      <ListComponent >
+        { data.map(v => {
+
+          const follow = (e) => {
+            e.stopPropagation()
+            this.props.follow(v.get('id'))
+          }
+
+          const unfollow = (e) => {
+            e.stopPropagation()
+            this.props.unfollow(v.get('id'))
+          }
+
+          const followed = v.get('followedUser')
+
+          const rightButton = v.get('id') !== visitorUid
+            ? <RaisedButton
+              label={ !followed ? '关注' : '取消关注' }
+              onClick={ !followed ? follow : unfollow }
+              primary
+            />
+            : null
+
+          return <ListItem
+            key={ v.get('id') }
+            onClick={ (e) => {
+              this.closeModal()
+              this.props.history.push(`/profile/${v.get('id')}`)
+            } }
+            leftAvatar={ <MAvatar size={ 36 } src={ v.get('avatar') } /> }
+            rightAvatar={ rightButton }
+            primaryText={ v.get('nickName') }
+          />
+        }) }
+      </ListComponent>
+    </Dialog>
   }
 
   renderFollowButton() {
@@ -235,9 +360,7 @@ class Profile extends React.Component<ProfileProps, {}> {
     </div>
   }
 
-  editProfile = () => {
-    this.props.history.push('/dashboard/setting')
-  }
+
 }
 
 export default connect(

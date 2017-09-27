@@ -1,4 +1,5 @@
 import * as ActionTypes from '../constants/profile'
+import { addFollowerForUser, addFollowingForUser, removeFollowerForUser, removeFollowingForUser } from './follow'
 import * as req from '../api/user'
 
 export function getProfile(userId: Uid) {
@@ -21,6 +22,10 @@ export function getProfile(userId: Uid) {
 
 export function follow(userId: Uid) {
   return (dispatch, getState) => {
+    const currentUid = getState().session.getIn(['user', 'id'])
+    dispatch(addFollowingForUser(currentUid, userId))
+    dispatch(addFollowerForUser(userId, currentUid))
+
     return dispatch({
       types: [
         ActionTypes.FOLLOW_USER_PENDING,
@@ -30,7 +35,7 @@ export function follow(userId: Uid) {
       payload: {
         promise: req.follow(userId)
           .then((res) => {
-            return { id: userId };
+            return { id: userId, currentUid };
           }),
       },
     })
@@ -39,6 +44,9 @@ export function follow(userId: Uid) {
 
 export function unfollow(userId: Uid) {
   return (dispatch, getState) => {
+    const currentUid = getState().session.getIn(['user', 'id'])
+    dispatch(removeFollowingForUser(currentUid, userId))
+    dispatch(removeFollowerForUser(userId, currentUid))
     return dispatch({
       types: [
         ActionTypes.UNFOLLOW_USER_PENDING,
@@ -48,7 +56,7 @@ export function unfollow(userId: Uid) {
       payload: {
         promise: req.unfollow(userId)
           .then((res) => {
-            return { id: userId }
+            return { id: userId, currentUid }
           }),
       },
     })

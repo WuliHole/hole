@@ -25,6 +25,36 @@ function recordUser(dispatch, users = {}) {
   })
 }
 
+
+export function addFollowerForUser(id: Uid, followerId: Uid) {
+  return {
+    type: Types.ADD_FOLLOWER_FOR_USER,
+    payload: { id, followerId }
+  }
+}
+
+export function removeFollowerForUser(id: Uid, followerId: Uid) {
+  return {
+    type: Types.REMOVE_FOLLOWER_FOR_USER,
+    payload: { id, followerId }
+  }
+}
+
+export function addFollowingForUser(id: Uid, followingId: Uid) {
+  return {
+    type: Types.ADD_FOLLOWING_FOR_USER,
+    payload: { id, followingId }
+  }
+}
+
+export function removeFollowingForUser(id: Uid, followingId: Uid) {
+  return {
+    type: Types.REMOVE_FOLLOWING_FOR_USER,
+    payload: { id, followingId }
+  }
+}
+
+
 export function getFollowers(opts: FollowActionParams) {
   return (dispatch, getState) => {
     return dispatch({
@@ -104,4 +134,6 @@ export function getNextFollowings(opts: FollowActionParams) {
     })
   }
 }
+
+
 

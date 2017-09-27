@@ -59,14 +59,21 @@ function profileReducer(state = INITIAL_STATE,
 
     case FOLLOW_USER_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.setIn([`${action.payload.id}`, 'followedUser'], true),
+        meta: meta
+          .setIn([`${action.payload.id}`, 'followedUser'], true)
+          .updateIn([`${action.payload.id}`, 'followersCount'], n => n ? n + 1 : 1)
+          .updateIn([`${action.payload.currentUid}`, 'followingCount'], n => n ? n + 1 : 1)
+        ,
         hasError: false,
         isLoading: false,
       }))
 
     case UNFOLLOW_USER_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.setIn([`${action.payload.id}`, 'followedUser'], false),
+        meta: meta
+          .setIn([`${action.payload.id}`, 'followedUser'], false)
+          .updateIn([`${action.payload.id}`, 'followersCount'], n => n ? n - 1 : 0)
+          .updateIn([`${action.payload.currentUid}`, 'followingCount'], n => n ? n - 1 : 0),
         hasError: false,
         isLoading: false,
       }))
