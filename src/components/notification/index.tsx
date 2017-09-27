@@ -109,16 +109,17 @@ export default class NotificationBox extends React.Component<Props, State> {
   }
 
   getDescription(activity: Activity) {
+    const actor = <Link
+      to={ `/profile/${activity.actor}` }
+      className="text-decoration-none mr1 bold"
+      style={ { color: primary1Color } }
+    >
+      { activity.actorNickname }
+    </Link>
     switch (activity.verb) {
       case 'comment':
         return <p>
-          <Link
-            to={ `/profile/${activity.actor}` }
-            className="text-decoration-none mr1 bold"
-            style={ { color: primary1Color } }
-          >
-            { activity.actorNickname }
-          </Link>
+          { actor }
           { verbMap.comment }
           <Link to={ `/post/@${activity.postTitle}/${activity.target}` }
             className="text-decoration-none ml1 bold"
@@ -127,6 +128,11 @@ export default class NotificationBox extends React.Component<Props, State> {
             { activity.postTitle }
           </Link>
         </p>
+      case 'follow':
+        return <p>
+          { actor }
+          { verbMap.follow }
+        </p>
       default:
         throw new TypeError('Uknow activity type')
     }
@@ -134,5 +140,6 @@ export default class NotificationBox extends React.Component<Props, State> {
 }
 
 export const verbMap = {
-  comment: '评论了你的文章'
+  comment: '评论了你的文章',
+  follow: '关注了你'
 }
