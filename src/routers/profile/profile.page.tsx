@@ -158,14 +158,8 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 
   loadData() {
-    if (!this.profile) {
-      this.props.getProfile(this.userId)
-    }
-
-    // @Fix:In some case,posts always emepty
-    if (this.posts.length === 0) {
-      this.props.getUserPosts(this.userId)
-    }
+    this.props.getProfile(this.userId)
+    this.props.getUserPosts(this.userId)
   }
 
   editProfile = () => {
@@ -187,16 +181,12 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   }
 
   showFollowers = () => {
-    if (this.props.followers.size === 0) {
-      this.props.getFollowers({ uid: this.profile.get('id') })
-    }
+    this.props.getFollowers({ uid: this.profile.get('id') })
     this.setState({ openModal: true, dataType: 'followers' })
   }
 
   showFollowings = () => {
-    if (this.props.followings.size === 0) {
-      this.props.getFollowings({ uid: this.profile.get('id') })
-    }
+    this.props.getFollowings({ uid: this.profile.get('id') })
     this.setState({ openModal: true, dataType: 'followings' })
   }
 
