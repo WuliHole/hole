@@ -16,7 +16,8 @@ import { create } from '../actions/posts'
 import { loginUser, logoutUser, signUpUser, accessTokenRefresh } from '../actions/session'
 import { message, error, removeFirst } from '../actions/toast'
 import { initialLoadNotifications } from 'app/actions/notification'
-import decode = require('jwt-decode')
+import * as jwt from 'utils/jwt'
+
 import { List } from 'immutable'
 injectTapEven()
 
@@ -39,7 +40,6 @@ interface IAppProps extends React.Props<any> {
   shiftToast: typeof removeFirst
   loadNotifications: typeof initialLoadNotifications
 }
-
 
 interface AppState {
 }
@@ -71,7 +71,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-type Second = number
 class App extends React.Component<IAppProps, AppState> {
   static childContextTypes = {
     displayError: PropTypes.func,
@@ -84,28 +83,6 @@ class App extends React.Component<IAppProps, AppState> {
     return {
       displayError,
       displayMessage,
-    }
-  }
-
-  isExpried(token: string, max: Second): boolean {
-    try {
-      const decodedTok: any = decode(token)
-
-      // ms
-      const signAt = decodedTok.iat
-      if (!signAt) {
-        return true
-      }
-
-      // s
-      const diff = (Date.now() - signAt * 1000) / 1000
-      if (diff >= max) {
-        return true
-      }
-
-      return false
-    } catch (e) {
-      return true
     }
   }
 
@@ -122,13 +99,13 @@ class App extends React.Component<IAppProps, AppState> {
 
     // 6days
     const refreshTokMaxAge = 3600 * 24 * 6
-    if (refreshToken && this.isExpried(refreshToken, refreshTokMaxAge)) {
+    if (refreshToken && jwt.isExpried(refreshToken, refreshTokMaxAge)) {
       return this.logout()
     }
 
     // 1.5h
     const accessTokMaxAge = 3600 * 1.5
-    if (accessToken && this.isExpried(accessToken, accessTokMaxAge)) {
+    if (accessToken && jwt.isExpried(accessToken, accessTokMaxAge)) {
       return this.props.refreshAcessToken(refreshToken)
         .then((res) => {
 
