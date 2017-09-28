@@ -12,7 +12,15 @@ export const BaseHeaders = {
 }
 
 // json web token header
-const getHeaderForJWT = (token: string) => token ? { authorization: `Bearer ${token}` } : {}
+export const getHeaderForJWT = (token: string) => {
+  if (token) {
+    if (typeof token !== 'string') {
+      console.error('Unexcept token')
+    }
+    return { authorization: `Bearer ${token}` }
+  }
+  return {}
+}
 
 function shouldHaveBody(method: string) {
   return ['get', 'head'].indexOf(method) === -1

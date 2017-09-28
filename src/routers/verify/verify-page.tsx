@@ -67,16 +67,6 @@ class VerifyPage extends React.Component<IVerifyPageProps, VerifyPageState> {
     if (errMsg) {
       this.step(VERIFY_STEP.ABORD)
     }
-
-    const token = this.getAuthToken()
-    const payload = this.getPayload()
-    this.props.dispatch({
-      type: LOGIN_USER_SUCCESS,
-      payload: {
-        token,
-        ...payload
-      }
-    })
   }
 
   setPassword = () => {
@@ -109,21 +99,6 @@ class VerifyPage extends React.Component<IVerifyPageProps, VerifyPageState> {
       return element.getAttribute('content')
     }
   }
-
-  getAuthToken(): string {
-    const element = document.querySelector('meta[name="auth-token"]')
-    if (element) {
-      return element.getAttribute('content')
-    }
-  }
-
-  getPayload() {
-    const element = document.querySelector('meta[name="payload"]')
-    if (element) {
-      return JSON.parse(element.getAttribute('content'))
-    }
-  }
-
 
   goback = () => {
     this.props.history.push('/')

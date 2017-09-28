@@ -176,7 +176,12 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
     }
     this.setState({ saving: true })
     this.props.updatePost(this.currentPost.get('id'), state.getCurrentContent())
-      .then(() => this.setState({ saving: false }))
+      .then((res) => {
+        if (isRejectedAction(res)) {
+          this.context.displayError(res.payload.errMsg)
+        }
+        this.setState({ saving: false })
+      })
   }
 
 

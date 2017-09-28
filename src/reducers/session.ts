@@ -17,7 +17,8 @@ import {
 
   UPDATE_USER_PENDING,
   UPDATE_USER_ERROR,
-  UPDATE_USER_SUCCESS
+  UPDATE_USER_SUCCESS,
+  ACCESS_TOKEN_REFRESH_SUCCESS,
 } from '../constants';
 
 import { fromJS } from 'immutable';
@@ -28,6 +29,7 @@ const INITIAL_STATE = fromJS({
   user: undefined,
   hasError: false,
   isLoading: false,
+  refreshToken: null
 });
 
 function sessionReducer(state = INITIAL_STATE,
@@ -47,6 +49,7 @@ function sessionReducer(state = INITIAL_STATE,
       return state.merge(fromJS({
         token: action.payload.token,
         feedToken: action.payload.feedToken,
+        refreshToken: action.payload.refreshTok,
         user: action.payload,
         hasError: false,
         isLoading: false,
@@ -83,6 +86,11 @@ function sessionReducer(state = INITIAL_STATE,
 
     case LOGOUT_USER_SUCCESS:
       return state.merge(INITIAL_STATE);
+
+    case ACCESS_TOKEN_REFRESH_SUCCESS:
+      return state.merge({
+        token: action.payload.token
+      })
 
     default:
       return state;

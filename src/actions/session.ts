@@ -1,10 +1,10 @@
 import assert from '../utils/assert'
-import { login, signup, logout } from '../api/auth/';
+import { login, signup, logout, refreshToken } from '../api/auth/';
 import {
   setPassword as setUserPassword,
   update
 } from '../api/user'
-
+import { getHeaderForJWT } from '../api/server/index'
 import {
   LOGIN_USER_PENDING,
   LOGIN_USER_SUCCESS,
@@ -24,6 +24,10 @@ import {
   UPDATE_USER_PENDING,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR,
+
+  ACCESS_TOKEN_REFRESH_PENDING,
+  ACCESS_TOKEN_REFRESH_SUCCESS,
+  ACCESS_TOKEN_REFRESH_ERROR,
 } from '../constants';
 import { closeModal } from './modal';
 
@@ -119,7 +123,8 @@ export function updateUserInfo(formName: string) {
 }
 
 export function logoutUser() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const refreshTok = getState().session.getIn(['refreshToken'])
     return dispatch({
       types: [
         LOGOUT_USER_PENDING,
@@ -127,7 +132,22 @@ export function logoutUser() {
         LOGOUT_USER_ERROR
       ],
       payload: {
-        promise: logout()
+        promise: logout(refreshTok)
+      }
+    })
+  }
+}
+
+export function accessTokenRefresh(token: string) {
+  return (dispatch) => {
+    return dispatch({
+      types: [
+        ACCESS_TOKEN_REFRESH_PENDING,
+        ACCESS_TOKEN_REFRESH_SUCCESS,
+        ACCESS_TOKEN_REFRESH_ERROR
+      ],
+      payload: {
+        promise: refreshToken(token).then(res => res)
       }
     })
   }

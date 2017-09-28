@@ -7,9 +7,8 @@ import {
 import { fromJS } from 'immutable';
 import { browserHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
-
 import thunk from 'redux-thunk';
-
+import { preloadSession } from './preloadSession'
 const persistState = require('redux-localstorage');
 
 import promiseMiddleware from '../middleware/promise-middleware';
@@ -25,9 +24,9 @@ export function configureStore(initialState) {
     compose(
       applyMiddleware(..._getMiddleware()),
       persistState('session', _getStorageConfig()),
-      __DEV__ && environment.devToolsExtension ?
-        environment.devToolsExtension() :
-        f => f));
+      __DEV__ && environment.devToolsExtension ? environment.devToolsExtension() : f => f
+    )
+  );
 
   _enableHotLoader(store);
   return store;
@@ -72,15 +71,22 @@ function _getStorageConfig() {
       return store && store.session ?
         JSON.stringify(store.session.toJS()) : store;
     },
-    deserialize: (state) => ({
-      session: state ? fromJS(JSON.parse(state)) : fromJS({
-        // user: getCookie('uid') ? { id: getCookie('uid') } : undefined
-      }),
-    }),
+    deserialize: (state) => {
+      const data = JSON.parse(state)
+
+      if (data && data.token && data.refreshToken) {
+        return {
+          session: fromJS(data)
+        }
+      }
+    },
   };
 }
 
-const store = configureStore({})
+const store = configureStore({
+  session: fromJS(preloadSession())
+})
+
 export const getToken = () => {
   const s = store.getState()
   return s.session.getIn(['token'])

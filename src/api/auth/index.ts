@@ -1,4 +1,4 @@
-import { get, post } from '../server/';
+import { get, post, getHeaderForJWT } from '../server/';
 
 const LOGIN_ERR_MSG = `
   The username or password you have entered is invalid.
@@ -16,6 +16,12 @@ export function signup(email: string) {
   return post('/auth/signup', { email })
 }
 
-export function logout() {
-  return get('/auth/signout')
+export function logout(tok) {
+  const header = getHeaderForJWT(tok)
+  return get('/auth/signout', {}, header)
+}
+
+export function refreshToken(tok: string) {
+  const header = getHeaderForJWT(tok)
+  return get('/auth/token/refresh', {}, header)
 }

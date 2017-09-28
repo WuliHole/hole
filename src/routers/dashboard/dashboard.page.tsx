@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { PropTypes } from 'react'
 import { HistoryBase } from 'react-router'
 import CommonAppBar from '../../widgets/commonAppBar'
 import Transition from '../../components/transition'
@@ -48,6 +49,10 @@ interface ViewState {
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class DashBoardView extends React.PureComponent<ViewProps, ViewState> {
+  static contextTypes = {
+    displayError: PropTypes.func
+  }
+
   static sideBarMenu = [
     { text: '已发布', icon: <RemoveRedEye />, path: '/dashboard/recent-post?public=true' },
     { text: '草稿', icon: <Draft />, path: '/dashboard/recent-post?public=false' },
@@ -70,7 +75,7 @@ export default class DashBoardView extends React.PureComponent<ViewProps, ViewSt
     this.props.onCreate()
       .then((res) => {
         if (isRejectedAction(res)) {
-          return alert(res.payload)
+          return this.context.displayError(res.payload.errMsg)
         }
         this.props.history.push(`/post/${res.payload.id}/edit`)
       })
