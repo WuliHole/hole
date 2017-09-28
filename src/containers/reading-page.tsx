@@ -63,14 +63,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-
-/**
- * @return List<IComment>  imuutable list
- */
-
-type CommentTable = { [keys: string]: List<IComment> }
-
-
 class ReadingPage extends React.Component<IReadingPageProps, {}> {
 
   constructor(props) {

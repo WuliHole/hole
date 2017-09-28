@@ -27,6 +27,7 @@ import { unique } from '../../utils/arrayUtils'
 import isLogin from '../../store/isLogin'
 import { groupPostsByAuthorId } from '../../redux-selector/posts'
 import { selectFollowersForUser, selectFollowingsForUser, Followers, Followings } from 'app/redux-selector/follow'
+import { requireLogin } from 'app/middleware/requireLogin'
 
 import Avatar from 'app/components/avatar'
 
@@ -104,7 +105,6 @@ interface ProfileState {
 }
 
 
-
 class Profile extends React.Component<ProfileProps, ProfileState> {
 
   constructor(props) {
@@ -113,6 +113,8 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
       openModal: false,
       dataType: null
     }
+    this.follow = this.follow.bind(this)
+    this.unfollow = this.unfollow.bind(this)
   }
 
   get userId() {
@@ -172,11 +174,13 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
     return this.props.updateProfile(formName, stateSync)
   }
 
-  follow = () => {
+  @requireLogin
+  follow() {
     this.props.follow(this.profile.get('id'))
   }
 
-  unfollow = () => {
+  @requireLogin
+  unfollow() {
     this.props.unfollow(this.profile.get('id'))
   }
 

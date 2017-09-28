@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@types/enzyme": "^2.8.7",
+    "@types/jwt-decode": "^2.2.1",
     "@types/redux-form": "^6.6.2",
     "awesome-typescript-loader": "3.1.2",
     "compression": "^1.7.0",
@@ -45,6 +46,7 @@
     "helmet": "^2.0.0",
     "http-proxy": "^1.13.2",
     "ip": "^1.1.5",
+    "jwt-decode": "^2.2.0",
     "lockdown": "^0.0.8-dev",
     "material-ui": "^0.17.4",
     "ncp": "^2.0.0",
