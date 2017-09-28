@@ -124,7 +124,8 @@ export function updateUserInfo(formName: string) {
 
 export function logoutUser() {
   return (dispatch, getState) => {
-    const refreshTok = getState().session.getIn(['refreshToken'])
+    const session = getState().session
+    const refreshTok = session && session.getIn(['refreshToken'])
     return dispatch({
       types: [
         LOGOUT_USER_PENDING,

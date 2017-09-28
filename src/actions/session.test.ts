@@ -195,7 +195,9 @@ describe('Logout Async Action', () => {
         meta: undefined
       },
     ]
-    const store = mockStore({})
+    const store = mockStore(fromJS({
+      session: {}
+    }))
     return store.dispatch(logoutUser())
       .then(res => {
         expect(store.getActions()).toEqual(expectedActions, res)
