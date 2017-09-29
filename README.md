@@ -6,6 +6,27 @@ WuliHole
 
 # Screenshot
 ![screentshot](./Screenshot.jpeg)
+
+### Editor usage
+----
+
+  ##### code high light
+ Add comment to enable syntax high light.
+
+ The following case is working well
+  ![screentshot](./screenshot/usage1.png)
+  ![screentshot](./screenshot/usage2.png)
+
+Some case is not working
+```javascript
+//ptyhon asdasd         "not working"
+/*ptyhon asdasd*/       "not working"
+
+///python               "working"
+////////python          "working"
+//   python             "working"
+//py             "working"
+```
 ## npm scripts
 
 ### Dev
