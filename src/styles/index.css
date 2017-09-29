@@ -32,6 +32,10 @@
 @import 'basscss-hide';
 @import './icon/iconfont';
 
+pre {
+  overflow: auto;
+}
+
 .background-color-gray {
   background-color: #fafafa;
 }
