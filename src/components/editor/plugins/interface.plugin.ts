@@ -29,13 +29,13 @@ interface PluginFunctions {
 
 type Decorator = {
   strategy: any,
-  component: React.ComponentClass<any>,
+  component: (props) => JSX.Element
 }
 
 export interface InAddtionAccepts {
   initialize?: (props: PluginFunctions) => void
   onChange?: (editorState: EditorState) => EditorState
   willUnMount?: (props: PluginFunctions) => void
-  decorators?: (decorators: Decorator[]) => void
+  decorators?: Decorator[]
   getAccessibilityProps?: () => { ariaHasPopup: string, ariaExpanded: string }
 }
