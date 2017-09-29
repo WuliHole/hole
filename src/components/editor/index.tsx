@@ -16,10 +16,11 @@ import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
 import 'draft-js-image-plugin/lib/plugin.css'
 import 'draft-js-alignment-plugin/lib/plugin.css'
-
+import linkify from 'draft-js-linkify-plugin'
+import createCodePlugin from './plugins/code-highlight/code-light.plugin'
+import { is } from 'immutable'
 import './draft.less'
 import './style.less'
-
 interface EditorProps {
   plugins?: any[]
   decorators?: any[]
@@ -30,10 +31,11 @@ interface EditorProps {
   autoFocus?: boolean
 }
 
+const plg = [linkify(), createCodePlugin({})]
 export default class HoleEditor
   extends React.Component<EditorProps, any> {
-  public editor;
   public static placeholder = ' '
+  public editor
 
   serializer = Serlizer.serialize
 
@@ -43,27 +45,29 @@ export default class HoleEditor
       : EditorState.createEmpty(),
   };
 
+  /**
+   * A bug was here .
+   * If call the method(focus) ,decorators will not work
+   */
   componentDidMount() {
-    if (this.props.autoFocus) {
-      this.focus()
-    }
+    // this.focus()
   }
 
   onChange = (editorState) => {
-    if (this.editor) {
-      this.setState({
-        editorState,
-      });
 
-      if (this.props.onChange) {
-        this.props.onChange(editorState)
-      }
+
+    this.setState({
+      editorState,
+    });
+
+    if (this.props.onChange) {
+      this.props.onChange(editorState)
     }
   };
 
 
   focus = () => {
-    this.editor.focus();
+    this.editor.getEditorRef().focus()
   };
 
   hasFocus() {
@@ -90,23 +94,31 @@ export default class HoleEditor
     return 'not-handled'
   }
 
+  onTab = (e: Event): DraftHandleValue => {
+    // prevent default page jump
+    e.preventDefault()
+    return 'handled'
+  }
+
   render() {
     const placeholder = this.props.placeholder || HoleEditor.placeholder
     return (
       <div >
         <Editor
+          ref={ e => this.editor = e }
           editorState={ this.state.editorState }
           onChange={ this.onChange }
-          plugins={ this.props.plugins || [] }
+          plugins={ [...plg, ...this.props.plugins] || [] }
           handleReturn={ this.handleReturn }
           decorators={ this.props.decorators || [] }
-          ref={ (element) => { this.editor = element; } }
           blockStyleFn={ this.blockStyleFn }
           placeholder={ placeholder }
           readOnly={ this.props.readonly }
+          onTab={ this.onTab }
+        >
 
-        />
-        { this.editor && this.props.children }
+        </Editor>
+        { this.props.children }
       </div>
     );
   }
