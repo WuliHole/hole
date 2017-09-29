@@ -25,7 +25,7 @@ Some case is not working
 ///python               "working"
 ////////python          "working"
 //   python             "working"
-//py             "working"
+//py                    "working"
 ```
 ## npm scripts
 
