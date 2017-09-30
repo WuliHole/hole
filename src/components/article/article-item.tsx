@@ -15,6 +15,8 @@ import { Serlizer } from '../editor/utils/serializer'
 import { createImagePlugin } from '../editor/plugins/image/index'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
+import linkify from 'draft-js-linkify-plugin'
+import createCodePlugin from 'app/components/editor/plugins/code-highlight/code-light.plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
 
 const focusPlugin = createFocusPlugin()
@@ -32,6 +34,8 @@ const plugins = [
   focusPlugin,
   alignmentPlugin,
   imagePlugin,
+  linkify(),
+  createCodePlugin({})
 ]
 
 interface ItemProps {
