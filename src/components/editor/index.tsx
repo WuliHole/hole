@@ -16,8 +16,7 @@ import 'draft-js-inline-toolbar-plugin/lib/plugin.css'
 import 'draft-js-side-toolbar-plugin/lib/plugin.css'
 import 'draft-js-image-plugin/lib/plugin.css'
 import 'draft-js-alignment-plugin/lib/plugin.css'
-import linkify from 'draft-js-linkify-plugin'
-import createCodePlugin from './plugins/code-highlight/code-light.plugin'
+
 import { is } from 'immutable'
 import './draft.less'
 import './style.less'
@@ -31,7 +30,6 @@ interface EditorProps {
   autoFocus?: boolean
 }
 
-const plg = [linkify(), createCodePlugin({})]
 export default class HoleEditor
   extends React.Component<EditorProps, any> {
   public static placeholder = ' '
@@ -108,16 +106,15 @@ export default class HoleEditor
           ref={ e => this.editor = e }
           editorState={ this.state.editorState }
           onChange={ this.onChange }
-          plugins={ [...plg, ...this.props.plugins] || [] }
+          plugins={ this.props.plugins || [] }
           handleReturn={ this.handleReturn }
           decorators={ this.props.decorators || [] }
           blockStyleFn={ this.blockStyleFn }
           placeholder={ placeholder }
           readOnly={ this.props.readonly }
           onTab={ this.onTab }
-        >
+        />
 
-        </Editor>
         { this.props.children }
       </div>
     );

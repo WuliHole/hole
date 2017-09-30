@@ -107,9 +107,6 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
 
     if (!post) {
       return <div className="not-found">
-        <Alert status="info" isVisible={ true }>
-          <CircularProgress />
-        </Alert>
       </div>
     }
 

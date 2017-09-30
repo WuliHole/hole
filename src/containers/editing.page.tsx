@@ -36,6 +36,8 @@ import { createSideToolBarPlugin } from '../components/editor/plugins/side-tool-
 import { createImagePlugin } from '../components/editor/plugins/image/index'
 import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
+import linkify from 'draft-js-linkify-plugin'
+import createCodePlugin from '../components/editor/plugins/code-highlight/code-light.plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
 import { isRejectedAction } from '../actions/utils'
 Moment.locale('zh-cn')
@@ -60,6 +62,8 @@ const plugins = [
   imagePlugin,
   inlineToolbarPlugin,
   sideToolbarPlugin,
+  linkify(),
+  createCodePlugin({})
 ]
 
 interface IEditViewProps {
