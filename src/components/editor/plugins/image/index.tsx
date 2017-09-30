@@ -8,9 +8,7 @@ export const createImagePlugin = (config?: PluginConfig): ImagePluginObject => {
       const entityKey = block.getEntityAt(0);
       const contentState = getEditorState().getCurrentContent();
       const alignmentData = entityKey ? contentState.getEntity(entityKey).data : {};
-      /* tslint:disable */
-      console.log('image', alignmentData)
-      /* tslint:enable */
+
       if (alignmentData.src) {
         switch (alignmentData.alignment) {
           case 'left':
