@@ -57,6 +57,7 @@
     "prismjs": "1.x",
     "qiniu4js": "^1.0.10",
     "qn-webpack": "^1.1.0",
+    "react-addons-perf": "^15.4.2",
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-manifest-plugin": "^1.3.1",
     "winston": "^2.1.1"

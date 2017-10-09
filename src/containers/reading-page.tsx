@@ -22,7 +22,7 @@ import { getCommentByPostId } from '../redux-selector/comments'
 import CircularProgress from 'material-ui/CircularProgress'
 import CommonAppBar from '../widgets/commonAppBar'
 import { RaisedButton } from 'material-ui'
-
+import { ScrollerReset } from '../components/scrollerReset/scrollerReset'
 interface IReadingPageProps extends React.Props<any> {
   article
   comments: List<IComment>
@@ -133,38 +133,40 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
         />
       )
     }
-    return <div >
-      <div className="bg-white pt4">
-        <CommonAppBar history={ this.props.history } />
-        <Container size={ post ? 4 : 1 }
-          center
-          style={ { minHeight: '320px' } }>
-          <ArticleItem
-            articleInfo={ post }
-            rightIcon={
-              ReadingPage.makeEditButton(this)
-            }
-          />
-        </Container>
-      </div>
-      <Container size={ 3 } center
-        style={ { minHeight: '80px' } }
-        className="mt3 mb3"
-        backgroundTheme=""
-      >
-        <CommentForm
-          user={ this.props.user && this.props.user.toJS() }
-          article={ post }
-          postComment={ this.props.postComment }
-          submitButton={ loginButton }
-        >
-        </CommentForm>
-        <div style={ { marginTop: '30px' } }>
-          <CommentTable comments={ comments } />
+    return <ScrollerReset >
+      <div >
+        <div className="bg-white pt4">
+          <CommonAppBar history={ this.props.history } />
+          <Container size={ post ? 4 : 1 }
+            center
+            style={ { minHeight: '320px' } }>
+            <ArticleItem
+              articleInfo={ post }
+              rightIcon={
+                ReadingPage.makeEditButton(this)
+              }
+            />
+          </Container>
         </div>
-      </Container>
+        <Container size={ 3 } center
+          style={ { minHeight: '80px' } }
+          className="mt3 mb3"
+          backgroundTheme=""
+        >
+          <CommentForm
+            user={ this.props.user && this.props.user.toJS() }
+            article={ post }
+            postComment={ this.props.postComment }
+            submitButton={ loginButton }
+          >
+          </CommentForm>
+          <div style={ { marginTop: '30px' } }>
+            <CommentTable comments={ comments } />
+          </div>
+        </Container>
 
-    </div>
+      </div>
+    </ScrollerReset >
   }
 
   static makeEditButton(context) {

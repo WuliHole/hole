@@ -21,7 +21,7 @@ export const createImagePlugin = (config?: PluginConfig): ImagePluginObject => {
             return 'img-align-center'
 
           case 'default':
-            return
+            return 'img-no-margin'
         }
       }
     }

@@ -8,6 +8,7 @@ import Container from '../../components/container'
 import { EditorState } from 'draft-js'
 import CommonAppBar from '../../widgets/commonAppBar'
 import { Serlizer } from '../../components/editor/utils/serializer'
+import { ScrollerReset } from 'app/components/scrollerReset/scrollerReset'
 import {
   CircularProgress,
   RaisedButton,
@@ -41,6 +42,8 @@ type store = {
   hasError: boolean
   errMsg: string
 }
+
+type GroupedPosts = OrderedMap<number, Map<string, Map<keyof Post<any>, any>>>
 interface ProfileProps extends React.Props<any> {
   session: any;
   history
@@ -62,7 +65,6 @@ interface ProfileProps extends React.Props<any> {
   renderAppBar?: boolean
 }
 
-type GroupedPosts = OrderedMap<number, Map<string, Map<keyof Post<any>, any>>>
 
 function mapStateToProps(state, props) {
   return {
@@ -199,12 +201,14 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
   render() {
     const { renderAppBar = true } = this.props
     return (
-      <Transition >
-        <div style={ { marginTop: 50 } }>
-          { renderAppBar && <CommonAppBar history={ this.props.history } /> }
-          { this.content() }
-        </div>
-      </Transition>
+      <ScrollerReset>
+        <Transition >
+          <div style={ { marginTop: 50 } }>
+            { renderAppBar && <CommonAppBar history={ this.props.history } /> }
+            { this.content() }
+          </div>
+        </Transition>
+      </ScrollerReset >
     )
   }
 
@@ -280,7 +284,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
         {
           !this.posts
             ? loader
-            : <PostList posts={ this.posts } />
+            : <PostList posts={ this.posts } history={ this.props.history } />
         }
       </Container>
     </Container>

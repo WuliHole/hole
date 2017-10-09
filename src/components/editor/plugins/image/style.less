@@ -1,19 +1,35 @@
-.haf-width() {
+.inner-img-width(@width: 50%) {
 
   img {
     margin-right: 20px;
-    width: 50%;
+    width: @width;
+
+    &::after {
+      clear: both;
+    }
   }
 }
 
+.relative() {
+  position: relative;
+}
+
 .img-align-left {
-  .haf-width();
+  .inner-img-width();
+  .relative();
+  left: -40px;
 }
 
 .img-align-right {
-  .haf-width();
+  .inner-img-width();
+  .relative();
+  right: -40px;
 }
 
 .img-align-center {
-  .haf-width();
+  .inner-img-width(100%);
+}
+
+.img-no-margin {
+  margin: 0;
 }

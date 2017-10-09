@@ -114,7 +114,7 @@ export default class RecentPost extends React.Component<RecentPostProps, {}> {
       return <ListItem
         className="recent-item"
         key={ p.createdAt }
-
+        innerDivStyle={ { padding: 8 } }
         primaryText={ resolveTitleFromContent(p.content) }
         onClick={ (e) => this.visitPostIfClickedItemContainer(e, p) }
         secondaryText={ `最后更新 ${date}` }

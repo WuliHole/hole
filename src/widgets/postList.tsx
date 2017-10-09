@@ -3,14 +3,17 @@ import Moment = require('moment')
 import { EditorState } from 'draft-js'
 import { unique } from '../utils/arrayUtils'
 import { Serlizer } from '../components/editor/utils/serializer'
-import { Link } from 'react-router'
-import { CardHeader, Divider } from 'material-ui'
+import { Link, HistoryBase } from 'react-router'
+import { CardHeader, Divider, RaisedButton } from 'material-ui'
 import Editor from '../components/editor'
 import { truncate } from '../components/article/article-item'
 import { createImagePlugin } from '../components/editor/plugins/image/index'
 import resolveTitleFromContent from 'utils/resolveTitleFromContent'
+import './postList.less'
+
 interface ListProps {
   posts: Post<any>[]
+  history: HistoryBase
 }
 
 const maxLength = 200
@@ -20,6 +23,21 @@ const plugins = [
 ]
 
 export default class PostList extends React.Component<ListProps, {}> {
+
+  readPost = (e: React.SyntheticEvent<any>) => {
+    e.preventDefault()
+    const el = e.currentTarget as HTMLDivElement
+    const id = parseInt(el.getAttribute('data-key'), 10)
+
+    if (!id) {
+      throw new Error('Unexcept post id ')
+    }
+
+    const targetPost = this.props.posts.find(p => p.id === id)
+    const title = resolveTitleFromContent(targetPost.content)
+    this.props.history.push(`/post/@${title}/${targetPost.id}`)
+  }
+
   render() {
     const { posts } = this.props
     return <section>
@@ -38,26 +56,25 @@ export default class PostList extends React.Component<ListProps, {}> {
           .locale('zh-cn')
           .format('L')
 
-        return <div key={ p.id } className="mt2 ">
-          <Link to={ `/post/@${resolveTitleFromContent(p.content)}/${p.id}` }>
-            <CardHeader
-              subtitle={ `最后一次更新: ${updated}` }
-              style={ { padding: '16px 0' } }
-              subtitleColor={ '#02b875' }
-              subtitleStyle={ styles.subTitle }
+        return <div key={ p.id } className="mt2 mb4 relative post-info">
+          <div >
+            <span
+              className="text-decoration-none black gray "
             >
-            </CardHeader>
-          </Link>
-          <Editor
-            plugins={ plugins }
-            editorState={ editorState }
-            readonly
-          >
-            <Link to={ `/post/@${resolveTitleFromContent(p.content)}/${p.id}` } className="text-decoration-none">
-              阅读全文
-          </Link>
-          </Editor>
-          <Divider />
+              { `最后一次更新: ${updated}` }
+            </span>
+            <h1 onClick={ this.readPost } data-key={ p.id } style={ styles.postContainer } >
+              { resolveTitleFromContent(p.content) }
+            </h1>
+            {/* <RaisedButton primary className="mt2 mb2">
+              <Link to={ `/post/@${resolveTitleFromContent(p.content)}/${p.id}` }
+                className="text-decoration-none yellow "
+              >
+                阅读全文
+              </Link>
+            </RaisedButton > */}
+          </div>
+          <Divider className="clear" />
         </div>
       })
       }
@@ -73,5 +90,9 @@ const styles = {
   },
   title: {
     width: '100%'
+  },
+  postContainer: {
+    cursor: 'pointer',
+    margin: '10px 0'
   }
 }

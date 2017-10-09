@@ -119,13 +119,12 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
       .find(v => v.get('id') === currentEdit)
   }
 
-  get editorState() {
+  get contentState() {
     if (!this.isAuthor()) {
       return
     }
     const content = this.currentPost && this.currentPost.toJS().content
-    const editorState = content && EditorState.createWithContent(Serlizer.deserialize(content))
-    return editorState
+    return content
   }
 
   componentWillUnmount() {
@@ -224,11 +223,11 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
               subtitle={ bio }
               avatar={ <Avatar src={ avatar } size={ 48 } /> }
             />
-            <CardText>
-              { this.editorState &&
+            <CardText >
+              { this.contentState &&
                 <Editor
                   plugins={ plugins.concat([this.autoSavePlugin]) }
-                  editorState={ this.editorState }
+                  content={ this.contentState }
                   autoFocus
                 >
                   <AlignmentTool />

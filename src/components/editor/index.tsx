@@ -7,8 +7,8 @@ import {
   EditorState,
   ContentBlock,
   getDefaultKeyBinding,
-  convertToRaw
-
+  convertToRaw,
+  RawDraftContentState
 } from 'draft-js'
 import { DraftHandleValue } from './interface.editor'
 import { Serlizer } from './utils/serializer'
@@ -24,6 +24,7 @@ interface EditorProps {
   plugins?: any[]
   decorators?: any[]
   editorState?: EditorState
+  content?: RawDraftContentState
   placeholder?: string
   onChange?: (s: EditorState) => any
   readonly?: boolean
@@ -37,18 +38,21 @@ export default class HoleEditor
 
   serializer = Serlizer.serialize
 
-  state = {
-    editorState: this.props.editorState
-      ? this.props.editorState
-      : EditorState.createEmpty(),
-  };
-
+  state = { editorState: EditorState.createEmpty() }
   /**
    * A bug was here .
    * If call the method(focus) ,decorators will not work
    */
-  componentDidMount() {
+  componentWillMount() {
     // this.focus()
+
+    if (this.props.editorState) {
+      this.setState({ editorState: this.props.editorState })
+    } else if (this.props.content) {
+      const editorState = EditorState
+        .push(this.state.editorState, Serlizer.deserialize(this.props.content), 'change-block-data')
+      this.setState({ editorState })
+    }
   }
 
   onChange = (editorState) => {
@@ -63,6 +67,15 @@ export default class HoleEditor
     }
   };
 
+  shouldComponentUpdate(nextProps: EditorProps, nextState) {
+    /*  tslint:disable */
+
+    if (nextState.editorState && !is(nextState.editorState, this.state.editorState)) {
+      return true
+    }
+
+    return false
+  }
 
   focus = () => {
     this.editor.getEditorRef().focus()
@@ -79,6 +92,11 @@ export default class HoleEditor
     if (type === 'unstyled') {
       return 'paragraph'
     }
+
+    if (type === 'header-one' || type === 'header-two') {
+      return 'editor-title serif'
+    }
+
     return null
   }
 
@@ -101,7 +119,7 @@ export default class HoleEditor
   render() {
     const placeholder = this.props.placeholder || HoleEditor.placeholder
     return (
-      <div >
+      <div className="hole-editor">
         <Editor
           ref={ e => this.editor = e }
           editorState={ this.state.editorState }

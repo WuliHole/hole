@@ -14,6 +14,10 @@ import store from './store/configure-store';
 
 import './styles/index.css';
 import './styles/index.less';
+if (__DEV__) {
+  const Perf = require('react-addons-perf')
+  window['Perf'] = Perf
+}
 
 declare const __TEST__: boolean;
 
