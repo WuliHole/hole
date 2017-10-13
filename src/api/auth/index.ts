@@ -1,15 +1,7 @@
 import { get, post, getHeaderForJWT } from '../server/';
 
-const LOGIN_ERR_MSG = `
-  The username or password you have entered is invalid.
-`;
-
 export function login(user) {
-  return new Promise((resolve, reject) => {
-    return post('/auth/login', user)
-      .then((json: any) => resolve(json))
-      .then(null, (err) => reject(new Error(LOGIN_ERR_MSG)));
-  });
+  return post('/auth/login', user)
 }
 
 export function signup(email: string) {

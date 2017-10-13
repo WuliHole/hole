@@ -1,32 +1,6 @@
-import { } from './../constants/posts.action.types';
-import {
-  GET_PUBLISHED_POST_FOR_USER_PENDING,
-  GET_PUBLISHED_POST_FOR_USER_SUCCESS,
-  GET_PUBLISHED_POST_FOR_USER_ERROR,
-
-  PUBLISH_POST_PENDING,
-  PUBLISH_POST_SUCCESS,
-  PUBLISH_POST_ERROR,
-
-  GET_DRAFT_FOR_USER_PENDING,
-  GET_DRAFT_FOR_USER_SUCCESS,
-  GET_DRAFT_FOR_USER_ERROR,
-
-  GET_POST_BY_ID_ERROR,
-  GET_POST_BY_ID_PENDING,
-  GET_POST_BY_ID_SUCCESS,
-
-  UPDATE_POST_ERROR,
-  UPDATE_POST_PENDING,
-  UPDATE_POST_SUCCESS,
-
-  CREATE_POST_PENDING,
-  CREATE_POST_ERROR,
-  CREATE_POST_SUCCESS,
-  EDIT_POST
-} from '../constants/posts.action.types';
+import * as Types from '../constants/posts.action.types';
 import { getPublishedPostsForUser, getDraftForUser } from '../api/user'
-import { getPostById, updatePost, createNew, publishPost } from '../api/article'
+import { getPostById, updatePost, createNew, publishPost, upvote, removeUpvote } from '../api/article'
 import { EditorState, ContentState } from 'draft-js'
 import { Serlizer } from '../components/editor/utils/serializer'
 
@@ -38,9 +12,9 @@ export function getPublished(uid: string | number) {
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        GET_PUBLISHED_POST_FOR_USER_PENDING,
-        GET_PUBLISHED_POST_FOR_USER_SUCCESS,
-        GET_PUBLISHED_POST_FOR_USER_ERROR
+        Types.GET_PUBLISHED_POST_FOR_USER_PENDING,
+        Types.GET_PUBLISHED_POST_FOR_USER_SUCCESS,
+        Types.GET_PUBLISHED_POST_FOR_USER_ERROR
       ],
       payload: {
         promise: getPublishedPostsForUser(uid)
@@ -59,9 +33,9 @@ export function getDraft(uid: string | number) {
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        GET_DRAFT_FOR_USER_PENDING,
-        GET_DRAFT_FOR_USER_SUCCESS,
-        GET_DRAFT_FOR_USER_ERROR
+        Types.GET_DRAFT_FOR_USER_PENDING,
+        Types.GET_DRAFT_FOR_USER_SUCCESS,
+        Types.GET_DRAFT_FOR_USER_ERROR
       ],
       payload: {
         promise: getDraftForUser(uid)
@@ -77,9 +51,9 @@ export function getById(postId: POST_ID) {
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        GET_POST_BY_ID_PENDING,
-        GET_POST_BY_ID_SUCCESS,
-        GET_POST_BY_ID_ERROR
+        Types.GET_POST_BY_ID_PENDING,
+        Types.GET_POST_BY_ID_SUCCESS,
+        Types.GET_POST_BY_ID_ERROR
       ],
       payload: {
         promise: getPostById(postId).then(res => res),
@@ -88,15 +62,13 @@ export function getById(postId: POST_ID) {
   }
 }
 
-
-
 export function create() {
   return (dispatch, getState) => {
     return dispatch({
       types: [
-        CREATE_POST_PENDING,
-        CREATE_POST_SUCCESS,
-        CREATE_POST_ERROR
+        Types.CREATE_POST_PENDING,
+        Types.CREATE_POST_SUCCESS,
+        Types.CREATE_POST_ERROR
       ],
       payload: {
         promise: createNew({
@@ -112,13 +84,12 @@ export function create() {
   };
 }
 
-
 export function update(postId: POST_ID, content: ContentState) {
   return dispatch => dispatch(({
     types: [
-      UPDATE_POST_PENDING,
-      UPDATE_POST_SUCCESS,
-      UPDATE_POST_ERROR
+      Types.UPDATE_POST_PENDING,
+      Types.UPDATE_POST_SUCCESS,
+      Types.UPDATE_POST_ERROR
     ],
     payload: {
       promise: updatePost(postId, Serlizer.serialize(content)).then(res => res)
@@ -129,9 +100,9 @@ export function update(postId: POST_ID, content: ContentState) {
 export function publish(postId: POST_ID, tags?: string) {
   return dispatch => dispatch(({
     types: [
-      PUBLISH_POST_PENDING,
-      PUBLISH_POST_SUCCESS,
-      PUBLISH_POST_ERROR
+      Types.PUBLISH_POST_PENDING,
+      Types.PUBLISH_POST_SUCCESS,
+      Types.PUBLISH_POST_ERROR
     ],
     payload: {
       promise: publishPost(postId, tags),
@@ -141,7 +112,33 @@ export function publish(postId: POST_ID, tags?: string) {
 
 export function edit(postId: POST_ID) {
   return {
-    type: EDIT_POST,
+    type: Types.EDIT_POST,
     payload: { id: postId }
   }
+}
+
+export function upvotePost(postId: POST_ID) {
+  return dispatch => dispatch(({
+    types: [
+      Types.UPDATE_POST_PENDING,
+      Types.UPDATE_POST_SUCCESS,
+      Types.UPDATE_POST_ERROR
+    ],
+    payload: {
+      promise: upvote(postId).then(res => { return {} })
+    }
+  }))
+}
+
+export function removeUpvoteRecord(postId: POST_ID) {
+  return dispatch => dispatch(({
+    types: [
+      Types.REMOVE_UPVOTE_RECORD_PENDING,
+      Types.REMOVE_UPVOTE_RECORD_SUCCESS,
+      Types.REMOVE_UPVOTE_RECORD_ERROR
+    ],
+    payload: {
+      promise: removeUpvote(postId).then(res => { return {} })
+    }
+  }))
 }
