@@ -25,6 +25,7 @@ interface CommonAppBarProps {
   openLoginModal?: any
   fixed?: boolean
   notification?
+  style?: React.CSSProperties
   clearnUnreadNotification?: typeof clearnUnreadNotification
 }
 
@@ -145,16 +146,16 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
   }
 
   render() {
-    const { fixed = true } = this.props
+    const { fixed = true, style = {} } = this.props
     const rightElement = <div className="app-bar-right-element">
       { this.elementRight() }
     </div>
     const cls = classnames({ fixed })
-    const style = fixed ? { top: 0, width: '100%', zIndex: 999 } : {}
-    return <div className={ cls } style={ style }>
+    const containerStyle = fixed ? { top: 0, width: '100%', zIndex: 999 } : {}
+    return <div className={ cls } style={ containerStyle }>
       <AppBar
         iconElementLeft={ <Link to="/" className="text-decoration-none"><Logo /></Link> }
-        style={ { boxShadow: '0' } }
+        style={ { boxShadow: '0', ...style } }
         iconElementRight={
           rightElement
         }
