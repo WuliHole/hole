@@ -12,4 +12,50 @@
     position: absolute;
     right: 0;
   }
+
+  .affixed-header {
+    animation: trans-in 0.4s ease-in-out;
+    top: 5px;
+    transform-origin: center;
+    transition: all 0.33s;
+    width: 64rem;
+    z-index: 9999999999;
+
+    .left-part-avatar {
+      left: -240px;
+      position: absolute;
+      top: 100px;
+    }
+
+    .right-icon {
+      right: -100px;
+    }
+  }
+
+  .static-header {
+    animation: trans-in-2 1s ease-in-out;
+    transition: all 0.33s;
+  }
+}
+
+@keyframes trans-in {
+
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes trans-in-2 {
+
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

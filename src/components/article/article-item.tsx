@@ -18,6 +18,7 @@ import createFocusPlugin from 'draft-js-focus-plugin'
 import linkify from 'draft-js-linkify-plugin'
 import createCodePlugin from 'app/components/editor/plugins/code-highlight/code-light.plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
+import { Affix } from 'react-overlays'
 
 const focusPlugin = createFocusPlugin()
 const alignmentPlugin = createAlignmentPlugin()
@@ -70,23 +71,26 @@ const item = ({
 
     <div className={ `article-list-item-wrap ${className || ' '}` }>
 
-      <div className="relative" >
-        <Link className="inline-block" to={ `/profile/${author.id}` }>
-          <Avatar src={ author.avatar } size={ 53 } />
-        </Link>
-        <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
-          style={ {
-            verticalAlign: 'text-bottom'
-          } }
-        >
-          <div>{ author.nickName }</div>
-          <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
+      <Affix affixClassName="affixed-header" topClassName="static-header" offsetTop={ 125 }>
+        <div className="relative" >
+          <div className="inline-block left-part-avatar">
+            <Link className="inline-block" to={ `/profile/${author.id}` }>
+              <Avatar src={ author.avatar } size={ 53 } />
+            </Link>
+            <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
+              style={ {
+                verticalAlign: 'text-bottom'
+              } }
+            >
+              <div>{ author.nickName }</div>
+              <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
+            </div>
+          </div>
+          <div className="inline-block right-icon">
+            { rightIcon }
+          </div>
         </div>
-        <div className="inline-block right-icon">
-          { rightIcon }
-        </div>
-      </div>
-
+      </Affix>
       {/* <Link className={ cls } to={ href }>
         { title }
       </Link> */}
