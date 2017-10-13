@@ -32,7 +32,22 @@ const http = (method: string) => (path, data = {}, header = {}, json = true) => 
     headers: { ...BaseHeaders, ...getHeaderForJWT(getToken()), ...header },
     credentials: 'same-origin',
     body: shouldHaveBody(method) && JSON.stringify(data)
-  }).then(response => json ? response.json() : response)
+  }).then(response => {
+    if (!response.ok) {
+
+      try {
+        const body = response.json()
+        return body
+      } catch (e) {
+        return {
+          errMsg: response.statusText,
+          code: response.status
+        }
+      }
+    }
+
+    return json ? response.json() : response
+  })
 }
 
 export const post = http('post')

@@ -11,11 +11,7 @@ export function update(data = {}) {
 }
 
 export function getProfile(uid) {
-  return new Promise((resolve, reject) => {
-    return get(`/user/${uid}/profile`)
-      .then((json: any) => resolve(json))
-      .then(null, (err) => reject(err));
-  });
+  return get(`/user/${uid}/profile`)
 }
 
 
@@ -28,11 +24,7 @@ export function unfollow(uid: Uid) {
 }
 
 export function getPublishedPostsForUser(uid) {
-  return new Promise((resolve, reject) => {
-    return get(`/user/${uid}/posts/published`)
-      .then((json: any) => resolve(json))
-      .then(null, (err) => reject(err));
-  });
+  return get(`/user/${uid}/posts/published`)
 }
 
 export function getDraftForUser(uid) {
