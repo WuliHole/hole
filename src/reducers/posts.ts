@@ -25,6 +25,8 @@ import {
   PUBLISH_POST_PENDING,
   PUBLISH_POST_SUCCESS,
 
+  UPVOTE_POST_SUCCESS,
+  REMOVE_UPVOTE_RECORD_SUCCESS,
   EDIT_POST
 } from '../constants/posts.action.types';
 
@@ -45,7 +47,7 @@ const INITIAL_STATE = fromJS({
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
   const meta = state.get('meta') as Map<string, POST>
-
+  const uid = action.payload && action.payload.id && action.payload.id.toString()
   switch (action.type) {
 
     case GET_POST_BY_ID_PENDING:
@@ -70,7 +72,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
+        meta: meta.set(uid, Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -78,7 +80,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
+        meta: meta.set(uid, Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -92,10 +94,29 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(action.payload.id.toString(), Map(action.payload) as POST),
+        meta: meta.set(uid, Map(action.payload) as POST),
         isLoading: false,
         hasError: false
       }))
+
+    case UPVOTE_POST_SUCCESS:
+      return state.merge(fromJS({
+        meta: meta
+          .setIn([uid, 'upvoteCount'], meta.getIn([uid, 'upvoteCount'], 0) + 1)
+          .setIn([uid, 'upvoted'], true),
+        isLoading: false,
+        hasError: false
+      }))
+
+    case REMOVE_UPVOTE_RECORD_SUCCESS:
+      return state.merge(fromJS({
+        meta: meta
+          .setIn([uid, 'upvoteCount'], meta.getIn([uid, 'upvoteCount'], 0) - 1)
+          .setIn([uid, 'upvoted'], false),
+        isLoading: false,
+        hasError: false
+      }))
+
 
     case PUBLISH_POST_SUCCESS:
       const id: number = action.payload.id

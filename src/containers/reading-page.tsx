@@ -1,13 +1,12 @@
-const connect = require('react-redux').connect
+import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as React from 'react'
 import { PropTypes } from 'react'
 import Container from '../components/container'
 import Icon from '../components/icon'
-import { getById, edit } from '../actions/posts'
+import { getById, edit, upvotePost, removeUpvoteRecord } from '../actions/posts'
 import { ArticleList, ArticleItem } from '../components/article'
 import { List, Map } from 'immutable'
-import Alert from '../components/alert'
 import {
   default as CommentForm,
   CommentTable
@@ -22,6 +21,7 @@ import { getCommentByPostId } from '../redux-selector/comments'
 import CircularProgress from 'material-ui/CircularProgress'
 import CommonAppBar from '../widgets/commonAppBar'
 import { RaisedButton } from 'material-ui'
+import Like from 'material-ui/svg-icons/action/favorite';
 import { ScrollerReset } from '../components/scrollerReset/scrollerReset'
 interface IReadingPageProps extends React.Props<any> {
   article
@@ -39,6 +39,8 @@ interface IReadingPageProps extends React.Props<any> {
   history
   edit: typeof edit
   loginButton: () => (props: LoginButtonProps) => JSX.Element
+  upvote: typeof upvotePost
+  removeUpvoteRecord: typeof removeUpvoteRecord
 }
 
 
@@ -59,7 +61,9 @@ function mapDispatchToProps(dispatch) {
     postComment: (params) => dispatch(postComment(params)),
     getComments: (postId) => dispatch(getComments(postId)),
     loginButton: () => ReadingPage.loginButton(dispatch),
-    edit: bindActionCreators(edit, dispatch)
+    edit: bindActionCreators(edit, dispatch),
+    upvote: bindActionCreators(upvotePost, dispatch),
+    removeUpvoteRecord: bindActionCreators(removeUpvoteRecord, dispatch)
   }
 }
 
@@ -85,6 +89,33 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
 
   get comments() {
     return this.props.comments
+  }
+
+  onClickUpvoteButton = () => {
+    const { post } = this
+    if (!post) {
+      return
+    }
+
+    if (post.upvoted) {
+      this.removeUpvoteRecord()
+    } else {
+      this.upvote()
+    }
+  }
+
+  upvote = () => {
+    const post = this.post
+    if (post) {
+      return this.props.upvote(post.id)
+    }
+  }
+
+  removeUpvoteRecord = () => {
+    const post = this.post
+    if (post) {
+      return this.props.removeUpvoteRecord(post.id)
+    }
   }
 
   isAuthor() {
@@ -136,7 +167,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     return <ScrollerReset >
       <div >
         <div className="bg-white pt4">
-          <CommonAppBar history={ this.props.history } />
+          <CommonAppBar history={ this.props.history } style={ { background: 'rgba(0, 0, 0, 0)' } } />
           <Container size={ post ? 4 : 1 }
             center
             style={ { minHeight: '320px' } }>
@@ -146,6 +177,9 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
                 ReadingPage.makeEditButton(this)
               }
             />
+            <div className="pl2 pb2">
+              <Like onClick={ this.onClickUpvoteButton } />
+            </div>
           </Container>
         </div>
         <Container size={ 3 } center
