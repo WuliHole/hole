@@ -120,12 +120,16 @@ export function edit(postId: POST_ID) {
 export function upvotePost(postId: POST_ID) {
   return dispatch => dispatch(({
     types: [
-      Types.UPDATE_POST_PENDING,
-      Types.UPDATE_POST_SUCCESS,
-      Types.UPDATE_POST_ERROR
+      Types.UPVOTE_POST_PENDING,
+      Types.UPVOTE_POST_SUCCESS,
+      Types.UPVOTE_POST_ERROR
     ],
     payload: {
-      promise: upvote(postId).then(res => { return {} })
+      promise: upvote(postId).then(res => {
+        return {
+          id: postId
+        }
+      })
     }
   }))
 }
@@ -138,7 +142,11 @@ export function removeUpvoteRecord(postId: POST_ID) {
       Types.REMOVE_UPVOTE_RECORD_ERROR
     ],
     payload: {
-      promise: removeUpvote(postId).then(res => { return {} })
+      promise: removeUpvote(postId).then(res => {
+        return {
+          id: postId
+        }
+      })
     }
   }))
 }

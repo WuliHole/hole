@@ -47,7 +47,7 @@ const INITIAL_STATE = fromJS({
 function postsReducer(state = INITIAL_STATE,
   action = { type: '', payload: null }) {
   const meta = state.get('meta') as Map<string, POST>
-  const uid = action.payload && action.payload.id && action.payload.id.toString()
+  const uid = action.payload && action.payload.id
   switch (action.type) {
 
     case GET_POST_BY_ID_PENDING:
@@ -72,7 +72,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid, Map(action.payload) as POST),
+        meta: meta.set(uid.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -80,7 +80,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid, Map(action.payload) as POST),
+        meta: meta.set(uid.toString(), Map(action.payload) as POST),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -94,7 +94,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid, Map(action.payload) as POST),
+        meta: meta.set(uid.toString(), Map(action.payload) as POST),
         isLoading: false,
         hasError: false
       }))
@@ -102,17 +102,18 @@ function postsReducer(state = INITIAL_STATE,
     case UPVOTE_POST_SUCCESS:
       return state.merge(fromJS({
         meta: meta
-          .setIn([uid, 'upvoteCount'], meta.getIn([uid, 'upvoteCount'], 0) + 1)
-          .setIn([uid, 'upvoted'], true),
+          .setIn([uid.toString(), 'upvoteCount'], meta.getIn([uid.toString(), 'upvoteCount'], 0) + 1)
+          .setIn([uid.toString(), 'upvoted'], true),
         isLoading: false,
         hasError: false
       }))
 
     case REMOVE_UPVOTE_RECORD_SUCCESS:
+      const count = meta.getIn([uid.toString(), 'upvoteCount'], 0)
       return state.merge(fromJS({
         meta: meta
-          .setIn([uid, 'upvoteCount'], meta.getIn([uid, 'upvoteCount'], 0) - 1)
-          .setIn([uid, 'upvoted'], false),
+          .setIn([uid.toString(), 'upvoteCount'], count > 0 ? count - 1 : 0)
+          .setIn([uid.toString(), 'upvoted'], false),
         isLoading: false,
         hasError: false
       }))
