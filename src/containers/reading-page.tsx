@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as React from 'react'
+import * as  classNames from 'classnames'
 import { PropTypes } from 'react'
 import Container from '../components/container'
 import Icon from '../components/icon'
@@ -20,9 +21,12 @@ import { findPostById } from '../redux-selector/posts'
 import { getCommentByPostId } from '../redux-selector/comments'
 import CircularProgress from 'material-ui/CircularProgress'
 import CommonAppBar from '../widgets/commonAppBar'
-import { RaisedButton } from 'material-ui'
+import { RaisedButton, Checkbox } from 'material-ui'
 import Like from 'material-ui/svg-icons/action/favorite';
+import LikeBorder from 'material-ui/svg-icons/action/favorite-border';
+
 import { ScrollerReset } from '../components/scrollerReset/scrollerReset'
+import './reading-page.less'
 interface IReadingPageProps extends React.Props<any> {
   article
   comments: List<IComment>
@@ -91,13 +95,20 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     return this.props.comments
   }
 
+  upvoted(): boolean {
+    if (!this.post) {
+      return false
+    }
+
+    return !!this.post.upvoted
+  }
+
   onClickUpvoteButton = () => {
-    const { post } = this
-    if (!post) {
+    if (!this.post) {
       return
     }
 
-    if (post.upvoted) {
+    if (this.upvoted()) {
       this.removeUpvoteRecord()
     } else {
       this.upvote()
@@ -132,7 +143,6 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     }
   }
 
-
   render() {
     const post = this.post
 
@@ -166,6 +176,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     }
     return <ScrollerReset >
       <div >
+
         <div className="bg-white pt4">
           <CommonAppBar history={ this.props.history } style={ { background: 'rgba(0, 0, 0, 0)' } } />
           <Container size={ post ? 4 : 1 }
@@ -177,11 +188,23 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
                 ReadingPage.makeEditButton(this)
               }
             />
-            <div className="pl2 pb2">
-              <Like onClick={ this.onClickUpvoteButton } />
+            <div className="pl2 pb2 ">
+              <div className="checkbox-group inline-block">
+                <Checkbox
+                  className="inline-block"
+                  checkedIcon={ <Like className="upvote-button" /> }
+                  uncheckedIcon={ <LikeBorder className="upvote-button-border" /> }
+                  onCheck={ this.onClickUpvoteButton }
+                  checked={ this.upvoted() }
+                  iconStyle={ { marginRight: '5px', height: 20, width: 20 } }
+                  label={ this.post.upvoteCount }
+                />
+              </div>
             </div>
+
           </Container>
         </div>
+
         <Container size={ 3 } center
           style={ { minHeight: '80px' } }
           className="mt3 mb3"
