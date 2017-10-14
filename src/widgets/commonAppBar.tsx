@@ -94,7 +94,7 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
     if (isLogin()) {
       const avatar = <Avatar size={ 30 }
         onClick={ this.showPopMenu }
-        src={ this.props.user.avatar }
+        src={ this.props.user && this.props.user.avatar }
       />
 
       return <div className="app-bar-right-item" ref={ this.ref }>
