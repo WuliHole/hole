@@ -4,7 +4,6 @@ import * as React from 'react'
 import * as  classNames from 'classnames'
 import { PropTypes } from 'react'
 import Container from '../components/container'
-import Icon from '../components/icon'
 import { getById, edit, upvotePost, removeUpvoteRecord } from '../actions/posts'
 import { ArticleList, ArticleItem } from '../components/article'
 import { List, Map } from 'immutable'
@@ -24,7 +23,7 @@ import CommonAppBar from '../widgets/commonAppBar'
 import { RaisedButton, Checkbox } from 'material-ui'
 import Like from 'material-ui/svg-icons/action/favorite';
 import LikeBorder from 'material-ui/svg-icons/action/favorite-border';
-
+import { requireLogin } from 'app/middleware/requireLogin'
 import { ScrollerReset } from '../components/scrollerReset/scrollerReset'
 import './reading-page.less'
 interface IReadingPageProps extends React.Props<any> {
@@ -115,14 +114,16 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     }
   }
 
-  upvote = () => {
+  @requireLogin
+  upvote() {
     const post = this.post
     if (post) {
       return this.props.upvote(post.id)
     }
   }
 
-  removeUpvoteRecord = () => {
+  @requireLogin
+  removeUpvoteRecord() {
     const post = this.post
     if (post) {
       return this.props.removeUpvoteRecord(post.id)
