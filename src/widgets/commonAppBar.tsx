@@ -82,7 +82,7 @@ class CommonAppBar extends React.Component<CommonAppBarProps, CommonAppBarState>
     this.props.logout()
       .then(res => {
         if (!isRejectedAction(res)) {
-          this.props.history.push('/logged-out')
+          this.props.history.push('/')
         } else {
           const error: DisplayError = this.context.displayError
           error(res.payload.errMsg)

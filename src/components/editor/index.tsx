@@ -57,10 +57,7 @@ export default class HoleEditor
 
   onChange = (editorState) => {
 
-
-    this.setState({
-      editorState,
-    });
+    this.setState({ editorState })
 
     if (this.props.onChange) {
       this.props.onChange(editorState)
@@ -68,8 +65,6 @@ export default class HoleEditor
   };
 
   shouldComponentUpdate(nextProps: EditorProps, nextState) {
-    /*  tslint:disable */
-
     if (nextState.editorState && !is(nextState.editorState, this.state.editorState)) {
       return true
     }
