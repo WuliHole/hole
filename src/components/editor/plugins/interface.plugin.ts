@@ -1,5 +1,5 @@
 import React = require('react')
-import { EditorState } from 'draft-js'
+import { EditorState, ContentBlock } from 'draft-js'
 /**
  * This file defined the interface of plugin.
  * Each plugin you created should implement EditorPluginBuilder
@@ -37,5 +37,19 @@ export interface InAddtionAccepts {
   onChange?: (editorState: EditorState) => EditorState
   willUnMount?: (props: PluginFunctions) => void
   decorators?: Decorator[]
+  keyBindingFn?: (evt: React.KeyboardEvent<any>, props: PluginFunctions) => any
+  blockRenderMap?: (block: ContentBlock) => any
+  blockRendererFn?: (block: ContentBlock) => any
+  onUpArrow?: (evt: React.KeyboardEvent<any>, props: PluginFunctions) => any
+  onDownArrow?: (evt: React.KeyboardEvent<any>, props: PluginFunctions) => any
   getAccessibilityProps?: () => { ariaHasPopup: string, ariaExpanded: string }
+}
+
+
+export interface BlockProps {
+  alignment: string
+  isCollapsedSelection: boolean
+  isFocused: boolean
+  setAlignment: () => any
+  setFocusToBlock: () => any
 }
