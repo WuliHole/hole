@@ -38,6 +38,7 @@ import createAlignmentPlugin from 'draft-js-alignment-plugin'
 import createFocusPlugin from 'draft-js-focus-plugin'
 import linkify from 'draft-js-linkify-plugin'
 import createCodePlugin from '../components/editor/plugins/code-highlight/code-light.plugin'
+import { createTexlugin } from '../components/editor/plugins/tex'
 import { composeDecorators } from 'draft-js-plugins-editor'
 import { isRejectedAction } from '../actions/utils'
 Moment.locale('zh-cn')
@@ -59,11 +60,11 @@ const { SideToolbar } = sideToolbarPlugin
 const plugins = [
   focusPlugin,
   alignmentPlugin,
-  imagePlugin,
   inlineToolbarPlugin,
   sideToolbarPlugin,
   linkify(),
-  createCodePlugin({})
+  createCodePlugin({}),
+  imagePlugin,
 ]
 
 interface IEditViewProps {
@@ -80,7 +81,8 @@ interface IEditViewProps {
 
 interface IEditViewState {
   saving?: boolean
-  openPublishWindow?: boolean
+  openPublishWindow?: boolean,
+  readonly?: boolean
 }
 
 function mapStateToProps(state) {
@@ -102,6 +104,8 @@ function mapDispatchToProps(dispatch) {
 
 class EditView extends React.Component<IEditViewProps, IEditViewState> {
   private autoSavePlugin: AutoSavePlugin
+  private texPlugin
+
   private tags: string
 
   static contextTypes = {
@@ -110,7 +114,20 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
 
   state = {
     saving: false,
-    openPublishWindow: false
+    openPublishWindow: false,
+    readonly: false
+  }
+
+  isReadonly = () => {
+    return this.state.readonly
+  }
+
+  lockEditor = () => {
+    this.setState({ readonly: true })
+  }
+
+  openEditgor = () => {
+    this.setState({ readonly: false })
   }
 
   get currentPost() {
@@ -129,11 +146,17 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
 
   componentWillUnmount() {
     this.autoSavePlugin = null
+    this.texPlugin = null
   }
 
   componentWillMount() {
     this.autoSavePlugin = createAutoSavePlugin({ saveAction: this.save, debounceTime: 300 })
     ImageReader.onTaskSuccess = this.save
+    this.texPlugin = createTexlugin({
+      setEditorReadonly: this.lockEditor,
+      setEditorEditable: this.openEditgor,
+      isReadonly: this.isReadonly,
+    })
   }
 
   componentDidMount() {
@@ -187,6 +210,13 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
       })
   }
 
+  onMouseDown = (e) => {
+    if (this.state.readonly) {
+      this.openEditgor()
+      // e.stopPropagation()
+      // e.preventDefault()
+    }
+  }
 
   render() {
     const style = { marginTop: '.3rem' }
@@ -201,7 +231,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
     const lastSave = this.currentPost && this.currentPost.get('updatedAt')
     const date = new Date(lastSave)
 
-    return <div>
+    return <div onMouseDown={ this.onMouseDown }>
       <AppBar
         style={ { position: 'fixed' } }
         title={ lastSave && `已自动保存到云端 ${Moment(date).fromNow()}` }
@@ -226,13 +256,14 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
             <CardText >
               { this.contentState &&
                 <Editor
-                  plugins={ plugins.concat([this.autoSavePlugin]) }
+                  plugins={ plugins.concat([this.autoSavePlugin, this.texPlugin]) }
                   content={ this.contentState }
                   autoFocus
+                  readonly={ this.state.readonly }
                 >
                   <AlignmentTool />
                   <InlineToolbar />
-                  <SideToolbar />
+                  { !this.state.readonly && <SideToolbar /> }
                 </Editor>
               }
             </CardText>

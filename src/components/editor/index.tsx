@@ -69,6 +69,10 @@ export default class HoleEditor
       return true
     }
 
+    if (nextProps.readonly !== this.props.readonly) {
+      return true
+    }
+
     return false
   }
 

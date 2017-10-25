@@ -2,8 +2,37 @@ import createPlugin from 'draft-js-image-plugin'
 import { EditorState, ContentBlock } from 'draft-js'
 import './style.less'
 export const createImagePlugin = (config?: PluginConfig): ImagePluginObject => {
+  const originProps = createPlugin(config)
+  const { blockRendererFn } = originProps
+
+  function wrappedBlockRendererFn(block: ContentBlock, ...args) {
+    if (!block) {
+      return null
+    }
+
+    if (block.getType() === 'atomic') {
+
+      const entityKey = block.getEntityAt(0)
+      if (!entityKey) {
+        return null
+      }
+
+      const { getEditorState } = args[0]
+      const state: EditorState = getEditorState()
+      const type = state.getCurrentContent().getEntity(entityKey).getType()
+      if (type === 'image') {
+        return blockRendererFn(block, ...args)
+      }
+
+    }
+    return null
+  }
+
   return {
-    ...createPlugin(config),
+    ...originProps,
+
+    blockRendererFn: wrappedBlockRendererFn,
+
     blockStyleFn(block: ContentBlock, { getEditorState }) {
       const entityKey = block.getEntityAt(0);
       const contentState = getEditorState().getCurrentContent();

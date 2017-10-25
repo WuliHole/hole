@@ -13,7 +13,7 @@ import { EditorState } from 'draft-js'
 import BlockTypeSelect from 'draft-js-side-toolbar-plugin/lib/components/BlockTypeSelect'
 import createPlugin from 'draft-js-side-toolbar-plugin'
 import { PluginConfig, PluginObject } from './interface'
-
+import TexButton from '../tex/components/texButton'
 
 export const DefaultBlockTypeSelect = ({ getEditorState, setEditorState, theme }) => (
   <BlockTypeSelect
@@ -28,6 +28,7 @@ export const DefaultBlockTypeSelect = ({ getEditorState, setEditorState, theme }
       BlockquoteButton,
       CodeBlockButton,
       ImageReader,
+      TexButton
     ] }
   />
 );
