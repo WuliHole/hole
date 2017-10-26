@@ -5,7 +5,7 @@
 WuliHole
 
 # Screenshot
-![screentshot](./Screenshot.jpeg)
+![screentshot](./screenshot/demo.gif)
 
 ### Editor usage
 ----
@@ -27,6 +27,7 @@ Some case is not working
 //   python             "working"
 //py                    "working"
 ```
+
 ## npm scripts
 
 ### Dev
@@ -67,3 +68,4 @@ developing your software.
 Edit [this file](server/proxy-config.js) to mount such APIs at a given path.
 
 
+![screentshot](./Screenshot.jpeg)
