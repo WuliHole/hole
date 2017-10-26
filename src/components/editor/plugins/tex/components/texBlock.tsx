@@ -1,3 +1,4 @@
+import Katex = require('katex')
 import * as React from 'react'
 import * as DraftEditorBlock from 'draft-js/lib/DraftEditorBlock.react'
 import { EditorState, ContentBlock, SelectionState } from 'draft-js'
@@ -7,9 +8,8 @@ import { TextField } from 'material-ui'
 import { KeyMap } from '../../../utils/keyMap'
 import { KataxRenderer } from './texRenderer'
 import { KatexErrorRenderer } from './texErrorRenderer'
-import { getCursorPosition } from '../utils/getCursorPosition'
-import { getLineNumber } from '../utils/getLineNumber'
-import Katex = require('katex')
+import { getCursorPosition, getLineNumber, isNewlyCreated } from '../utils'
+import { removeTeXBlock } from '../modifiers/removeTexBlock'
 import './style.less'
 import './texBlock.less'
 
@@ -61,11 +61,15 @@ export class TexBlock extends React.Component<Props, State> {
       if (content) {
         this.setState({ content })
       }
-    }
 
+      if (isNewlyCreated(state, entityKey)) {
+        this.focus()
+      }
+    }
   }
 
   focus = () => {
+    this.setEditorReadonly()
     this.setState({ focus: true }, () => this.input.focus())
   }
 
@@ -80,8 +84,13 @@ export class TexBlock extends React.Component<Props, State> {
     switch (e.keyCode) {
       case KeyMap.UpArrow:
         return this.handleUpArrow(e)
+
       case KeyMap.DownArrow:
         return this.handleDownArrow(e)
+
+      case KeyMap.BackSpace:
+      case KeyMap.Delete:
+        return this.handleDelete(e)
     }
   }
 
@@ -89,7 +98,7 @@ export class TexBlock extends React.Component<Props, State> {
     if (this.currentCurosrPosition === 1 && this.prevCursorPosition === 1) {
       const state: EditorState = this.getEditorState()
       const prevBlock = state.getCurrentContent().getBlockBefore(this.props.block.getKey())
-      this.focusOn(prevBlock)
+      this.focusOn(prevBlock, state)
     }
   }
 
@@ -97,15 +106,22 @@ export class TexBlock extends React.Component<Props, State> {
     if (this.currentCurosrPosition === getLineNumber(e.target)) {
       const state: EditorState = this.getEditorState()
       const nextBlock = state.getCurrentContent().getBlockAfter(this.props.block.getKey())
-      this.focusOn(nextBlock)
+      this.focusOn(nextBlock, state)
     }
   }
 
-  focusOn(block: ContentBlock) {
+  handleDelete(e: React.KeyboardEvent<any>) {
+    if (this.state.content.length === 0) {
+      const newState = removeTeXBlock(this.getEditorState(), this.props.block.getKey())
+      this.focusOn(this.props.block, newState)
+    }
+  }
+
+  focusOn(block: ContentBlock, state: EditorState) {
     setTimeout(() => {
       this.setEditable()
       this.getEditorRef().focus()
-      setSelectionToBlock(this.getEditorState, this.setEditorState, block)
+      setSelectionToBlock(state, this.setEditorState, block)
     }, 0)
 
     this.setState({ focus: false })
@@ -118,7 +134,7 @@ export class TexBlock extends React.Component<Props, State> {
     }
 
     e.preventDefault()
-    setSelectionToBlock(this.getEditorState, this.setEditorState, this.props.block)
+    setSelectionToBlock(this.getEditorState(), this.setEditorState, this.props.block)
     this.focus()
   }
 
@@ -126,10 +142,6 @@ export class TexBlock extends React.Component<Props, State> {
     const { value } = e.currentTarget
     this.setState({ content: value })
     this.updateEntityData({ content: value })
-  }
-
-  onF = (e) => {
-    this.setEditorReadonly()
   }
 
   private updateEntityData(data) {
@@ -157,7 +169,6 @@ export class TexBlock extends React.Component<Props, State> {
         hasError = false
       } catch (e) {
         errorObj = e
-        window['ee'] = e
       }
     }
 
@@ -170,7 +181,6 @@ export class TexBlock extends React.Component<Props, State> {
           style={ { width: '100%' } }
           onChange={ this.onValueChane }
           value={ this.state.content }
-          onFocus={ this.onF }
           onBlur={ this.blur }
           ref={ this.ref }
           onKeyDown={ this.handleKeyDown }

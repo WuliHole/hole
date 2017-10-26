@@ -12,7 +12,6 @@ export function getCursorPosition(el: HTMLInputElement) {
     // we should +1, because "\n" was removed before
     const lengthOfCurrentLine = contents[i].length + 1
     const j = (total + lengthOfCurrentLine - selectionStart) >= 0
-    /* tslint:disable */
     if (j) {
       return i + 1
     }

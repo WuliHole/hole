@@ -1,8 +1,7 @@
 import * as DraftOffsetKey from 'draft-js/lib/DraftOffsetKey';
-import { SelectionState, EditorState } from 'draft-js';
+import { SelectionState, EditorState, ContentBlock } from 'draft-js';
 // Set selection of editor to next/previous block
-export default (getEditorState, setEditorState, newActiveBlock) => {
-  const editorState = getEditorState();
+export default (editorState: EditorState, setEditorState, newActiveBlock: ContentBlock) => {
 
   // TODO verify that always a key-0-0 exists
   const offsetKey = DraftOffsetKey.encode(newActiveBlock.getKey(), 0, 0);

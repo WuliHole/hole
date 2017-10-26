@@ -1,5 +1,5 @@
 import { EditorPluginBuilder, InAddtionAccepts } from '../interface.plugin'
-import { EditorState, ContentBlock, ContentState } from 'draft-js'
+import { EditorState, ContentBlock, ContentState, getDefaultKeyBinding } from 'draft-js'
 import { is } from 'immutable'
 import debounce from '../../../../utils/debounce'
 import createStore from '../../utils/createStore'
@@ -11,8 +11,7 @@ interface PluginConfig {
   isReadonly: () => boolean
 }
 
-interface StaticMethod {
-}
+interface StaticMethod { }
 
 export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = ({
   setEditorReadonly,
@@ -39,10 +38,24 @@ export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = (
     if (isTex && hasFocus) {
       setEditorReadonly()
       const key = block.getKey()
-      /* tslint:disable */
       const callbackName = `focus:${key}`
       store.getItem(callbackName)()
     }
+  }
+  /* tslint:disable */
+  function handleDelete(e: React.KeyboardEvent<any>) {
+    const getEditorState = store.getItem('getEditorState')
+    const state: EditorState = getEditorState()
+    const selection = state.getSelection()
+    if (selection.getAnchorOffset() === 0) {
+      const content = state.getCurrentContent()
+      const blockBefore = content.getBlockBefore(selection.getAnchorKey())
+      if (blockBefore && isTexBlock(blockBefore, content)) {
+        moveCursor('up', getEditorState)
+        return 'handled'
+      }
+    }
+    return getDefaultKeyBinding(e)
   }
 
   function isTexBlock(block: ContentBlock, content: ContentState) {
@@ -81,14 +94,18 @@ export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = (
       moveCursor('down', getEditorState)
     },
 
-    keyBindingFn(evt: React.KeyboardEvent<any>, { getEditorState, setEditorState }) {
-
+    keyBindingFn(evt, { getEditorState, setEditorState }) {
+      switch (evt.keyCode) {
+        case KeyMap.BackSpace:
+        case KeyMap.Delete:
+          return handleDelete(evt)
+      }
+      return getDefaultKeyBinding(evt)
     },
 
     blockRendererFn(block: ContentBlock) {
       const editorState: EditorState = store.getItem('getEditorState')()
       const isTex = isTexBlock(block, editorState.getCurrentContent())
-      /* tslint:disable */
       if (isTex) {
         return {
           component: TexBlock,

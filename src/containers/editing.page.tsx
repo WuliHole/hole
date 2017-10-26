@@ -127,7 +127,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
   }
 
   openEditgor = () => {
-    this.setState({ readonly: false })
+    setTimeout(this.setState({ readonly: false }), 0)
   }
 
   get currentPost() {
@@ -218,6 +218,11 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
     }
   }
 
+  getPluigins() {
+    const others = [this.autoSavePlugin, this.texPlugin]
+    return plugins.concat(others)
+  }
+
   render() {
     const style = { marginTop: '.3rem' }
     const Save = this.state.saving
@@ -256,14 +261,14 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
             <CardText >
               { this.contentState &&
                 <Editor
-                  plugins={ plugins.concat([this.autoSavePlugin, this.texPlugin]) }
+                  plugins={ this.getPluigins() }
                   content={ this.contentState }
                   autoFocus
                   readonly={ this.state.readonly }
                 >
                   <AlignmentTool />
                   <InlineToolbar />
-                  { !this.state.readonly && <SideToolbar /> }
+                  { <SideToolbar /> }
                 </Editor>
               }
             </CardText>
