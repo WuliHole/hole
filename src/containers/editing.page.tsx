@@ -268,7 +268,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
                 >
                   <AlignmentTool />
                   <InlineToolbar />
-                  { <SideToolbar /> }
+                  { !this.state.readonly && <SideToolbar /> }
                 </Editor>
               }
             </CardText>
