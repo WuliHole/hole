@@ -70,7 +70,7 @@ export class TexBlock extends React.Component<Props, State> {
 
   focus = () => {
     this.setEditorReadonly()
-    this.setState({ focus: true }, () => this.input.focus())
+    this.setState({ focus: true }, () => { this.input.focus() })
   }
 
   blur = () => {
@@ -124,13 +124,15 @@ export class TexBlock extends React.Component<Props, State> {
       setSelectionToBlock(state, this.setEditorState, block)
     }, 0)
 
-    this.setState({ focus: false })
+    if (block.getKey() !== this.props.block.getKey()) {
+      this.setState({ focus: false })
+    }
   }
 
   onMouseDown = (e: React.MouseEvent<any>) => {
     this.setEditorReadonly()
     if (this.state.focus) {
-      return
+      return e.stopPropagation()
     }
 
     e.preventDefault()
