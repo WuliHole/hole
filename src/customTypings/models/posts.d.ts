@@ -31,4 +31,6 @@ interface Post<T> {
   updatedAt: string
   tags?: string
   published: boolean
+  upvoted: boolean
+  upvoteCount: number
 }

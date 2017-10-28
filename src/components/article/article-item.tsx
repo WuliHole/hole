@@ -8,6 +8,7 @@ import { EditorState } from 'draft-js'
 import Moment = require('moment')
 import Avatar from '../avatar'
 import { animated } from '../transition/utils'
+import { Map, is } from 'immutable'
 import './item.less'
 
 import HoleEditor from '../editor'
@@ -40,80 +41,77 @@ const plugins = [
 ]
 
 interface ItemProps {
-  articleInfo: Post<any>
+  post: Map<keyof Post<any>, any>
   className?: string
   children?
   maxLength?: number
   rightIcon?: JSX.Element
 }
 
-const item = ({
-  articleInfo,
-  className,
-  maxLength,
-  children = null,
-  rightIcon = null
-}: ItemProps) => {
-  assert(!!articleInfo.content)
 
-  const cls = classnames(
-    'h1',
-    'bold',
-    'mt2',
-    'block',
-    'article-list-item-title',
-    'text-decoration-none'
-  )
-  const { title, content, author, id, createdAt } = articleInfo
-  const href = `/post/${title}/${id}`
-  const date = new Date(createdAt)
-  return (
+class Item extends React.Component<ItemProps, {}> {
+  shouldComponentUpdate(np: ItemProps) {
+    if (!is(this.props.post, np.post)) {
+      return true
+    }
+    return false
+  }
 
-    <div className={ `article-list-item-wrap ${className || ' '}` }>
+  render() {
+    const { post, maxLength, className, rightIcon, children } = this.props
+    if (!post) {
+      return null
+    }
+    const rawPost: Post<any> = post.toJS()
+    const cls = classnames(
+      'h1',
+      'bold',
+      'mt2',
+      'block',
+      'article-list-item-title',
+      'text-decoration-none'
+    )
+    const { content, author, id, createdAt } = rawPost
+    const date = new Date(createdAt)
+    return (
 
-      <Affix affixClassName="affixed-header" topClassName="static-header" offsetTop={ 125 }>
-        <div className="relative" >
-          <div className="inline-block left-part-avatar">
-            <Link className="inline-block" to={ `/profile/${author.id}` }>
-              <Avatar src={ author.avatar } size={ 53 } />
-            </Link>
-            <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
-              style={ {
-                verticalAlign: 'text-bottom'
-              } }
-            >
-              <div>{ author.nickName }</div>
-              <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
+      <div className={ `article-list-item-wrap ${className || ' '}` }>
+
+        <Affix affixClassName="affixed-header" topClassName="static-header" offsetTop={ 125 }>
+          <div className="relative" >
+            <div className="inline-block left-part-avatar">
+              <Link className="inline-block" to={ `/profile/${author.id}` }>
+                <Avatar src={ author.avatar } size={ 53 } />
+              </Link>
+              <div className="inline-block clearfix article-item-usrInfo ml2 pt1 pb1"
+                style={ {
+                  verticalAlign: 'text-bottom'
+                } }
+              >
+                <div>{ author.nickName }</div>
+                <div>{ Moment(date, 'YYYYMMDD').fromNow() }</div>
+              </div>
+            </div>
+            <div className="inline-block right-icon">
+              { rightIcon }
             </div>
           </div>
-          <div className="inline-block right-icon">
-            { rightIcon }
-          </div>
-        </div>
-      </Affix>
-      {/* <Link className={ cls } to={ href }>
-        { title }
-      </Link> */}
-      <div className="article-list-item-paragraph">
-        <HoleEditor
-          readonly
-          editorState={
-            EditorState.createWithContent(
-              Serlizer.deserialize(
-                maxLength ? truncate(content, maxLength) : content
-              )
-            )
+        </Affix>
+        <div className="article-list-item-paragraph">
+          {
+            <HoleEditor
+              readonly
+              content={ maxLength && content ? truncate(content, maxLength) : content }
+              plugins={ plugins } />
           }
-          plugins={ plugins }>
-        </HoleEditor>
-      </div>
-      <span className="mr1"></span>
-      {/* <Icon name="like" /> */ }
-      { children }
-    </div >
-  )
+        </div>
+        <span className="mr1"></span>
+        { children }
+      </div >
+    )
+  }
 }
-const AnimatedItem = animated<ItemProps>({ transitionName: 'fadeIn' })(item)
+const AnimatedItem = animated<ItemProps>({ transitionName: 'fadeIn' })(Item)
 export default AnimatedItem
 
 

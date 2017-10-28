@@ -14,7 +14,7 @@ import { Map } from 'immutable'
 import resolveTitle from 'utils/resolveTitleFromContent'
 interface ICommentFormProps {
   user: User
-  article: Post<any>
+  post: Map<keyof Post<any>, any>
   postComment: IPostComment,
   children?
   submitButton?: JSX.Element
@@ -27,7 +27,7 @@ const sideToolbarPlugin = createSideToolbarPlugin()
 const { SideToolbar } = sideToolbarPlugin;
 
 let _postComment: IPostComment
-let _article: Post<any>
+let _post: Post<any>
 let _authorId: number
 let text: string = '提交'
 
@@ -38,22 +38,22 @@ const ButtonPlugin = createButtonPlugin({
     const editorState = store.getItem('getEditorState')() as EditorState
     const content = Serlizer.serialize(editorState.getCurrentContent())
     if (!_authorId) {
-      throw new Error('unexcept value')
+      throw new Error('unexcept authorId')
     }
 
     if (!content) {
-      throw new Error('unexcept value')
+      throw new Error('unexcept content')
     }
 
-    if (!_article.id) {
-      throw new Error('unexcept value')
+    if (!_post.id) {
+      throw new Error('unexcept post.id')
     }
 
     if (_postComment) {
       _postComment({
-        postId: (_article.id),
-        postOwnerId: _article.authorId,
-        postTitle: resolveTitle(_article.content),
+        postId: (_post.id),
+        postOwnerId: _post.authorId,
+        postTitle: resolveTitle(_post.content),
         content,
         authorId: _authorId
       }).then(() => {
@@ -76,13 +76,13 @@ const plugins = [
 
 export default ({
   user,
-  article,
+  post,
   postComment,
   children = null,
   submitButton = <Button />
 }: ICommentFormProps) => {
   _postComment = postComment
-  _article = article
+  _post = post && post.toJS()
   _authorId = user && user.id
   return <div className="clearfix  p2  bg-white">
     { user && <CommentAvatar user={ user } /> }

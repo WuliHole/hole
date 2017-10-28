@@ -5,8 +5,8 @@ import * as  classNames from 'classnames'
 import { PropTypes } from 'react'
 import Container from '../components/container'
 import { getById, edit, upvotePost, removeUpvoteRecord } from '../actions/posts'
-import { ArticleList, ArticleItem } from '../components/article'
-import { List, Map } from 'immutable'
+import { ArticleItem } from '../components/article'
+import { List, Map, is } from 'immutable'
 import {
   default as CommentForm,
   CommentTable
@@ -26,8 +26,7 @@ import LikeBorder from 'material-ui/svg-icons/action/favorite-border';
 import { requireLogin } from 'app/middleware/requireLogin'
 import { ScrollerReset } from '../components/scrollerReset/scrollerReset'
 import './reading-page.less'
-interface IReadingPageProps extends React.Props<any> {
-  article
+interface ReadingPageProps extends React.Props<any> {
   comments: List<IComment>
   getComments: IGetComment
   user
@@ -47,10 +46,8 @@ interface IReadingPageProps extends React.Props<any> {
 }
 
 
-function mapStateToProps(state, props: IReadingPageProps) {
+function mapStateToProps(state, props: ReadingPageProps) {
   return {
-    article: state.article,
-    router: state.router,
     user: state.session.get('user'),
     post: findPostById(state, props),
     comments: getCommentByPostId(state, props),
@@ -70,7 +67,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-class ReadingPage extends React.Component<IReadingPageProps, {}> {
+class ReadingPage extends React.Component<ReadingPageProps, {}> {
 
   constructor(props) {
     super(props)
@@ -87,7 +84,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
   }
 
   get post() {
-    return this.props.post && this.props.post.toJS()
+    return this.props.post
   }
 
   get comments() {
@@ -99,7 +96,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
       return false
     }
 
-    return !!this.post.upvoted
+    return !!this.post.get('upvoted')
   }
 
   onClickUpvoteButton = () => {
@@ -118,7 +115,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
   upvote() {
     const post = this.post
     if (post) {
-      return this.props.upvote(post.id)
+      return this.props.upvote(post.get('id'))
     }
   }
 
@@ -126,7 +123,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
   removeUpvoteRecord() {
     const post = this.post
     if (post) {
-      return this.props.removeUpvoteRecord(post.id)
+      return this.props.removeUpvoteRecord(post.get('id'))
     }
   }
 
@@ -134,24 +131,18 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
     if (!this.props.user || !this.post) {
       return false
     }
-    return this.props.user.get('id') === this.post.author.id
+    return this.props.user.get('id') === this.post.getIn(['authorId'])
   }
 
   edit = () => {
     if (this.isAuthor()) {
-      this.props.edit(this.post.id)
-      this.props.history.push(`/post/${this.post.id}/edit`)
+      this.props.edit(this.post.get('id'))
+      this.props.history.push(`/post/${this.post.get('id')}/edit`)
     }
   }
 
   render() {
     const post = this.post
-
-    if (!post) {
-      return <div className="not-found">
-      </div>
-    }
-
     const commetTable = this.props.comments
     const comments = this.comments ? this.comments.toJS() : []
 
@@ -180,14 +171,15 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
 
         <div className="bg-white pt4">
           <CommonAppBar history={ this.props.history } style={ { background: 'rgba(0, 0, 0, 0)' } } />
-          <Container size={ post ? 4 : 1 }
+          <Container size={ 4 }
             center
             style={ { minHeight: '320px' } }>
+            {
+              !post && <CircularProgress style={ { left: '50%' } } />
+            }
             <ArticleItem
-              articleInfo={ post }
-              rightIcon={
-                ReadingPage.makeEditButton(this)
-              }
+              post={ post }
+              rightIcon={ ReadingPage.makeEditButton(this) }
             />
             <div className="pl2 pb2 ">
               <div className="checkbox-group inline-block">
@@ -198,7 +190,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
                   onCheck={ this.onClickUpvoteButton }
                   checked={ this.upvoted() }
                   iconStyle={ { marginRight: '5px', height: 20, width: 20 } }
-                  label={ this.post.upvoteCount }
+                  label={ post && post.get('upvoteCount') }
                 />
               </div>
             </div>
@@ -213,7 +205,7 @@ class ReadingPage extends React.Component<IReadingPageProps, {}> {
         >
           <CommentForm
             user={ this.props.user && this.props.user.toJS() }
-            article={ post }
+            post={ post }
             postComment={ this.props.postComment }
             submitButton={ loginButton }
           >

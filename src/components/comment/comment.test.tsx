@@ -2,6 +2,7 @@ import { shallow, mount } from 'enzyme'
 import * as React from 'react'
 import CommentForm from './index'
 import { getContentState } from '../editor/utils/testUtils'
+import { fromJS } from 'immutable'
 describe('Comment Component', () => {
   let user: User = {
     nickName: 'jacky',
@@ -13,7 +14,7 @@ describe('Comment Component', () => {
     avatar: 'http://www.163.com'
   }
 
-  let article = {
+  let article = fromJS({
     title: 'hello world',
     id: 1,
     authorId: 201,
@@ -23,13 +24,13 @@ describe('Comment Component', () => {
     createdAt: '2017-04-13T12:41:17.996Z',
     content: getContentState('hello world'),
     published: true
-  }
+  })
 
   it('should rightly render user name', () => {
 
     const comment = mount(
       <CommentForm user={ user }
-        article={ article }
+        post={ article }
         postComment={ (s) => new Promise(void 0) }></CommentForm>
     )
 
@@ -39,7 +40,7 @@ describe('Comment Component', () => {
     const comment = mount(
       <CommentForm user={ user }
         postComment={ (s) => new Promise(void 0) }
-        article={ article }></CommentForm>
+        post={ article }></CommentForm>
     )
     expect(comment.find('img').length).toEqual(1)
   })

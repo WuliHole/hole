@@ -42,7 +42,7 @@ export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = (
       store.getItem(callbackName)()
     }
   }
-  /* tslint:disable */
+
   function handleDelete(e: React.KeyboardEvent<any>) {
     const getEditorState = store.getItem('getEditorState')
     const state: EditorState = getEditorState()

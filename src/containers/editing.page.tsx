@@ -140,7 +140,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
     if (!this.isAuthor()) {
       return
     }
-    const content = this.currentPost && this.currentPost.toJS().content
+    const content = this.currentPost && this.currentPost.get('content')
     return content
   }
 
@@ -168,6 +168,8 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
       }
     }
   }
+
+
 
   loadCurrentPost() {
     this.props.getPostById(this.props.params.pid)

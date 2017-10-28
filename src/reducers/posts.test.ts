@@ -150,6 +150,8 @@ function mockResponse(id?: number): Post<any> {
       createdAt: '',
       bio: ''
     },
-    published: true
+    published: true,
+    upvoted: true,
+    upvoteCount: 12
   }
 }
