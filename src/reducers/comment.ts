@@ -52,15 +52,14 @@ function commentReducer(state = INITIAL_STATE,
 export default commentReducer
 
 function processGetCommetList(state, action) {
-  const comments = action.payload as ICommentServerResponse[]
+  const comments = action.payload as CommentPayload[]
   if (comments.length === 0) {
     return state
   }
 
-  debug(`responseComments:\n${JSON.stringify(comments)}`)
 
   const postId = comments[0].postId.toString()
-  const oldComments: List<ICommentServerResponse>
+  const oldComments: List<CommentPayload>
     = state.getIn(['comments', postId.toString()])
 
   const newComments = oldComments
@@ -79,8 +78,7 @@ function processGetCommetList(state, action) {
 }
 
 function processPostComment(state, action) {
-  const comment = action.payload as ICommentServerResponse
-  debug(`responseComment:\n${JSON.stringify(comment)}`)
+  const comment = action.payload as CommentPayload
   const oldTable = state.get('comments') as Map<string, List<any>>
 
   const oldComments = state

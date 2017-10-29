@@ -72,7 +72,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case GET_POST_BY_ID_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid.toString(), Map(action.payload) as POST),
+        meta: meta.merge({ [uid]: action.payload as POST }),
         hasError: false,
         isLoading: false,
         total: state.get('total') + 1
@@ -80,7 +80,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case CREATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid.toString(), Map(action.payload) as POST),
+        meta: meta.merge({ [uid]: action.payload as POST }),
         hasError: false,
         isLoading: false,
         editing: action.payload.id,
@@ -94,7 +94,7 @@ function postsReducer(state = INITIAL_STATE,
 
     case UPDATE_POST_SUCCESS:
       return state.merge(fromJS({
-        meta: meta.set(uid.toString(), Map(action.payload) as POST),
+        meta: meta.merge({ [uid]: action.payload as POST }),
         isLoading: false,
         hasError: false
       }))

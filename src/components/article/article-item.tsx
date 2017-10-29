@@ -101,7 +101,9 @@ class Item extends React.Component<ItemProps, {}> {
           {
             <HoleEditor
               readonly
-              content={ maxLength && content ? truncate(content, maxLength) : content }
+              editorState={ EditorState.createWithContent(
+                Serlizer.deserialize(maxLength ? truncate(content, maxLength) : content)
+              ) }
               plugins={ plugins } />
           }
         </div>

@@ -136,7 +136,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
       .find(v => v.get('id') === currentEdit)
   }
 
-  get contentState() {
+  get content() {
     if (!this.isAuthor()) {
       return
     }
@@ -215,8 +215,6 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
   onMouseDown = (e) => {
     if (this.state.readonly) {
       this.openEditgor()
-      // e.stopPropagation()
-      // e.preventDefault()
     }
   }
 
@@ -237,7 +235,7 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
 
     const lastSave = this.currentPost && this.currentPost.get('updatedAt')
     const date = new Date(lastSave)
-
+    const content = this.content
     return <div onMouseDown={ this.onMouseDown }>
       <AppBar
         style={ { position: 'fixed' } }
@@ -261,10 +259,10 @@ class EditView extends React.Component<IEditViewProps, IEditViewState> {
               avatar={ <Avatar src={ avatar } size={ 48 } /> }
             />
             <CardText >
-              { this.contentState &&
+              { content &&
                 <Editor
                   plugins={ this.getPluigins() }
-                  content={ this.contentState }
+                  content={ content.toJS() }
                   autoFocus
                   readonly={ this.state.readonly }
                 >

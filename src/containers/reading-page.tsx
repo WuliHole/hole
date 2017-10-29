@@ -177,10 +177,10 @@ class ReadingPage extends React.Component<ReadingPageProps, {}> {
             {
               !post && <CircularProgress style={ { left: '50%' } } />
             }
-            <ArticleItem
+            { post && <ArticleItem
               post={ post }
               rightIcon={ ReadingPage.makeEditButton(this) }
-            />
+            /> }
             <div className="pl2 pb2 ">
               <div className="checkbox-group inline-block">
                 <Checkbox

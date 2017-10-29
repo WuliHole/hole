@@ -6,7 +6,7 @@ interface IComment {
   date: string
 }
 
-interface ICommentServerResponse {
+interface CommentPayload {
   author: User
   comment: any
   postId: string
