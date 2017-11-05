@@ -31,6 +31,7 @@ export class TexBlock extends React.Component<Props, State> {
   private setEditable: () => void
   private setEditorReadonly: () => void
   private getEditorRef: () => any
+  private isReadonly: () => boolean
   private parseKatex: (content: string) => any
   private prevCursorPosition: number
   private currentCurosrPosition: number
@@ -45,9 +46,10 @@ export class TexBlock extends React.Component<Props, State> {
   componentDidMount() {
     const callbackName = `focus:${this.props.block.getKey()}`
     this.props.blockProps.store.updateItem(callbackName, this.focus)
-    this.setEditable = this.props.blockProps.store.getItem('setEditorEditable')
+    this.isReadonly = this.props.blockProps.store.getItem('isReadonly')
     this.setEditorState = this.props.blockProps.store.getItem('setEditorState')
     this.getEditorState = this.props.blockProps.store.getItem('getEditorState')
+    this.setEditable = this.props.blockProps.store.getItem('setEditorEditable')
     this.setEditorReadonly = this.props.blockProps.store.getItem('setEditorReadonly')
     this.getEditorRef = this.props.blockProps.store.getItem('getEditorRef')
     this.parseKatex = Katex['__parse']
@@ -62,7 +64,7 @@ export class TexBlock extends React.Component<Props, State> {
         this.setState({ content })
       }
 
-      if (isNewlyCreated(state, entityKey)) {
+      if (!this.isReadonly() && isNewlyCreated(state, entityKey)) {
         this.focus()
       }
     }
@@ -130,6 +132,10 @@ export class TexBlock extends React.Component<Props, State> {
   }
 
   onMouseDown = (e: React.MouseEvent<any>) => {
+    if (this.isReadonly()) {
+      return
+    }
+
     this.setEditorReadonly()
     if (this.state.focus) {
       return e.stopPropagation()

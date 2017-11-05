@@ -19,6 +19,7 @@ import createFocusPlugin from 'draft-js-focus-plugin'
 import linkify from 'draft-js-linkify-plugin'
 import createCodePlugin from 'app/components/editor/plugins/code-highlight/code-light.plugin'
 import { composeDecorators } from 'draft-js-plugins-editor'
+import { createTexlugin } from 'app/components/editor/plugins/tex'
 import { Affix } from 'react-overlays'
 
 const focusPlugin = createFocusPlugin()
@@ -37,7 +38,8 @@ const plugins = [
   alignmentPlugin,
   imagePlugin,
   linkify(),
-  createCodePlugin({})
+  createCodePlugin({}),
+  createTexlugin({})
 ]
 
 interface ItemProps {

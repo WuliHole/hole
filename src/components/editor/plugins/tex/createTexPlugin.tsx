@@ -5,18 +5,27 @@ import debounce from '../../../../utils/debounce'
 import createStore from '../../utils/createStore'
 import { TexBlock } from './components/texBlock'
 import { KeyMap } from '../../utils/keyMap'
+
 interface PluginConfig {
-  setEditorReadonly: () => void
-  setEditorEditable: () => void
-  isReadonly: () => boolean
+  setEditorReadonly?: () => void
+  setEditorEditable?: () => void
+  isReadonly?: () => boolean
 }
 
 interface StaticMethod { }
 
+function placeholder() {
+  // noop
+}
+
+function defaultIsReadonly() {
+  return true
+}
+
 export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = ({
-  setEditorReadonly,
-  setEditorEditable,
-  isReadonly,
+  setEditorReadonly = placeholder,
+  setEditorEditable = placeholder,
+  isReadonly = defaultIsReadonly,
   }) => {
 
   const store = createStore()
@@ -83,6 +92,7 @@ export const createTexlugin: EditorPluginBuilder<PluginConfig, StaticMethod> = (
       store.updateItem('getEditorState', getEditorState)
       store.updateItem('setEditorReadonly', setEditorReadonly)
       store.updateItem('setEditorEditable', setEditorEditable)
+      store.updateItem('isReadonly', isReadonly)
       store.updateItem('getEditorRef', getEditorRef)
     },
 
