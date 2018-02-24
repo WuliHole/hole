@@ -67,5 +67,3 @@ developing your software.
 
 Edit [this file](server/proxy-config.js) to mount such APIs at a given path.
 
-
-![screentshot](./Screenshot.jpeg)
